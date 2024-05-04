@@ -1,6 +1,6 @@
 <script setup>
 import UpperLogo from "./UpperLogo.vue";
-import UpperSearch from "./UpperSearch.vue";
+// import UpperSearch from "./UpperSearch.vue";
 import UpperItems from "./UpperItems.vue";
 </script>
 
@@ -10,7 +10,7 @@ import UpperItems from "./UpperItems.vue";
         <!-- 좌측 로고 & 검색 -->
         <div class="d-flex align-items-center w-auto h-100">
             <UpperLogo />
-            <UpperSearch />
+            <!-- <UpperSearch /> -->
         </div>
         <!-- 우측 사용자 상태 관리 -->
         <div class="h-100">
