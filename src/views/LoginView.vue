@@ -11,7 +11,7 @@ import LoginSubMenu from "@/components/Login/LoginSubMenu.vue";
     <div class="row">
         <div class="d-flex flex-column h-auto col-10 col-sm-12 mx-auto login">
             <!-- 로고 -->
-            <CommonLogo />
+            <CommonLogo length="44" size="36" />
             <div class="d-flex flex-column align-items-center h-auto row-gap-2 mt-5 w-100">
                 <!-- 아이디 & 비밀번호 -->
                 <CommonInput :height="50" :placeholder="'아이디'" :icon="{ isStart: true, name: 'id' }" />

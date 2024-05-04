@@ -1,7 +1,7 @@
 <script setup>
-import UpperLogo from "@/components/Nav/UpperLogo.vue";
-// import UpperSearch from "./UpperSearch.vue";
 import UpperItems from "@/components/Nav/UpperItems.vue";
+
+import CommonLogo from "@/components/common/CommonLogo.vue";
 </script>
 
 <template>
@@ -9,8 +9,7 @@ import UpperItems from "@/components/Nav/UpperItems.vue";
     <div class="d-flex justify-content-between align-items-center m-auto nav-upper">
         <!-- 좌측 로고 & 검색 -->
         <div class="d-flex align-items-center w-auto h-100">
-            <UpperLogo />
-            <!-- <UpperSearch /> -->
+            <CommonLogo length="28" size="24" />
         </div>
         <!-- 우측 사용자 상태 관리 -->
         <div class="h-100">
