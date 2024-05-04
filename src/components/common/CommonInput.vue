@@ -5,7 +5,6 @@ import IconLock from "@/components/icons/IconLock.vue";
 import IconSearch from "@/components/icons/IconSearch.vue";
 
 defineProps({
-    width: Number,
     height: Number,
     placeholder: String,
     icon: Object,
@@ -19,8 +18,8 @@ const focusOut = () => (colors.value = "#999999");
 <template>
     <!-- 입력 -->
     <div
-        class="d-flex align-items-center rounded-5 overflow-hidden px-4 column-gap-2"
-        :style="{ width: width + 'px', height: height + 'px', border: '1px solid' + colors }"
+        class="d-flex align-items-center rounded-5 overflow-hidden px-4 column-gap-2 w-100"
+        :style="{ height: height + 'px', border: '1px solid' + colors }"
     >
         <!-- 아이콘(앞) -->
         <IconPerson v-if="icon.isStart && icon.name == 'id'" :width="32" :height="32" :color="colors" />

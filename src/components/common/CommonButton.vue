@@ -2,7 +2,6 @@
 import { ref } from "vue";
 
 defineProps({
-    width: Number,
     height: Number,
     value: String,
     bgColors: Array,
@@ -15,9 +14,8 @@ const btnState = ref(false);
     <!-- 버튼 -->
     <input
         type="button"
-        class="border-0 rounded-5 fw-bold mt-4"
+        class="border-0 rounded-5 fw-bold mt-4 w-100"
         :style="{
-            width: width + 'px',
             height: height + 'px',
             'background-color': btnState ? bgColors[0] : bgColors[1],
             color: btnState ? '#ffffff' : '#374553',
