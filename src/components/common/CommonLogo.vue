@@ -4,6 +4,7 @@ import IconLogo from "@/components/icons/IconLogo.vue";
 defineProps({
     length: Number,
     size: Number,
+    title: String,
 });
 </script>
 
@@ -11,7 +12,7 @@ defineProps({
     <!-- 로고 -->
     <RouterLink class="d-flex align-items-center fw-bold router" to="/">
         <IconLogo :width="length" :height="length" :color="'#1769ff'" />
-        <div class="ms-3 logo-text" :style="{ 'font-size': size + 'px' }">EnjoyTrip</div>
+        <div class="ms-3 logo-text" :style="{ 'font-size': size + 'px' }">{{ title }}</div>
     </RouterLink>
 </template>
 
