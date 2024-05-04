@@ -4,15 +4,15 @@ import IconLogo from "@/components/icons/IconLogo.vue";
 
 <template>
     <!-- 로고 -->
-    <RouterLink class="d-flex align-items-center fw-bold nav-logo router" to="/">
-        <IconLogo :width="32" :height="32" :color="'#1769ff'" />
+    <RouterLink class="d-flex align-items-center w-auto m-auto fw-bold nav-logo router" to="/">
+        <IconLogo :width="44" :height="44" :color="'#1769ff'" />
         <div class="ms-3 logo-text">EnjoyTrip</div>
     </RouterLink>
 </template>
 
 <style scoped>
 .nav-logo {
-    font-size: 24px;
+    font-size: 36px;
 }
 
 .logo-text {

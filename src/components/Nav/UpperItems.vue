@@ -17,7 +17,7 @@ const userState = ref(false);
 </template>
 
 <style scoped>
-a {
+.router {
     color: #646f7c;
 }
 </style>

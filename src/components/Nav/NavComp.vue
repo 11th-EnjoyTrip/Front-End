@@ -1,6 +1,6 @@
 <script setup>
-import NavCompUpper from "./NavCompUpper.vue";
-import NavCompLower from "./NavCompLower.vue";
+import NavCompUpper from "@/components/Nav/NavCompUpper.vue";
+import NavCompLower from "@/components/Nav/NavCompLower.vue";
 </script>
 
 <template>
