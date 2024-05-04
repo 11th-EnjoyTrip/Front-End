@@ -1,7 +1,7 @@
 <script setup>
-import UpperLogo from "./UpperLogo.vue";
+import UpperLogo from "@/components/Nav/UpperLogo.vue";
 // import UpperSearch from "./UpperSearch.vue";
-import UpperItems from "./UpperItems.vue";
+import UpperItems from "@/components/Nav/UpperItems.vue";
 </script>
 
 <template>
