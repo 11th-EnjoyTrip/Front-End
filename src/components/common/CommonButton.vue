@@ -15,7 +15,7 @@ const btnState = ref(false);
     <!-- 버튼 -->
     <input
         type="button"
-        class="border-0 rounded-5 fw-bold mt-5"
+        class="border-0 rounded-5 fw-bold mt-4"
         :style="{
             width: width + 'px',
             height: height + 'px',
