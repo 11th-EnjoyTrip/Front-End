@@ -1,0 +1,19 @@
+<script setup></script>
+
+<template>
+    <div class="d-flex align-items-center m-auto nav-lower">
+        <!-- 컨텐츠 네비게이션 리스트 -->
+        <RouterLink to="/" class="fw-medium contents-search router">관광지검색</RouterLink>
+    </div>
+</template>
+
+<style scoped>
+.nav-lower {
+    max-width: 1200px;
+    height: 44px;
+}
+
+.contents-search {
+    color: #374553;
+}
+</style>
