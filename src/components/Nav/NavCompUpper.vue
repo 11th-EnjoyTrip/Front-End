@@ -9,7 +9,7 @@ import UpperDropdown from "@/components/Nav/UpperDropdown.vue";
     <div class="row mx-auto nav-upper">
         <!-- 좌측 로고 & 검색 -->
         <div class="col my-auto">
-            <CommonLogo length="28" size="24" />
+            <CommonLogo :length="28" :size="24" :title="'EnjoyTrip'" />
         </div>
         <!-- 우측 사용자 상태 관리 -->
         <!-- 모바일보다 클 때 -->
