@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <!-- 로고 -->
-    <RouterLink class="d-flex align-items-center w-auto m-auto fw-bold router" to="/">
+    <RouterLink class="d-flex align-items-center fw-bold router" to="/">
         <IconLogo :width="length" :height="length" :color="'#1769ff'" />
         <div class="ms-3 logo-text" :style="{ 'font-size': size + 'px' }">EnjoyTrip</div>
     </RouterLink>
