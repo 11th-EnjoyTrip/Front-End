@@ -1,16 +1,15 @@
 <script setup>
-import CommonLogo from "@/components/common/CommonLogo.vue";
+import NavComp from "@/components/Nav/NavComp.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 </script>
 
 <template>
+    <NavComp :withLower="false" />
     <div class="row">
         <div class="d-flex flex-column h-auto col-10 col-sm-12 mx-auto signup">
-            <div class="w-auto mx-auto">
-                <CommonLogo :length="44" :size="36" :title="'회원가입'" />
-            </div>
+            <div class="mx-auto fw-bold title">회원가입</div>
             <div class="d-flex flex-column row-gap-3 mt-5">
                 <div>
                     <CommonInput2 :height="50" :placeholder="'소문자, 숫자'" :title="'아이디'" :type="text" />
