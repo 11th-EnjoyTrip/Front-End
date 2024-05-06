@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="fixed-top border-bottom w-100 nav-comp px-3" :style="{ 'min-height': withLower ? '108px' : '64px' }">
+    <div class="border-bottom w-100 nav-comp px-3" :style="{ 'min-height': withLower ? '108px' : '64px' }">
         <!-- 네비게이션 상단 -->
         <NavCompUpper />
         <!-- 네비게이션 하단 -->

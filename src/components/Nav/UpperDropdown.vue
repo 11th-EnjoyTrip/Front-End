@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import IconPerson from "@/components/icons/IconPerson.vue";
 
+const userState = ref(false);
 const displayState = ref("none");
 const changeState = () =>
     displayState.value == "none" ? (displayState.value = "flex") : (displayState.value = "none");
