@@ -1,6 +1,14 @@
 <script setup>
 import NavCompUpper from "@/components/Nav/NavCompUpper.vue";
 import NavCompLower from "@/components/Nav/NavCompLower.vue";
+import { onMounted } from "vue";
+import { doTest } from "@/apis/testApi";
+
+onMounted(() => {
+    doTest().then((response) => {
+        console.log(response);
+    });
+});
 
 defineProps({
     withLower: Boolean,
