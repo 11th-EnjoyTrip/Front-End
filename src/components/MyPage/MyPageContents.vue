@@ -6,7 +6,7 @@ import ContentsPlan from "@/components/MyPage/ContentsPlan.vue";
 import ContentsHotPlace from "@/components/MyPage/ContentsHotPlace.vue";
 import ContentsQuit from "@/components/MyPage/ContentsQuit.vue";
 
-const menu = ref(1);
+const menu = ref(4);
 </script>
 
 <template>
