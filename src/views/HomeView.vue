@@ -3,7 +3,7 @@ import NavComp from "@/components/Nav/NavComp.vue";
 </script>
 
 <template>
-    <NavComp />
+    <NavComp :withLower="true" />
 </template>
 
 <style scoped></style>
