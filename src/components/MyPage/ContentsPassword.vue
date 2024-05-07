@@ -1,6 +1,7 @@
 <script setup>
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
+import CommonButton from "@/components/common/CommonButton.vue";
 </script>
 
 <template>
@@ -27,6 +28,9 @@ import CommonMessage from "@/components/common/CommonMessage.vue";
                 <CommonMessage :isSuccess="false" :message="'이전과 동일한 비밀번호입니다'" />
                 <CommonMessage :isSuccess="true" :message="'사용가능한 비밀번호입니다'" />
             </div>
+        </div>
+        <div class="mt-5 w-100 d-flex align-items-center">
+            <CommonButton :height="50" :value="'비밀번호 변경'" :bgColors="['#1769ff', '#e1e1e1']" />
         </div>
     </div>
 </template>
