@@ -25,7 +25,7 @@ defineProps({
         <IconDeparture v-if="idx == 2" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
         <IconPlace v-if="idx == 3" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
         <IconQuit v-if="idx == 4" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
-        <div class="fw-medium" :style="{ color: menu == idx ? '#374553' : '#999999' }">
+        <div class="fw-medium item-title" :style="{ color: menu == idx ? '#374553' : '#999999' }">
             {{ title }}
         </div>
     </div>
@@ -36,8 +36,17 @@ defineProps({
     height: 40px;
 }
 
-.item-title {
-    font-weight: 500;
-    font-size: 18px;
+@media (max-width: 991.98px) {
+    .item-title {
+        font-weight: 400;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .item-title {
+        font-weight: 400;
+        font-size: 12px;
+    }
 }
 </style>

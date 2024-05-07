@@ -4,7 +4,7 @@ import SideMenuItems from "@/components/MyPage/SideMenuItems.vue";
 
 const menu = ref(0);
 const changeMenu = (newMenu) => (menu.value = newMenu);
-const titles = ["회원정보 관리", "비밀번호 변경", "내 여행 계획 관리", "내 핫플레이스 관리", "회원 탈퇴"];
+const titles = ["회원정보 관리", "비밀번호 변경", "여행 계획", "핫플레이스", "회원 탈퇴"];
 </script>
 
 <template>
