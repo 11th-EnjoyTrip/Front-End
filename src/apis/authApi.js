@@ -47,3 +47,13 @@ export const passwordChange = (id, newPassword) => {
         },
     });
 };
+
+export const userQuit = (id) => {
+    return api({
+        url: "",
+        method: "patch",
+        data: {
+            id: id,
+        },
+    });
+};

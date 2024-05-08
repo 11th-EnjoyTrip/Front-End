@@ -24,7 +24,7 @@ watch(newValue, () => {
     emit("update:modelValue", newValue.value);
 });
 
-const isEditing = ref(props.title == "기존 비밀번호" || props.title == "새로운 비밀번호");
+const isEditing = ref(props.title == "비밀번호" || props.title == "기존 비밀번호" || props.title == "새로운 비밀번호");
 const doEdit = () => {
     if (isEditing.value) {
         alert("변경?");
@@ -53,7 +53,13 @@ const doEdit = () => {
                 :type="type"
                 class="w-100 h-100 border-0"
                 :placeholder="placeholder"
-                :readonly="(title != '닉네임' && title != '기존 비밀번호' && title != '새로운 비밀번호') || !isEditing"
+                :readonly="
+                    (title != '닉네임' &&
+                        title != '기존 비밀번호' &&
+                        title != '새로운 비밀번호' &&
+                        title != '비밀번호') ||
+                    !isEditing
+                "
                 v-model="newValue"
             />
         </div>

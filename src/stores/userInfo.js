@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { login, signup, duplicateNickname, passwordCheck, passwordChange } from "@/apis/authApi";
+import { login, signup, duplicateNickname, passwordCheck, passwordChange, userQuit } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
@@ -79,5 +79,27 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         return res;
     };
 
-    return { loginState, userInfo, getInfo, doLogin, doSignup, duplicateCheck, checkPassword, changePassword };
+    const quitUser = async (id) => {
+        let res = false;
+        await userQuit(id)
+            .then(() => {
+                res = true;
+            })
+            .catch(() => {
+                res = false;
+            });
+        return res;
+    };
+
+    return {
+        loginState,
+        userInfo,
+        getInfo,
+        doLogin,
+        doSignup,
+        duplicateCheck,
+        checkPassword,
+        changePassword,
+        quitUser,
+    };
 });
