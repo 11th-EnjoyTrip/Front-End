@@ -1,12 +1,13 @@
 <script setup>
-import { ref } from "vue";
 import ContentsUser from "@/components/MyPage/ContentsUser.vue";
 import ContentsPassword from "@/components/MyPage/ContentsPassword.vue";
 import ContentsPlan from "@/components/MyPage/ContentsPlan.vue";
 import ContentsHotPlace from "@/components/MyPage/ContentsHotPlace.vue";
 import ContentsQuit from "@/components/MyPage/ContentsQuit.vue";
 
-const menu = ref(4);
+defineProps({
+    menu: Number,
+});
 </script>
 
 <template>
