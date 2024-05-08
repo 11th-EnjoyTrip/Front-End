@@ -7,3 +7,11 @@ export const login = (loginInfo) => {
         data: { ...loginInfo },
     });
 };
+
+export const signup = (signupInfo) => {
+    return api({
+        url: "",
+        method: "post",
+        data: { ...signupInfo },
+    });
+};

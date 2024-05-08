@@ -5,14 +5,23 @@ import IconTag from "@/components/icons/IconTag.vue";
 import IconMail from "@/components/icons/IconMail.vue";
 import IconNickname from "@/components/icons/IconNickname.vue";
 import IconEdit from "@/components/icons/IconEdit.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
-defineProps({
+const props = defineProps({
     height: Number,
     placeholder: String,
     title: String,
     type: String,
     withEdit: Boolean,
+    modelValue: {
+        type: String,
+        required: true,
+    },
+});
+const emit = defineEmits(["update:modelValue"]);
+const newValue = ref(props.modelValue);
+watch(newValue, () => {
+    emit("update:modelValue", newValue.value);
 });
 
 const isEditing = ref(false);
@@ -45,6 +54,7 @@ const doEdit = () => {
                 class="w-100 h-100 border-0"
                 :placeholder="placeholder"
                 :readonly="title == '닉네임' && !isEditing"
+                v-model="newValue"
             />
         </div>
         <div class="col-2 d-flex align-items-center px-0 edit" v-if="title == '닉네임' && !withEdit">

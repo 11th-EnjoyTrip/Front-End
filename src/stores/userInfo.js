@@ -1,14 +1,14 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { login } from "@/apis/authApi";
+import { login, signup } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
-    const loginState = ref(false); // 로그인 상태
+    const loginState = ref(false);
     const userInfo = ref({
         name: "",
         nickname: "",
-    }); // 사용자 정보
+    });
 
     /* getters */
 
@@ -24,5 +24,9 @@ export const useUserInfoStore = defineStore("userInfo", () => {
             });
     };
 
-    return { loginState, userInfo, doLogin };
+    const doSignup = (signupInfo) => {
+        signup(signupInfo);
+    };
+
+    return { loginState, userInfo, doLogin, doSignup };
 });
