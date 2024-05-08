@@ -1,16 +1,21 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { login, signup } from "@/apis/authApi";
+import { login, signup, duplicateNickname } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
     const loginState = ref(false);
     const userInfo = ref({
-        name: "",
-        nickname: "",
+        id: "bluewhaleyh",
+        name: "최요하",
+        nickname: "흰수염고래",
+        email: "bluewhaleyh@gmail.com",
     });
 
     /* getters */
+    const getInfo = computed(() => {
+        return userInfo.value;
+    });
 
     /* actions */
     const doLogin = (loginInfo) => {
@@ -28,5 +33,15 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         signup(signupInfo);
     };
 
-    return { loginState, userInfo, doLogin, doSignup };
+    const duplicateCheck = (nickname) => {
+        duplicateNickname(nickname)
+            .then(() => {
+                return true;
+            })
+            .catch(() => {
+                return false;
+            });
+    };
+
+    return { loginState, userInfo, getInfo, doLogin, doSignup, duplicateCheck };
 });

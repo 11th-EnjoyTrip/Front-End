@@ -15,3 +15,13 @@ export const signup = (signupInfo) => {
         data: { ...signupInfo },
     });
 };
+
+export const duplicateNickname = (nickname) => {
+    return api({
+        url: "",
+        method: "get",
+        params: {
+            nickname: nickname,
+        },
+    });
+};

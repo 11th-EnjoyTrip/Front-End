@@ -53,7 +53,7 @@ const doEdit = () => {
                 :type="type"
                 class="w-100 h-100 border-0"
                 :placeholder="placeholder"
-                :readonly="title == '닉네임' && !isEditing"
+                :readonly="title != '닉네임' || !isEditing"
                 v-model="newValue"
             />
         </div>
