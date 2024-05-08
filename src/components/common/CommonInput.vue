@@ -1,13 +1,23 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import IconPerson from "@/components/icons/IconPerson.vue";
 import IconLock from "@/components/icons/IconLock.vue";
 import IconSearch from "@/components/icons/IconSearch.vue";
 
-defineProps({
+const props = defineProps({
     height: Number,
     placeholder: String,
     icon: Object,
+    modelValue: {
+        type: String,
+        required: true,
+    },
+});
+const emit = defineEmits(["update:modelValue"]);
+
+const newValue = ref(props.modelValue);
+watch(newValue, () => {
+    emit("update:modelValue", newValue.value);
 });
 
 const colors = ref("#999999");
@@ -31,6 +41,7 @@ const focusOut = () => (colors.value = "#999999");
             :placeholder="placeholder"
             @focusin="focusIn"
             @focusout="focusOut"
+            v-model="newValue"
         />
         <!-- 아이콘(뒤) -->
         <IconSearch v-if="!icon.isStart && icon.name == 'search'" :width="28" :height="28" :color="'#646f7c'" />
