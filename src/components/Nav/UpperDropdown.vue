@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import IconPerson from "@/components/icons/IconPerson.vue";
+import { useUserInfoStore } from "@/stores/userInfo";
 
-const userState = ref(false);
 const displayState = ref("none");
 const changeState = () =>
     displayState.value == "none" ? (displayState.value = "flex") : (displayState.value = "none");
+const store = useUserInfoStore();
 </script>
 
 <template>
@@ -18,11 +19,11 @@ const changeState = () =>
             :style="{ display: displayState }"
         >
             <!-- 사용자 로그인 전 -->
-            <RouterLink to="/login" class="router" v-if="!userState">로그인</RouterLink>
-            <RouterLink to="/signup" class="router" v-if="!userState">회원가입</RouterLink>
+            <RouterLink to="/login" class="router" v-if="!store.getState">로그인</RouterLink>
+            <RouterLink to="/signup" class="router" v-if="!store.getState">회원가입</RouterLink>
             <!-- 사용자 로그인 후 -->
-            <RouterLink to="/login" class="router" v-if="userState">로그아웃</RouterLink>
-            <RouterLink to="/signup" class="router" v-if="userState">마이페이지</RouterLink>
+            <RouterLink to="/login" class="router" v-if="store.getState">로그아웃</RouterLink>
+            <RouterLink to="/signup" class="router" v-if="store.getState">마이페이지</RouterLink>
         </div>
     </div>
 </template>
