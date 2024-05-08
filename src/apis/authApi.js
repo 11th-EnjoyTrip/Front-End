@@ -25,3 +25,25 @@ export const duplicateNickname = (nickname) => {
         },
     });
 };
+
+export const passwordCheck = (id, password) => {
+    return api({
+        url: "",
+        method: "post",
+        data: {
+            id: id,
+            password: password,
+        },
+    });
+};
+
+export const passwordChange = (id, newPassword) => {
+    return api({
+        url: "",
+        method: "post",
+        data: {
+            id: id,
+            password: newPassword,
+        },
+    });
+};

@@ -42,10 +42,10 @@ const messageInfo = ref({
     state: false,
     message: "",
 });
-const doLogin = () => {
+const doLogin = async () => {
     if (canLogin.value) {
         const store = useUserInfoStore();
-        messageInfo.value.state = store.doLogin(loginInfo.value);
+        messageInfo.value.state = await store.doLogin(loginInfo.value);
         if (!messageInfo.value.state) {
             messageInfo.value.message = "아이디 또는 비밀번호가 일치하지 않습니다";
         }

@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { login, signup, duplicateNickname } from "@/apis/authApi";
+import { login, signup, duplicateNickname, passwordCheck, passwordChange } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
@@ -18,30 +18,66 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     });
 
     /* actions */
-    const doLogin = (loginInfo) => {
-        login(loginInfo)
+    const doLogin = async (loginInfo) => {
+        let res = false;
+        await login(loginInfo)
             .then((response) => {
                 userInfo.value = { ...response };
-                return true;
+                res = true;
             })
             .catch(() => {
-                return false;
+                res = false;
             });
+        return res;
     };
 
-    const doSignup = (signupInfo) => {
-        signup(signupInfo);
-    };
-
-    const duplicateCheck = (nickname) => {
-        duplicateNickname(nickname)
+    const doSignup = async (signupInfo) => {
+        let res = false;
+        await signup(signupInfo)
             .then(() => {
-                return true;
+                res = true;
             })
             .catch(() => {
-                return false;
+                res = false;
             });
+        return res;
     };
 
-    return { loginState, userInfo, getInfo, doLogin, doSignup, duplicateCheck };
+    const duplicateCheck = async (nickname) => {
+        let res = false;
+        await duplicateNickname(nickname)
+            .then(() => {
+                res = true;
+            })
+            .catch(() => {
+                res = false;
+            });
+        return res;
+    };
+
+    const checkPassword = async (id, password) => {
+        let res = false;
+        await passwordCheck(id, password)
+            .then(() => {
+                res = true;
+            })
+            .catch(() => {
+                res = false;
+            });
+        return res;
+    };
+
+    const changePassword = async (id, password) => {
+        let res = false;
+        await passwordChange(id, password)
+            .then(() => {
+                res = true;
+            })
+            .catch(() => {
+                res = false;
+            });
+        return res;
+    };
+
+    return { loginState, userInfo, getInfo, doLogin, doSignup, duplicateCheck, checkPassword, changePassword };
 });

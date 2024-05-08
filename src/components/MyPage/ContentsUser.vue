@@ -18,10 +18,10 @@ watch(nickname, () => {
     } else {
         if (store.duplicateCheck(nickname.value)) {
             messages.value.state = true;
-            messages.value.message = "";
+            messages.value.message = "사용 가능한 닉네임 입니다";
         } else {
             messages.value.state = false;
-            messages.value.message = "중복된 닉네임입니다";
+            messages.value.message = "중복된 닉네임 입니다";
         }
     }
 });
