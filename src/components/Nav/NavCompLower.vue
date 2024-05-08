@@ -3,7 +3,7 @@
 <template>
     <div class="d-flex align-items-center m-auto nav-lower">
         <!-- 컨텐츠 네비게이션 리스트 -->
-        <RouterLink to="/" class="fw-medium contents-search router">관광지검색</RouterLink>
+        <RouterLink to="/attraction" class="fw-medium contents-search router">관광지검색</RouterLink>
     </div>
 </template>
 

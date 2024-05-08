@@ -34,6 +34,7 @@ const focusOut = () => (colors.value = "#999999");
         <!-- 아이콘(앞) -->
         <IconPerson v-if="icon.isStart && icon.name == 'id'" :width="32" :height="32" :color="colors" />
         <IconLock v-if="icon.isStart && icon.name == 'password'" :width="28" :height="28" :color="colors" />
+        <IconSearch v-if="icon.isStart && icon.name== 'search'" :width="28" :height="28" :color="colors" />
         <!-- 입력 박스 -->
         <input
             class="w-100 h-100 border-0"
@@ -50,7 +51,8 @@ const focusOut = () => (colors.value = "#999999");
 
 <style scoped>
 input::placeholder {
-    color: #999999;
+    color: #CCCCCC;
+    font-weight: bold;
 }
 
 input:focus {
