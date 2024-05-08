@@ -2,6 +2,66 @@
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
+import { ref, computed, watch } from "vue";
+import { useUserInfoStore } from "@/stores/userInfo.js";
+
+const store = useUserInfoStore();
+const before = ref("");
+const after = ref("");
+const messages = ref([
+    {
+        state: false,
+        message: "",
+    },
+    {
+        state: false,
+        message: "",
+    },
+]);
+const canChange = computed(() => {
+    return messages.value.filter((item) => item.state).length;
+});
+
+watch(before, async () => {
+    if (before.value.length == 0) {
+        messages.value[0].state = false;
+        messages.value[0].message = "비밀번호를 입력해주세요";
+        messages.value[1].message = "";
+    } else {
+        if (await store.checkPassword(store.getInfo.id, before.value)) {
+            messages.value[0].state = true;
+            messages.value[0].message = "";
+        } else {
+            messages.value[0].state = false;
+            messages.value[0].message = "부정확한 비밀번호 입니다";
+        }
+
+        if (before.value == after.value) {
+            messages.value[1].state = true;
+            messages.value[1].message = "비밀번호가 일치합니다";
+        } else {
+            messages.value[1].state = false;
+            messages.value[1].message = "비밀번호가 일치하지 않습니다";
+        }
+    }
+});
+watch(after, () => {
+    if (after.value.length == 0) {
+        messages.value[1].state = false;
+        messages.value[1].message = "비밀번호를 입력해주세요";
+    } else {
+        if (after.value == before.value) {
+            messages.value[1].state = true;
+            messages.value[1].message = "비밀번호가 일치합니다";
+        } else {
+            messages.value[1].state = false;
+            messages.value[1].message = "비밀번호가 일치하지 않습니다";
+        }
+    }
+});
+const doChangePassword = async () => {
+    await store.changePassword(store.getInfo.id, after.value);
+};
 </script>
 
 <template>
@@ -14,8 +74,9 @@ import CommonButton from "@/components/common/CommonButton.vue";
                     :placeholder="'8자 이상 소문자, 숫자'"
                     :title="'기존 비밀번호'"
                     :type="'password'"
+                    v-model="before"
                 />
-                <CommonMessage :isSuccess="false" :message="'비밀번호가 일치하지 않습니다'" />
+                <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
             </div>
             <div>
                 <CommonInput2
@@ -23,14 +84,19 @@ import CommonButton from "@/components/common/CommonButton.vue";
                     :placeholder="'8자 이상 소문자, 숫자'"
                     :title="'새로운 비밀번호'"
                     :type="'password'"
+                    v-model="after"
                 />
-                <CommonMessage :isSuccess="false" :message="'사용 불가능한 비밀번호입니다'" />
-                <CommonMessage :isSuccess="false" :message="'이전과 동일한 비밀번호입니다'" />
-                <CommonMessage :isSuccess="true" :message="'사용가능한 비밀번호입니다'" />
+                <CommonMessage :isSuccess="messages[1].state" :message="messages[1].message" />
             </div>
         </div>
         <div class="mt-5 w-100 d-flex align-items-center">
-            <CommonButton :height="50" :value="'비밀번호 변경'" :bgColors="['#1769ff', '#e1e1e1']" />
+            <CommonButton
+                :height="50"
+                :value="'비밀번호 변경'"
+                :bgColors="['#1769ff', '#e1e1e1']"
+                :state="canChange == 2"
+                :click="doChangePassword"
+            />
         </div>
     </div>
 </template>

@@ -86,7 +86,7 @@ watch(inputEmail, () => {
     }
 });
 
-const doSignup = () => {
+const doSignup = async () => {
     if (canSignup.value == 5) {
         const store = useUserInfoStore();
         const signupInfo = {
@@ -95,7 +95,7 @@ const doSignup = () => {
             name: inputName.value,
             email: inputEmail.value,
         };
-        store.doSignup(signupInfo);
+        await store.doSignup(signupInfo);
     }
 };
 </script>
