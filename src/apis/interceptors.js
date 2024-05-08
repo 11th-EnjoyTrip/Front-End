@@ -24,6 +24,6 @@ api.interceptors.response.use(
     },
     (error) => {
         console.log(error);
-        return Promise.rejecterror;
+        return Promise.reject(error);
     }
 );
