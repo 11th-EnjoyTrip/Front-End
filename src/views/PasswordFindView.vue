@@ -5,6 +5,7 @@ import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import { passwordFind } from "@/apis/authApi.js";
+import ModalPasswordFindResult from "@/components/Modal/ModalPasswordFindResult.vue";
 
 const inputId = ref("");
 const inputEmail = ref("");
@@ -21,6 +22,8 @@ const messages = ref([
 const canFind = computed(() => {
     return messages.value.filter((item) => item.state).length;
 });
+const modalState = ref(false);
+const result = ref("");
 
 watch(inputId, () => {
     if (inputId.value.length == 0) {
@@ -46,6 +49,8 @@ const doFind = async () => {
         await passwordFind(inputId.value, inputEmail.value)
             .then((response) => {
                 console.log(response.data);
+                result.value = response.data;
+                modalState.value = true;
             })
             .catch((error) => {
                 console.log(error);
@@ -85,6 +90,7 @@ const doFind = async () => {
             </div>
         </div>
     </div>
+    <ModalPasswordFindResult :modalState="modalState" :result="result" @close="modalState = false" />
 </template>
 
 <style scoped>
