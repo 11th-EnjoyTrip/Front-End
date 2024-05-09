@@ -3,6 +3,7 @@ import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import { ref, computed, watch } from "vue";
+import { passwordCheck, passwordChange } from "@/apis/userApi.js";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
 const store = useUserInfoStore();
@@ -28,13 +29,17 @@ watch(before, async () => {
         messages.value[0].message = "비밀번호를 입력해주세요";
         messages.value[1].message = "";
     } else {
-        if (await store.checkPassword(store.getInfo.id, before.value)) {
-            messages.value[0].state = true;
-            messages.value[0].message = "";
-        } else {
-            messages.value[0].state = false;
-            messages.value[0].message = "부정확한 비밀번호 입니다";
-        }
+        await passwordCheck(store.getUserInfo.id, before.value)
+            .then((response) => {
+                console.log(response.data);
+                messages.value[0].state = true;
+                messages.value[0].message = "";
+            })
+            .catch((error) => {
+                console.log(error);
+                messages.value[0].state = false;
+                messages.value[0].message = "부정확한 비밀번호 입니다";
+            });
 
         if (before.value == after.value) {
             messages.value[1].state = true;
@@ -60,7 +65,15 @@ watch(after, () => {
     }
 });
 const doChangePassword = async () => {
-    await store.changePassword(store.getInfo.id, after.value);
+    if (canChange.value == 2) {
+        await passwordChange(store.getUserInfo.id, after.value)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 };
 </script>
 

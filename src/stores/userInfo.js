@@ -1,6 +1,5 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { passwordCheck, passwordChange, userQuit } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
@@ -28,42 +27,6 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         userInfo.value.id = userId;
     };
 
-    const checkPassword = async (id, password) => {
-        let res = false;
-        await passwordCheck(id, password)
-            .then(() => {
-                res = true;
-            })
-            .catch(() => {
-                res = false;
-            });
-        return res;
-    };
-
-    const changePassword = async (id, password) => {
-        let res = false;
-        await passwordChange(id, password)
-            .then(() => {
-                res = true;
-            })
-            .catch(() => {
-                res = false;
-            });
-        return res;
-    };
-
-    const quitUser = async (id) => {
-        let res = false;
-        await userQuit(id)
-            .then(() => {
-                res = true;
-            })
-            .catch(() => {
-                res = false;
-            });
-        return res;
-    };
-
     return {
         loginState,
         userInfo,
@@ -71,9 +34,5 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         getUserInfo,
         changeLoginState,
         changeUserInfo,
-
-        checkPassword,
-        changePassword,
-        quitUser,
     };
 });
