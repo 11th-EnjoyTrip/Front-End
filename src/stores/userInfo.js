@@ -13,6 +13,9 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     });
 
     /* getters */
+    const getState = computed(() => {
+        return loginState.value;
+    });
     const getInfo = computed(() => {
         return userInfo.value;
     });
@@ -94,6 +97,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     return {
         loginState,
         userInfo,
+        getState,
         getInfo,
         doLogin,
         doSignup,
