@@ -7,8 +7,9 @@ import SearchItemCard from "@/components/Attraction/SearchItemCard.vue";
 <template>
     <NavComp :withLower="true" />
     <SearchBox/>
-    <hr width="1200px" class="mx-auto" >
-    <SearchItemCard/>
+    <hr width="1200px" class="mx-auto" />
+    <SearchItemCard />
+
 </template>
 
 <style scoped></style>
