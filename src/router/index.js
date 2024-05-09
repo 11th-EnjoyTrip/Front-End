@@ -3,6 +3,7 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import MyPageView from "@/views/MyPageView.vue";
+import PasswordFindView from "@/views/PasswordFindView.vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
 const router = createRouter({
@@ -33,6 +34,11 @@ const router = createRouter({
                     return { name: "login" };
                 }
             },
+        },
+        {
+            path: "/find",
+            name: "passwordFind",
+            component: PasswordFindView,
         },
         /*{
             path: "/about",

@@ -13,6 +13,7 @@ const props = defineProps({
     title: String,
     type: String,
     withEdit: Boolean,
+    page: String,
     modelValue: {
         type: String,
         required: true,
@@ -54,10 +55,11 @@ const doEdit = () => {
                 class="w-100 h-100 border-0"
                 :placeholder="placeholder"
                 :readonly="
-                    (title != '닉네임' &&
-                        title != '기존 비밀번호' &&
-                        title != '새로운 비밀번호' &&
-                        title != '비밀번호') ||
+                    page == 'edit' &&
+                    (title != '닉네임' ||
+                        title != '기존 비밀번호' ||
+                        title != '새로운 비밀번호' ||
+                        title != '비밀번호') &&
                     !isEditing
                 "
                 v-model="newValue"

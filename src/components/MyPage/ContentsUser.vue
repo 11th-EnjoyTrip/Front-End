@@ -37,6 +37,7 @@ watch(nickname, () => {
                     :placeholder="'아이디'"
                     :title="'아이디'"
                     :type="'text'"
+                    :page="'edit'"
                     v-model="userInfo.id"
                 />
             </div>
@@ -46,6 +47,7 @@ watch(nickname, () => {
                     :placeholder="'이름'"
                     :title="'이름'"
                     :type="'text'"
+                    :page="'edit'"
                     v-model="userInfo.name"
                 />
             </div>
@@ -55,6 +57,7 @@ watch(nickname, () => {
                     :placeholder="'닉네임'"
                     :title="'닉네임'"
                     :type="'text'"
+                    :page="'edit'"
                     v-model="nickname"
                 />
                 <CommonMessage :isSuccess="messages.state" :message="messages.message" />
@@ -65,6 +68,7 @@ watch(nickname, () => {
                     :placeholder="'이메일'"
                     :title="'이메일'"
                     :type="'text'"
+                    :page="'edit'"
                     v-model="userInfo.email"
                 />
             </div>

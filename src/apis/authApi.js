@@ -57,3 +57,15 @@ export const userQuit = (id) => {
         },
     });
 };
+
+export const passwordFind = (id, name, email) => {
+    return api({
+        url: "",
+        method: "post",
+        data: {
+            id: id,
+            name: name,
+            email: email,
+        },
+    });
+};
