@@ -20,7 +20,7 @@ const router = createRouter({
             component: LoginView,
             beforeEnter: (to, from) => {
                 const store = useUserInfoStore();
-                if (store.getState) {
+                if (store.getLoginState) {
                     return { name: "mypage" };
                 }
             },
@@ -31,7 +31,7 @@ const router = createRouter({
             component: SignUpView,
             beforeEnter: (to, from) => {
                 const store = useUserInfoStore();
-                if (store.getState) {
+                if (store.getLoginState) {
                     return { name: "mypage" };
                 }
             },
@@ -42,7 +42,7 @@ const router = createRouter({
             component: MyPageView,
             beforeEnter: (to, from) => {
                 const store = useUserInfoStore();
-                if (!store.getState) {
+                if (!store.getLoginState) {
                     return { name: "login" };
                 }
             },
@@ -53,7 +53,7 @@ const router = createRouter({
             component: PasswordFindView,
             beforeEnter: (to, from) => {
                 const store = useUserInfoStore();
-                if (store.getState) {
+                if (store.getLoginState) {
                     return { name: "mypage" };
                 }
             },

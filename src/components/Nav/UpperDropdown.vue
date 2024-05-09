@@ -19,11 +19,11 @@ const store = useUserInfoStore();
             :style="{ display: displayState }"
         >
             <!-- 사용자 로그인 전 -->
-            <RouterLink to="/login" class="router" v-if="!store.getState">로그인</RouterLink>
-            <RouterLink to="/signup" class="router" v-if="!store.getState">회원가입</RouterLink>
+            <RouterLink to="/login" class="router" v-if="!store.getLoginState">로그인</RouterLink>
+            <RouterLink to="/signup" class="router" v-if="!store.getLoginState">회원가입</RouterLink>
             <!-- 사용자 로그인 후 -->
-            <RouterLink to="/login" class="router" v-if="store.getState">로그아웃</RouterLink>
-            <RouterLink to="/signup" class="router" v-if="store.getState">마이페이지</RouterLink>
+            <RouterLink to="/login" class="router" v-if="store.getLoginState">로그아웃</RouterLink>
+            <RouterLink to="/signup" class="router" v-if="store.getLoginState">마이페이지</RouterLink>
         </div>
     </div>
 </template>

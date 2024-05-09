@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { passwordCheck, passwordChange, userQuit, passwordFind } from "@/apis/authApi";
+import { passwordCheck, passwordChange, userQuit } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
