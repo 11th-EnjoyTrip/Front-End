@@ -18,11 +18,23 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: LoginView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         {
             path: "/signup",
             name: "signup",
             component: SignUpView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         {
             path: "/mypage",
@@ -39,6 +51,12 @@ const router = createRouter({
             path: "/find",
             name: "passwordFind",
             component: PasswordFindView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         /*{
             path: "/about",
