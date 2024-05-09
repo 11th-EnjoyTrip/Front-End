@@ -65,7 +65,7 @@ const doEdit = () => {
                 v-model="newValue"
             />
         </div>
-        <div class="col-2 d-flex align-items-center px-0 edit" v-if="title == '닉네임' && !withEdit">
+        <div class="col-2 d-flex align-items-center px-0 edit" v-if="page == 'edit' && title == '닉네임' && !withEdit">
             <button
                 class="d-flex align-items-center justify-content-center fw-medium rounded-5 border-0 w-100 h-50"
                 :style="{
@@ -79,7 +79,7 @@ const doEdit = () => {
                 수정
             </button>
         </div>
-        <div class="col-2 edit-icon" v-if="title == '닉네임' && !withEdit">
+        <div v-if="page == 'edit' && title == '닉네임' && !withEdit" class="col-2 edit-icon">
             <IconEdit :width="24" :height="24" :color="isEditing ? '#1769ff' : '#999999'" @click="doEdit" />
         </div>
     </div>

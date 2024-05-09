@@ -1,14 +1,6 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import {
-    login,
-    signup,
-    duplicateNickname,
-    passwordCheck,
-    passwordChange,
-    userQuit,
-    passwordFind,
-} from "@/apis/authApi";
+import { passwordCheck, passwordChange, userQuit, passwordFind } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
@@ -21,49 +13,19 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     });
 
     /* getters */
-    const getState = computed(() => {
+    const getLoginState = computed(() => {
         return loginState.value;
     });
-    const getInfo = computed(() => {
+    const getUserInfo = computed(() => {
         return userInfo.value;
     });
 
     /* actions */
-    const doLogin = async (loginInfo) => {
-        let res = false;
-        await login(loginInfo)
-            .then((response) => {
-                userInfo.value = { ...response };
-                res = true;
-            })
-            .catch(() => {
-                res = false;
-            });
-        return res;
+    const changeLoginState = (newState) => {
+        loginState.value = newState;
     };
-
-    const doSignup = async (signupInfo) => {
-        let res = false;
-        await signup(signupInfo)
-            .then(() => {
-                res = true;
-            })
-            .catch(() => {
-                res = false;
-            });
-        return res;
-    };
-
-    const duplicateCheck = async (nickname) => {
-        let res = false;
-        await duplicateNickname(nickname)
-            .then(() => {
-                res = true;
-            })
-            .catch(() => {
-                res = false;
-            });
-        return res;
+    const changeUserInfo = (userId) => {
+        userInfo.value.id = userId;
     };
 
     const checkPassword = async (id, password) => {
@@ -117,11 +79,11 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     return {
         loginState,
         userInfo,
-        getState,
-        getInfo,
-        doLogin,
-        doSignup,
-        duplicateCheck,
+        getLoginState,
+        getUserInfo,
+        changeLoginState,
+        changeUserInfo,
+
         checkPassword,
         changePassword,
         quitUser,

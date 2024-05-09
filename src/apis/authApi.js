@@ -16,12 +16,32 @@ export const signup = (signupInfo) => {
     });
 };
 
-export const duplicateNickname = (nickname) => {
+export const idCheck = (id) => {
+    return api({
+        url: "",
+        method: "get",
+        params: {
+            id: id,
+        },
+    });
+};
+
+export const nicknameCheck = (nickname) => {
     return api({
         url: "",
         method: "get",
         params: {
             nickname: nickname,
+        },
+    });
+};
+
+export const emailCheck = (email) => {
+    return api({
+        url: "",
+        method: "get",
+        params: {
+            email: email,
         },
     });
 };
