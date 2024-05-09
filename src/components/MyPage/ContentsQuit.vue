@@ -4,6 +4,8 @@ import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import { ref, computed, watch } from "vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
+import { passwordCheck, userQuit } from "@/apis/userApi.js";
+import { useRouter } from "vue-router";
 
 const inputPwd = ref("");
 const messages = ref({
@@ -19,17 +21,34 @@ watch(inputPwd, async () => {
         messages.value.state = false;
         messages.value.message = "비밀번호를 입력해주세요";
     } else {
-        if (await store.checkPassword(store.getInfo.id, inputPwd.value)) {
-            messages.value.state = true;
-            messages.value.message = "탈퇴가 가능합니다";
-        } else {
-            messages.value.state = false;
-            messages.value.message = "비밀번호가 일치하지 않습니다";
-        }
+        await passwordCheck(store.getUserInfo.id, inputPwd.value)
+            .then((response) => {
+                console.log(response.data);
+                messages.value.state = true;
+                messages.value.message = "탈퇴가 가능합니다";
+            })
+            .catch((error) => {
+                console.log(error);
+                messages.value.state = false;
+                messages.value.message = "비밀번호가 일치하지 않습니다";
+            });
     }
 });
 const doQuit = async () => {
-    await store.quitUser(store.getInfo.id);
+    if (canQuit.value) {
+        await userQuit(store.getUserInfo.id)
+            .then((response) => {
+                console.log(response.data);
+                store.changeLoginState(false);
+                store.changeUserInfo("");
+
+                const router = useRouter();
+                router.replace("/");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 };
 </script>
 
