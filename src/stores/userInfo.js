@@ -64,18 +64,6 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         return res;
     };
 
-    const findPassword = async (id, name, email) => {
-        let res = false;
-        await passwordFind(id, name, email)
-            .then(() => {
-                res = true;
-            })
-            .catch(() => {
-                res = false;
-            });
-        return res;
-    };
-
     return {
         loginState,
         userInfo,
@@ -87,6 +75,5 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         checkPassword,
         changePassword,
         quitUser,
-        findPassword,
     };
 });

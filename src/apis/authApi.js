@@ -46,6 +46,17 @@ export const emailCheck = (email) => {
     });
 };
 
+export const passwordFind = (id, email) => {
+    return api({
+        url: "",
+        method: "post",
+        data: {
+            id: id,
+            email: email,
+        },
+    });
+};
+
 export const passwordCheck = (id, password) => {
     return api({
         url: "",
@@ -74,18 +85,6 @@ export const userQuit = (id) => {
         method: "patch",
         data: {
             id: id,
-        },
-    });
-};
-
-export const passwordFind = (id, name, email) => {
-    return api({
-        url: "",
-        method: "post",
-        data: {
-            id: id,
-            name: name,
-            email: email,
         },
     });
 };
