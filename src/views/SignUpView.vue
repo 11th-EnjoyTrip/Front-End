@@ -161,7 +161,7 @@ const doSignup = async () => {
 <template>
     <NavComp :withLower="false" />
     <div class="row">
-        <div class="d-flex flex-column h-auto col-7 col-sm-9 mx-auto signup">
+        <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto signup">
             <div class="mx-auto fw-bold title">회원가입</div>
             <div class="d-flex flex-column row-gap-3 mt-5">
                 <div>
