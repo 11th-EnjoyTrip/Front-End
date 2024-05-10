@@ -2,6 +2,7 @@
 import NavComp from "@/components/Nav/NavComp.vue";
 import MyPageSideMenu from "@/components/MyPage/MyPageSideMenu.vue";
 import MyPageContents from "@/components/MyPage/MyPageContents.vue";
+import MyPageSideMenuMobile from "@/components/MyPage/MyPageSideMenuMobile.vue";
 import { ref } from "vue";
 
 const menu = ref(0);
@@ -9,8 +10,8 @@ const menu = ref(0);
 
 <template>
     <NavComp :withLower="false" />
-    <div class="mobiles">이건 메뉴입니다</div>
-    <div class="row mx-auto px-3 contents desktops">
+    <div class="mobiles"><MyPageSideMenuMobile v-model="menu" /></div>
+    <div class="row justify-content-center mx-auto px-5 contents desktops">
         <div class="col-3">
             <MyPageSideMenu v-model="menu" />
         </div>
@@ -18,7 +19,9 @@ const menu = ref(0);
             <MyPageContents :menu="menu" />
         </div>
     </div>
-    <div class="mobiles"><MyPageContents :menu="menu" /></div>
+    <div class="mobiles">
+        <MyPageContents :menu="menu" />
+    </div>
 </template>
 
 <style scoped>

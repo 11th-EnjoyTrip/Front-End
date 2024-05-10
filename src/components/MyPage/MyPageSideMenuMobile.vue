@@ -16,11 +16,10 @@ const titles = ["회원정보 관리", "비밀번호 변경", "여행 계획", "
 </script>
 
 <template>
-    <div class="d-flex flex-column align-items-center w-100 h-auto rounded-4 side-menu">
-        <div class="fw-bold fs-5 mt-4">메뉴</div>
+    <div class="d-flex align-items-center justify-content-around px-5 py-4 mb-5">
         <SideMenuItems
             v-for="(title, index) in titles"
-            :type="'desktop'"
+            :type="'mobile'"
             :menu="curMenu"
             :idx="index"
             :title="title"
@@ -31,7 +30,13 @@ const titles = ["회원정보 관리", "비밀번호 변경", "여행 계획", "
 </template>
 
 <style scoped>
-.side-menu {
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+.icons {
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.menu-item-title {
+    font-size: 14px;
 }
 </style>

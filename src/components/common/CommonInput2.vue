@@ -51,7 +51,12 @@ const doEdit = async () => {
         <div class="col-3 title-icon">
             <IconPerson v-if="title == '아이디'" :width="24" :height="24" :color="'#374559'" />
             <IconLock
-                v-if="title == '비밀번호' || title == '비밀번호 확인'"
+                v-if="
+                    title == '비밀번호' ||
+                    title == '비밀번호 확인' ||
+                    title == '기존 비밀번호' ||
+                    title == '새로운 비밀번호'
+                "
                 :width="24"
                 :height="24"
                 :color="'#374559'"
@@ -60,7 +65,7 @@ const doEdit = async () => {
             <IconNickname v-if="title == '닉네임'" :width="24" :height="24" :color="'#374559'" />
             <IconMail v-if="title == '이메일'" :width="24" :height="24" :color="'#374559'" />
         </div>
-        <div class="col-7">
+        <div class="col-8">
             <input
                 :type="type"
                 class="w-100 h-100 border-0 contents"
@@ -87,7 +92,7 @@ const doEdit = async () => {
                 수정
             </button>
         </div>
-        <div v-if="page == 'edit' && title == '닉네임'" class="col-2 edit-icon">
+        <div v-if="page == 'edit' && title == '닉네임'" class="col-1 px-0 edit-icon">
             <IconEdit :width="24" :height="24" :color="isEditing ? '#1769ff' : '#999999'" @click="doEdit" />
         </div>
     </div>
