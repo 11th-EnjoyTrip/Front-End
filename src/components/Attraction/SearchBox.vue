@@ -5,9 +5,17 @@ import { ref } from 'vue';
 
 const sido = ref('')
 const sidoList = ref([
-    { name: '지역 전체', id: 'all' },
-    { name: '서울', id: 'seoul' },
-    { name: '인천', id: 'inchen' },
+    { name: '지역 전체', id: 0 },
+    { name: '서울', id: 1 },
+    { name: '인천', id: 2 },
+    { name: '대전', id: 3 },
+    { name: '대구', id: 4 },
+    { name: '광주', id: 5 },
+    { name: '부산', id: 6 },
+    { name: '울산', id: 7 },
+    { name: '세종특별자치시', id: 8 },
+    { name: '경기도', id: 31 },
+    { name: '강원도', id: 32 },
 ]);
 
 const category = ref([
@@ -24,6 +32,7 @@ const categoryList = ref([
 ])
 
 const keyword = ref('')
+
 const updateSido = (value) => {
     sido.value = value;
 };
@@ -48,6 +57,11 @@ const toggleAllCategories = () => {
         category.value = [];
     }
 };
+
+// 검색
+const doSearch = (sido,) => {
+
+}
 </script>
 
 <template>
@@ -63,11 +77,11 @@ const toggleAllCategories = () => {
                  type="button" data-bs-toggle="dropdown"
                  data-bs-auto-close="true" :value="(sido == '') ? '어디로 여행가세요?' : sido" />
                 <ul class="dropdown-menu" style="background: #FFFFFF; box-shadow: 0px 4px 19.35px rgba(0, 0, 0, 0.25);border-radius: 12.2692px;">
-                    <div class="ms-4 me-4">
+                    <div class="ms-4 me-4 mb-3">
                         <div class="pt-3 pb-3" style="font-weight: 700; font-size: 18.4038px;">지역 선택</div>
                         <li v-for="sidoItem in sidoList" :key="sidoItem.id">
                             <a class="dropdown-item pb-2 ps-0"
-                               style="font-weight: 700; font-size: 13px; background-color: #ffffff !important;"
+                               style="font-weight: 700; font-size: 14px; background-color: #ffffff !important;"
                                :style="{ 'color': (sido === sidoItem.name) ? '#1769FF' : 'black' }"
                                href="#" @click="updateSido(sidoItem.name)">{{ sidoItem.name }}</a>
                         </li>
@@ -143,10 +157,9 @@ const toggleAllCategories = () => {
                 :value="'검색'"
                 :bgColors="['#1769FF', '#e1e1e1']"
                 :state=true
-                :click="doLogin"
+                :click="doSearch"
             />
             </div>
-
         </div>
     </div>
 </template>
@@ -156,7 +169,7 @@ const toggleAllCategories = () => {
 .input-group{
     margin-top: 30px;
     padding: 15px;
-    width: 1200px;
+    width: 80%;
     background: #FFFFFF;
     border: 1.20907px solid #EEEEEE;
     box-shadow: 0px 2.41814px 19.3451px rgba(0, 0, 0, 0.25);
@@ -180,16 +193,3 @@ const toggleAllCategories = () => {
 
 </style>
 
-/* 관광지 */
-
-box-sizing: border-box;
-
-position: absolute;
-width: 93px;
-height: 38px;
-left: 56px;
-top: 159px;
-
-background: #E9F0FE;
-border: 1px solid #73AFFF;
-border-radius: 10px;
