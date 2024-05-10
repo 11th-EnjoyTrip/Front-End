@@ -18,7 +18,7 @@ const menu = ref(0);
             <MyPageContents :menu="menu" />
         </div>
     </div>
-    <div class="mobiles"><MyPageContents /></div>
+    <div class="mobiles"><MyPageContents :menu="menu" /></div>
 </template>
 
 <style scoped>
