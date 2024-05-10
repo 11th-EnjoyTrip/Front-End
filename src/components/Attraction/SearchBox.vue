@@ -84,34 +84,32 @@ const doSearch = () => {
 
 <template>
     <div class="searchBox">
-        <div class="row mx-auto d-flex align-items-center justify-content-centers input-group">
-            <div class="col dropdown row m-1">
-                <label class="" style="color: #999999; font-weight: 700; font-size: 15;">지역</label>
+        <div class="row mx-auto d-flex align-items-center input-group">
+            <div class="col-xl-3 col-lg-12 dropdown row search-style search-item region-style search-col">
+                <label class="" style="color: #999999; font-weight: 700; font-size: 100%;">지역</label>
                 <input
-                 class="btn"
-                 style="font-size: 20px; font-weight: 700; border: 0; text-align: left;
-                 background-color: #ffffff;"
+                 class="btn m-xxl-0  input-border"
+                 style="font-size: 20px; font-weight: 700; border-radius: 0;  text-align: left; border-color: #ffffff; "
                  :style="{ 'color': (sido === '') ? '#CCCCCC' : 'black' }"
                  type="button" data-bs-toggle="dropdown"
                  data-bs-auto-close="true" :value="(sido == '') ? '어디로 여행가세요?' : sido" />
-                <ul class="dropdown-menu" style="background: #FFFFFF; box-shadow: 0px 4px 19.35px rgba(0, 0, 0, 0.25);border-radius: 12.2692px;">
-                    <div class="ms-4 me-4 mb-3">
+                <ul class="dropdown-menu" style="box-shadow: 0px 4px 19.35px rgba(0, 0, 0, 0.25);border-radius: 12.2692px;">
+                    <div class="ms-4 mb-3">
                         <div class="pt-3 pb-3" style="font-weight: 700; font-size: 18.4038px;">지역 선택</div>
                         <li v-for="sidoItem in sidoList" :key="sidoItem.id">
                             <a class="dropdown-item pb-2 ps-0"
-                               style="font-weight: 700; font-size: 14px; background-color: #ffffff !important;"
+                               style="font-weight: 700; font-size: 14px;"
                                :style="{ 'color': (sido === sidoItem.name) ? '#1769FF' : 'black' }"
                                href="#" @click="updateSido(sidoItem.name)">{{ sidoItem.name }}</a>
                         </li>
                     </div>
                 </ul>
             </div>
-            <div class="col dropdown row m-1">
+            <div class="col-xl-4 col-lg-12 dropdown row ms-1 search-style search-item search-col">
                 <label class="" style="color: #999999; font-weight: 700; font-size: 15;">관광지 유형</label>
                 <input
-                 class="btn"
-                 style="font-size: 20px; font-weight: 700; border: 0; text-align: left;
-                 background-color: #ffffff;"
+                 class="btn m-0 input-border"
+                 style="font-size: 20px; font-weight: 700; border-radius: 0;  text-align: left; left; border-color: #ffffff;"
                  type="button" data-bs-toggle="dropdown"
                  data-bs-auto-close="outside" 
                  :style="{ 'color': (category.length == 0) ? '#CCCCCC' : 'black' }"
@@ -119,7 +117,7 @@ const doSearch = () => {
                     (category.length ==7 )? '관광지 유형 전체' : category.map(cat => cat.name).join(', ')" /> 
 
                 <ul class="dropdown-menu p-4"
-                    style="background: #FFFFFF; box-shadow: 0px 4px 19.35px rgba(0, 0, 0, 0.25); min-width: 350px;
+                    style="background: #FFFFFF; box-shadow: 0px 4px 19.35px rgba(0, 0, 0, 0.25); 
                         border-radius: 12.2692px;">
                     <div class="ms-4 me-4">
                         <div class="pt-3 pb-3" style="font-weight: 700; font-size: 18.4038px;">관광지 유형 선택</div>
@@ -158,17 +156,18 @@ const doSearch = () => {
                     </div>
                 </ul>
             </div>
-            <div class="col">
+            <div class="col-xl-3 col-lg-12 ms-3 pb-3 mt-3 search-item search-col search-atr">
                 <label style="color: #999999; font-weight: 700; font-size: 15;">관광지 검색</label>
                 <CommonInput
                 class="border-0 ps-0"
+                style="font-size: 18px;"
                 :height="40"
                 :placeholder="'키워드를 검색해보세요.'"
                 :icon="{ isStart: true, name: 'search' }"
                 v-model="keyword"/>
             </div>
 
-            <div class="col d-flex justify-content-end">
+            <div class="col-xl-2 col-lg-12 d-flex justify-content-end">
                 <CommonButton
                 class="search-button"
                 :height="50"
@@ -190,7 +189,12 @@ const doSearch = () => {
 </template>
 
 <style scoped>
-
+.dropdown-menu {
+    transform: none !important;
+}
+.dropdown-item{
+    background-color: #FFFFFF !important;
+}
 .input-group{
     margin-top: 30px;
     padding: 15px;
@@ -204,7 +208,7 @@ const doSearch = () => {
 .search-button{
     margin: 0px !important;
     background: #1769FF;
-    max-width: 100px;
+    width: 100% !important;
     border-radius: 10px !important;
     color: #FFFFFF;
     font-weight:bold;
@@ -215,6 +219,44 @@ const doSearch = () => {
     color: #1769FF !important;
     border-color: #73AFFF  !important;
 }
+
+@media (max-width: 1200px) {
+    .search-style {
+        border-right: 0px !important;
+        padding: 10px !important;
+    }
+
+    .region-style{
+        padding-left: 15px !important;
+    }
+
+    .search-item{
+        padding-top: 10px;
+    }
+    
+    .search-col{
+        margin: 5px !important;
+    }
+
+    .input-border{
+        border-bottom: 1px solid #CCCCCC !important;
+        padding-bottom: 20px !important;
+    }
+    .search-atr{
+        margin-left: 15px !important;
+    }
+}
+
+@media (max-width: 2000px) {
+    .search-style {
+        border-right: 1px solid #CCCCCC;
+    }
+
+    .region-style{
+        margin-left: 2px !important;
+    }
+}
+
 
 </style>
 

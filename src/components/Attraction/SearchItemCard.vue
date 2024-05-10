@@ -3,18 +3,22 @@
 import IconNoSearch from '../icons/IconNoSearch.vue';
 
 const props = defineProps({
-    dataList : Object
-})
+    dataList: Object,
+    region: Object
+});
 const attractionList = props.dataList
 
 </script>
 
 <template>
     <div v-if="attractionList.length">
-        <div class="d-flex mb-4 mt-3">
-            <div style="color: #1769FF;font-weight: 700;font-size: 32px; padding-left: 10%; padding-right: 5px;">
-                제주도 관광지</div>
-            <div class="mt-3">로 여기 어때요?</div>
+        <div class="d-flex mb-4 mt-3" style="width: 100%;">
+                            <!-- 삼항 연산자를 이용하여 displayRegion 값이 null이 아닌 경우에만 출력 -->
+            <div style="color: #1769FF;font-weight: 700;font-size: 25px; padding-left: 10%; padding-right: 5px;">
+                {{ region.value }} 관광지
+            </div>
+            
+            <div class="mt-2">로 여기 어때요?</div>
         </div>
         <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 g-4 mx-auto searchitem-card">
             <div class="col position-relative"

@@ -5,11 +5,14 @@ import CommonKakaoMap from "@/components/common/CommonKakaoMap.vue";
 import SearchItemCard from "@/components/Attraction/SearchItemCard.vue";
 import { ref } from 'vue';
 
+const region = ref('')
 const searchItem = (...args) => {
-  console.log(args)
+  console.log(args[0]);
+  region.value = args[0];
+
   // args(sido,category,keyword)로 서버에서 데이터 불러옴
-  // TODO : 서버 연동
-}
+  // TODO: 서버 연동
+};
 
 // 서버에서 불러온 데이터
 const attractionList = ref([
@@ -83,7 +86,7 @@ const attractionList = ref([
         <CommonKakaoMap :isDraggable="true" :dataList="attractionList" />
     </div>
     <hr width="80%" class="mx-auto" />
-    <SearchItemCard :dataList="attractionList"/>
+    <SearchItemCard :region="region" :dataList="attractionList"/>
   </div>
 </template>
 
