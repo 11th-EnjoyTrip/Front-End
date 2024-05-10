@@ -3,6 +3,7 @@ import { useUserInfoStore } from "@/stores/userInfo";
 
 defineProps({
     modalState: Boolean,
+    isSuccess: Boolean,
     result: String,
 });
 
@@ -16,14 +17,34 @@ const store = useUserInfoStore();
                 v-if="modalState"
                 class="position-fixed top-0 left-0 w-100 h-100 row justify-content-center align-items-center modal-background"
             >
-                <div class="col-9 col-sm-6 bg-white rounded-3 modal-container">
+                <div v-if="isSuccess" class="col-9 col-sm-6 bg-white rounded-3 modal-container">
                     <div class="fw-semibold">
                         <span class="fw-bold fs-5 modal-title">{{ store.getUserInfo.nickname }}</span> 님의 비밀번호는
                     </div>
                     <div class="fw-semibold mt-3 px-3">
                         <span class="fw-bold fs-5">" {{ result }} "</span> 입니다
                     </div>
-                    <button class="mt-3 modal-default-button" @click="$emit('close')">close button</button>
+                    <button
+                        class="w-100 mt-4 py-2 text-white fw-bold border-0 rounded-3 modal-default-button"
+                        @click="$emit('close')"
+                    >
+                        확인
+                    </button>
+                </div>
+
+                <div
+                    v-else
+                    class="col-9 col-sm-6 bg-white rounded-3 d-flex flex-column justify-content-center align-items-center modal-container"
+                >
+                    <div class="fw-semibold">
+                        <span class="fw-bold fs-5 modal-title">유효하지 않은 사용자</span> 입니다
+                    </div>
+                    <button
+                        class="w-100 mt-4 py-2 text-white fw-bold border-0 rounded-3 modal-default-button"
+                        @click="$emit('close')"
+                    >
+                        확인
+                    </button>
                 </div>
             </div>
         </Transition>
@@ -38,7 +59,10 @@ const store = useUserInfoStore();
 }
 
 .modal-container {
-    padding: 30px 30px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
 }
@@ -48,7 +72,7 @@ const store = useUserInfoStore();
 }
 
 .modal-default-button {
-    /* close button section style */
+    background-color: #73afff;
 }
 
 .modal-enter-from {

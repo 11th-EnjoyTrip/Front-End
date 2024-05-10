@@ -23,6 +23,7 @@ const canFind = computed(() => {
     return messages.value.filter((item) => item.state).length;
 });
 const modalState = ref(false);
+const isSuccess = ref(false);
 const result = ref("");
 
 watch(inputId, () => {
@@ -51,9 +52,12 @@ const doFind = async () => {
                 console.log(response.data);
                 result.value = response.data;
                 modalState.value = true;
+                isSuccess.value = true;
             })
             .catch((error) => {
                 console.log(error);
+                modalState.value = true;
+                isSuccess.value = false;
             });
     }
 };
@@ -90,7 +94,12 @@ const doFind = async () => {
             </div>
         </div>
     </div>
-    <ModalPasswordFindResult :modalState="modalState" :result="result" @close="modalState = false" />
+    <ModalPasswordFindResult
+        :modalState="modalState"
+        :isSucess="isSuccess"
+        :result="result"
+        @close="modalState = false"
+    />
 </template>
 
 <style scoped>
