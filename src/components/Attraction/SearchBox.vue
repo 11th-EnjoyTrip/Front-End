@@ -1,6 +1,7 @@
 <script setup>
 import CommonInput from "@/components/common/CommonInput.vue";
 import CommonButton from "../common/CommonButton.vue";
+import ModalSearchResult from "@/components/Modal/ModalSearchResult.vue";
 import { ref } from 'vue';
 
 const sido = ref('')
@@ -59,16 +60,24 @@ const toggleAllCategories = () => {
 };
 
 const emit = defineEmits(['searchEvent'])
+const modalState = ref(false)
+const isSuccess = ref(false);
+const result = ref("");
 
 // 검색 이벤트
 const doSearch = () => {
+    // 서버 연동
+    console.log(category.value.length)
     // 유효성 체크
     if (sido.value == '' || category.value.length == 0) {
-        
+        modalState.value = true;
+        isSuccess.value = false;
+        result.value = "지역을 입력하시거나 <br/> 관광지 유형을 선택해 주세요.";
+    } else { // 성공한 경우
+        isSuccess.value = true;
+        // 부모 컴포넌트로 전달
+        emit('searchItem', sido, category, keyword)
     }
-
-    // 부모 컴포넌트로 전달
-    emit('searchItem', sido, category, keyword)
 }
 
 </script>
@@ -170,7 +179,14 @@ const doSearch = () => {
             />
             </div>
         </div>
+        <ModalSearchResult
+        :modalState="modalState"
+        :isSucess="isSuccess"
+        :result="result"
+        @close="modalState = false"
+        />
     </div>
+
 </template>
 
 <style scoped>
