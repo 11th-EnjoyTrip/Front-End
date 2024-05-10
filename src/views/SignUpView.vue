@@ -4,14 +4,20 @@ import CommonButton from "@/components/common/CommonButton.vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import { ref, computed, watch } from "vue";
-import { useUserInfoStore } from "@/stores/userInfo.js";
+import { signup, idCheck, nicknameCheck, emailCheck } from "@/apis/authApi.js";
+import { useRouter } from "vue-router";
 
 const inputId = ref("");
 const inputPwd = ref("");
 const inputCheck = ref("");
 const inputName = ref("");
+const inputNickname = ref("");
 const inputEmail = ref("");
 const messages = ref([
+    {
+        state: false,
+        message: "",
+    },
     {
         state: false,
         message: "",
@@ -37,14 +43,21 @@ const canSignup = computed(() => {
     return messages.value.filter((item) => item.state).length;
 });
 
-watch(inputId, () => {
+watch(inputId, async () => {
     const regex = /^[a-z0-9]+$/g;
     if (!regex.test(inputId.value)) {
         messages.value[0].state = false;
         messages.value[0].message = "소문자와 숫자만 입력 가능합니다";
     } else {
-        messages.value[0].state = true;
-        messages.value[0].message = "사용 가능한 아이디 입니다";
+        await idCheck(inputId.value)
+            .then(() => {
+                messages.value[0].state = true;
+                messages.value[0].message = "사용 가능한 아이디 입니다";
+            })
+            .catch(() => {
+                messages.value[0].state = false;
+                messages.value[0].message = "중복된 아이디 입니다";
+            });
     }
 });
 watch(inputPwd, () => {
@@ -56,14 +69,27 @@ watch(inputPwd, () => {
         messages.value[1].state = true;
         messages.value[1].message = "사용 가능한 비밀번호 입니다";
     }
-});
-watch(inputCheck, () => {
-    if (inputCheck.value != inputPwd.value) {
+
+    if (inputPwd.value != inputCheck.value) {
         messages.value[2].state = false;
         messages.value[2].message = "비밀번호가 일치하지 않습니다";
     } else {
         messages.value[2].state = true;
         messages.value[2].message = "비밀번호가 일치합니다";
+    }
+});
+watch(inputCheck, () => {
+    if (inputCheck.value.length == 0) {
+        messages.value[2].state = false;
+        messages.value[2].message = "비밀번호를 입력해주세요";
+    } else {
+        if (inputCheck.value != inputPwd.value) {
+            messages.value[2].state = false;
+            messages.value[2].message = "비밀번호가 일치하지 않습니다";
+        } else {
+            messages.value[2].state = true;
+            messages.value[2].message = "비밀번호가 일치합니다";
+        }
     }
 });
 watch(inputName, () => {
@@ -75,27 +101,59 @@ watch(inputName, () => {
         messages.value[3].message = "";
     }
 });
-watch(inputEmail, () => {
+watch(inputNickname, async () => {
+    if (inputNickname.value.length == 0) {
+        messages.value[4].state = false;
+        messages.value[4].message = "닉네임을 입력해주세요";
+    } else {
+        await nicknameCheck(inputNickname.value)
+            .then(() => {
+                messages.value[4].state = true;
+                messages.value[4].message = "사용 가능한 닉네임 입니다";
+            })
+            .catch(() => {
+                messages.value[4].state = false;
+                messages.value[4].message = "중복된 닉네임 입니다";
+            });
+    }
+});
+watch(inputEmail, async () => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/g;
     if (!regex.test(inputEmail.value)) {
-        messages.value[4].state = false;
-        messages.value[4].message = "이메일 형식에 맞지 않습니다";
+        messages.value[5].state = false;
+        messages.value[5].message = "이메일 형식에 맞지 않습니다";
     } else {
-        messages.value[4].state = true;
-        messages.value[4].message = "사용 가능한 이메일 입니다";
+        await emailCheck(inputEmail.value)
+            .then(() => {
+                messages.value[5].state = true;
+                messages.value[5].message = "사용 가능한 이메일 입니다";
+            })
+            .catch(() => {
+                messages.value[5].state = false;
+                messages.value[5].message = "중복된 이메일 입니다";
+            });
     }
 });
 
 const doSignup = async () => {
-    if (canSignup.value == 5) {
-        const store = useUserInfoStore();
+    if (canSignup.value == 6) {
         const signupInfo = {
             id: inputId.value,
             password: inputPwd.value,
             name: inputName.value,
+            nickname: inputNickname.value,
             email: inputEmail.value,
         };
-        await store.doSignup(signupInfo);
+
+        await signup(signupInfo)
+            .then((response) => {
+                console.log(response.data);
+                const router = useRouter();
+                router.replace("/login");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 };
 </script>
@@ -107,13 +165,7 @@ const doSignup = async () => {
             <div class="mx-auto fw-bold title">회원가입</div>
             <div class="d-flex flex-column row-gap-3 mt-5">
                 <div>
-                    <CommonInput2
-                        :height="50"
-                        :placeholder="'소문자, 숫자'"
-                        :title="'아이디'"
-                        :type="text"
-                        v-model="inputId"
-                    />
+                    <CommonInput2 :height="50" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
                     <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
                 </div>
                 <div>
@@ -121,7 +173,7 @@ const doSignup = async () => {
                         :height="50"
                         :placeholder="'8자 이상 소문자, 숫자'"
                         :title="'비밀번호'"
-                        :type="password"
+                        :type="'password'"
                         v-model="inputPwd"
                     />
                     <CommonMessage :isSuccess="messages[1].state" :message="messages[1].message" />
@@ -131,6 +183,7 @@ const doSignup = async () => {
                         :height="50"
                         :placeholder="'비밀번호 재입력'"
                         :title="'비밀번호 확인'"
+                        :type="'password'"
                         v-model="inputCheck"
                     />
                     <CommonMessage :isSuccess="messages[2].state" :message="messages[2].message" />
@@ -139,7 +192,10 @@ const doSignup = async () => {
                     <CommonInput2 :height="50" :placeholder="'이름'" :title="'이름'" v-model="inputName" />
                     <CommonMessage :isSuccess="messages[3].state" :message="messages[3].message" />
                 </div>
-
+                <div>
+                    <CommonInput2 :height="50" :placeholder="'닉네임'" :title="'닉네임'" v-model="inputNickname" />
+                    <CommonMessage :isSuccess="messages[4].state" :message="messages[4].message" />
+                </div>
                 <div>
                     <CommonInput2
                         :height="50"
@@ -147,7 +203,7 @@ const doSignup = async () => {
                         :title="'이메일'"
                         v-model="inputEmail"
                     />
-                    <CommonMessage :isSuccess="messages[4].state" :message="messages[4].message" />
+                    <CommonMessage :isSuccess="messages[5].state" :message="messages[5].message" />
                 </div>
             </div>
             <div class="mt-4 px-5">

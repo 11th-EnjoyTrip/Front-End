@@ -3,6 +3,7 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import MyPageView from "@/views/MyPageView.vue";
+import PasswordFindView from "@/views/PasswordFindView.vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
 const router = createRouter({
@@ -17,11 +18,23 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: LoginView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getLoginState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         {
             path: "/signup",
             name: "signup",
             component: SignUpView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getLoginState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         {
             path: "/mypage",
@@ -29,8 +42,19 @@ const router = createRouter({
             component: MyPageView,
             beforeEnter: (to, from) => {
                 const store = useUserInfoStore();
-                if (!store.getState) {
+                if (!store.getLoginState) {
                     return { name: "login" };
+                }
+            },
+        },
+        {
+            path: "/find",
+            name: "passwordFind",
+            component: PasswordFindView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getLoginState) {
+                    return { name: "mypage" };
                 }
             },
         },

@@ -16,7 +16,17 @@ export const signup = (signupInfo) => {
     });
 };
 
-export const duplicateNickname = (nickname) => {
+export const idCheck = (id) => {
+    return api({
+        url: "",
+        method: "get",
+        params: {
+            id: id,
+        },
+    });
+};
+
+export const nicknameCheck = (nickname) => {
     return api({
         url: "",
         method: "get",
@@ -26,34 +36,23 @@ export const duplicateNickname = (nickname) => {
     });
 };
 
-export const passwordCheck = (id, password) => {
+export const emailCheck = (email) => {
+    return api({
+        url: "",
+        method: "get",
+        params: {
+            email: email,
+        },
+    });
+};
+
+export const passwordFind = (id, email) => {
     return api({
         url: "",
         method: "post",
         data: {
             id: id,
-            password: password,
-        },
-    });
-};
-
-export const passwordChange = (id, newPassword) => {
-    return api({
-        url: "",
-        method: "post",
-        data: {
-            id: id,
-            password: newPassword,
-        },
-    });
-};
-
-export const userQuit = (id) => {
-    return api({
-        url: "",
-        method: "patch",
-        data: {
-            id: id,
+            email: email,
         },
     });
 };
