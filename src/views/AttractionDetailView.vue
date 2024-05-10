@@ -10,7 +10,6 @@
             <DetailContents v-bind:item-content="content"/>
             <DetailMap/>
         </div>
-        
     </div>
 </template>
 

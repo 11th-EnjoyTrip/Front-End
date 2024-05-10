@@ -58,10 +58,19 @@ const toggleAllCategories = () => {
     }
 };
 
-// 검색
-const doSearch = (sido,) => {
+const emit = defineEmits(['searchEvent'])
 
+// 검색 이벤트
+const doSearch = () => {
+    // 유효성 체크
+    if (sido.value == '' || category.value.length == 0) {
+        
+    }
+
+    // 부모 컴포넌트로 전달
+    emit('searchItem', sido, category, keyword)
 }
+
 </script>
 
 <template>

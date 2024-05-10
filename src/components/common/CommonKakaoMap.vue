@@ -48,13 +48,15 @@ const setBounds = () => {
 </script>
 
 <template>
-    
+      <div>
+
+        <KakaoMap widht="100" class="kakao-map-item" :draggable="isDraggable" width="100%" :lat="markerInfoList[0].lat" :lng="markerInfoList[0].lng" @onLoadKakaoMap="onLoadKakaoMap" />
+      </div>
       <!-- <KakaoMap class="kakao-map-item" width="100%" :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true">
       <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
       </KakaoMap>  -->
-      <KakaoMap widht="100" class="kakao-map-item" :draggable="isDraggable" width="100%" :lat="markerInfoList[0].lat" :lng="markerInfoList[0].lng" @onLoadKakaoMap="onLoadKakaoMap" />
+      
         <!-- <button  @click="setBounds">지도 범위 재설정 하기</button> -->
-
 
 </template>
 
