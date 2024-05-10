@@ -49,21 +49,21 @@ const doEdit = async () => {
     <div class="row border-bottom input-border mx-0" :style="{ height: height + 'px' }">
         <div class="col-3 d-flex align-items-center fw-bold px-0 title">{{ title }}</div>
         <div class="col-3 title-icon">
-            <IconPerson v-if="title == '아이디'" :width="28" :height="28" :color="'#374559'" />
+            <IconPerson v-if="title == '아이디'" :width="24" :height="24" :color="'#374559'" />
             <IconLock
                 v-if="title == '비밀번호' || title == '비밀번호 확인'"
-                :width="32"
-                :height="32"
+                :width="24"
+                :height="24"
                 :color="'#374559'"
             />
-            <IconTag v-if="title == '이름'" :width="28" :height="28" :color="'#374559'" />
-            <IconNickname v-if="title == '닉네임'" :width="28" :height="28" :color="'#374559'" />
-            <IconMail v-if="title == '이메일'" :width="28" :height="28" :color="'#374559'" />
+            <IconTag v-if="title == '이름'" :width="24" :height="24" :color="'#374559'" />
+            <IconNickname v-if="title == '닉네임'" :width="24" :height="24" :color="'#374559'" />
+            <IconMail v-if="title == '이메일'" :width="24" :height="24" :color="'#374559'" />
         </div>
         <div class="col-7">
             <input
                 :type="type"
-                class="w-100 h-100 border-0"
+                class="w-100 h-100 border-0 contents"
                 :placeholder="placeholder"
                 :readonly="
                     page == 'edit' &&
@@ -73,7 +73,7 @@ const doEdit = async () => {
                 v-model="newValue"
             />
         </div>
-        <div class="col-2 d-flex align-items-center px-0 edit" v-if="page == 'edit' && title == '닉네임'">
+        <div class="col-1 d-flex align-items-center px-0 edit" v-if="page == 'edit' && title == '닉네임'">
             <button
                 class="d-flex align-items-center justify-content-center fw-medium rounded-5 border-0 w-100 h-50"
                 :style="{
@@ -99,7 +99,13 @@ const doEdit = async () => {
 }
 
 .title {
+    color: #646f7c;
+    font-size: 14px;
+}
+
+.contents {
     color: #374553;
+    font-size: 14px;
 }
 
 .title-icon {
