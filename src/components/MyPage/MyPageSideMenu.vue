@@ -1,9 +1,17 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import SideMenuItems from "@/components/MyPage/SideMenuItems.vue";
 
-const menu = ref(0);
-const changeMenu = (newMenu) => (menu.value = newMenu);
+const props = defineProps({
+    modelValue: Number,
+});
+
+const curMenu = ref(props.modelValue);
+const emit = defineEmits(["update:modelValue"]);
+watch(curMenu, () => {
+    emit("update:modelValue", curMenu.value);
+});
+const changeMenu = (newMenu) => (curMenu.value = newMenu);
 const titles = ["회원정보 관리", "비밀번호 변경", "여행 계획", "핫플레이스", "회원 탈퇴"];
 </script>
 
@@ -12,7 +20,7 @@ const titles = ["회원정보 관리", "비밀번호 변경", "여행 계획", "
         <div class="fw-bold fs-5 mt-4">메뉴</div>
         <SideMenuItems
             v-for="(title, index) in titles"
-            :menu="menu"
+            :menu="curMenu"
             :idx="index"
             :title="title"
             :key="title"

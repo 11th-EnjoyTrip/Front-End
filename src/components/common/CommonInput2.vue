@@ -5,22 +5,43 @@ import IconTag from "@/components/icons/IconTag.vue";
 import IconMail from "@/components/icons/IconMail.vue";
 import IconNickname from "@/components/icons/IconNickname.vue";
 import IconEdit from "@/components/icons/IconEdit.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { nicknameChange } from "@/apis/userApi.js";
+import { useUserInfoStore } from "@/stores/userInfo.js";
 
-defineProps({
+const props = defineProps({
     height: Number,
     placeholder: String,
     title: String,
     type: String,
-    withEdit: Boolean,
+    page: String,
+    canChange: Boolean,
+    modelValue: {
+        type: String,
+        required: true,
+    },
+});
+const emit = defineEmits(["update:modelValue"]);
+const newValue = ref(props.modelValue);
+watch(newValue, () => {
+    emit("update:modelValue", newValue.value);
 });
 
 const isEditing = ref(false);
-const doEdit = () => {
-    if (isEditing.value) {
-        alert("변경?");
-        isEditing.value = false;
-    } else isEditing.value = true;
+const doEdit = async () => {
+    if (!isEditing.value) {
+        isEditing.value = true;
+    } else if (props.canChange) {
+        const store = useUserInfoStore();
+        await nicknameChange(store.getUserInfo.id, newValue.value)
+            .then((response) => {
+                console.log(response.data);
+                isEditing.value = false;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 };
 </script>
 
@@ -44,10 +65,15 @@ const doEdit = () => {
                 :type="type"
                 class="w-100 h-100 border-0"
                 :placeholder="placeholder"
-                :readonly="title == '닉네임' && !isEditing"
+                :readonly="
+                    page == 'edit' &&
+                    (title == '아이디' || title == '이메일' || title == '이름' || title == '닉네임') &&
+                    !isEditing
+                "
+                v-model="newValue"
             />
         </div>
-        <div class="col-2 d-flex align-items-center px-0 edit" v-if="title == '닉네임' && !withEdit">
+        <div class="col-2 d-flex align-items-center px-0 edit" v-if="page == 'edit' && title == '닉네임'">
             <button
                 class="d-flex align-items-center justify-content-center fw-medium rounded-5 border-0 w-100 h-50"
                 :style="{
@@ -61,7 +87,7 @@ const doEdit = () => {
                 수정
             </button>
         </div>
-        <div class="col-2 edit-icon" v-if="title == '닉네임' && !withEdit">
+        <div v-if="page == 'edit' && title == '닉네임'" class="col-2 edit-icon">
             <IconEdit :width="24" :height="24" :color="isEditing ? '#1769ff' : '#999999'" @click="doEdit" />
         </div>
     </div>

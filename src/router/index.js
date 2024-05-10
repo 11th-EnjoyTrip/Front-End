@@ -5,6 +5,8 @@ import SignUpView from "@/views/SignUpView.vue";
 import MyPageView from "@/views/MyPageView.vue";
 import AttractionView from "@/views/AttractionView.vue";
 import AttractionDetailView from "@/views/AttractionDetailView.vue";
+import PasswordFindView from "@/views/PasswordFindView.vue";
+import { useUserInfoStore } from "@/stores/userInfo.js";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,16 +20,45 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: LoginView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getLoginState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         {
             path: "/signup",
             name: "signup",
             component: SignUpView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getLoginState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         {
             path: "/mypage",
             name: "mypage",
             component: MyPageView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (!store.getLoginState) {
+                    return { name: "login" };
+                }
+            },
+        },
+        {
+            path: "/find",
+            name: "passwordFind",
+            component: PasswordFindView,
+            beforeEnter: (to, from) => {
+                const store = useUserInfoStore();
+                if (store.getLoginState) {
+                    return { name: "mypage" };
+                }
+            },
         },
         {
             path: "/attraction",

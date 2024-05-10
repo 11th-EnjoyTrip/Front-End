@@ -1,28 +1,38 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { login } from "@/apis/authApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
-    const loginState = ref(false); // 로그인 상태
+    const loginState = ref(false);
     const userInfo = ref({
-        name: "",
-        nickname: "",
-    }); // 사용자 정보
+        id: "bluewhaleyh",
+        name: "최요하",
+        nickname: "흰수염고래",
+        email: "bluewhaleyh@gmail.com",
+    });
 
     /* getters */
+    const getLoginState = computed(() => {
+        return loginState.value;
+    });
+    const getUserInfo = computed(() => {
+        return userInfo.value;
+    });
 
     /* actions */
-    const doLogin = (loginInfo) => {
-        login(loginInfo)
-            .then((response) => {
-                userInfo.value = { ...response };
-                return true;
-            })
-            .catch(() => {
-                return false;
-            });
+    const changeLoginState = (newState) => {
+        loginState.value = newState;
+    };
+    const changeUserInfo = (userId) => {
+        userInfo.value.id = userId;
     };
 
-    return { loginState, userInfo, doLogin };
+    return {
+        loginState,
+        userInfo,
+        getLoginState,
+        getUserInfo,
+        changeLoginState,
+        changeUserInfo,
+    };
 });
