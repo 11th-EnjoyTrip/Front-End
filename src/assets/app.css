@@ -1,3 +1,9 @@
+@import url("Pretendard.css");
+
+* {
+    font-family: "Pretendard";
+}
+
 .router {
     text-decoration: none;
 }
