@@ -161,16 +161,16 @@ const doSignup = async () => {
 <template>
     <NavComp :withLower="false" />
     <div class="row">
-        <div class="d-flex flex-column h-auto col-10 col-sm-12 mx-auto signup">
+        <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto signup">
             <div class="mx-auto fw-bold title">회원가입</div>
             <div class="d-flex flex-column row-gap-3 mt-5">
                 <div>
-                    <CommonInput2 :height="50" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
+                    <CommonInput2 :height="40" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
                     <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
                 </div>
                 <div>
                     <CommonInput2
-                        :height="50"
+                        :height="40"
                         :placeholder="'8자 이상 소문자, 숫자'"
                         :title="'비밀번호'"
                         :type="'password'"
@@ -180,7 +180,7 @@ const doSignup = async () => {
                 </div>
                 <div>
                     <CommonInput2
-                        :height="50"
+                        :height="40"
                         :placeholder="'비밀번호 재입력'"
                         :title="'비밀번호 확인'"
                         :type="'password'"
@@ -189,16 +189,16 @@ const doSignup = async () => {
                     <CommonMessage :isSuccess="messages[2].state" :message="messages[2].message" />
                 </div>
                 <div>
-                    <CommonInput2 :height="50" :placeholder="'이름'" :title="'이름'" v-model="inputName" />
+                    <CommonInput2 :height="40" :placeholder="'이름'" :title="'이름'" v-model="inputName" />
                     <CommonMessage :isSuccess="messages[3].state" :message="messages[3].message" />
                 </div>
                 <div>
-                    <CommonInput2 :height="50" :placeholder="'닉네임'" :title="'닉네임'" v-model="inputNickname" />
+                    <CommonInput2 :height="40" :placeholder="'닉네임'" :title="'닉네임'" v-model="inputNickname" />
                     <CommonMessage :isSuccess="messages[4].state" :message="messages[4].message" />
                 </div>
                 <div>
                     <CommonInput2
-                        :height="50"
+                        :height="40"
                         :placeholder="'email@domain.com'"
                         :title="'이메일'"
                         v-model="inputEmail"
@@ -208,7 +208,7 @@ const doSignup = async () => {
             </div>
             <div class="mt-4 px-5">
                 <CommonButton
-                    :height="50"
+                    :height="40"
                     :value="'회원가입'"
                     :bgColors="['#1769ff', '#e1e1e1']"
                     :state="canSignup == 5"
@@ -221,12 +221,12 @@ const doSignup = async () => {
 
 <style scoped>
 .signup {
-    max-width: 480px;
+    max-width: 440px;
     margin-top: 60px;
 }
 
 .title {
-    font-size: 36px;
+    font-size: 24px;
     color: #374553;
 }
 </style>

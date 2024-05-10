@@ -66,16 +66,16 @@ const doFind = async () => {
 <template>
     <NavComp :withLower="false" />
     <div class="row">
-        <div class="d-flex flex-column h-auto col-10 col-sm-12 mx-auto find">
+        <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto find">
             <div class="mx-auto fw-bold title">비밀번호 찾기</div>
             <div class="d-flex flex-column row-gap-3 mt-5">
                 <div>
-                    <CommonInput2 :height="50" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
+                    <CommonInput2 :height="40" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
                     <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
                 </div>
                 <div>
                     <CommonInput2
-                        :height="50"
+                        :height="40"
                         :placeholder="'email@domain.com'"
                         :title="'이메일'"
                         v-model="inputEmail"
@@ -85,7 +85,7 @@ const doFind = async () => {
             </div>
             <div class="mt-4 px-5">
                 <CommonButton
-                    :height="50"
+                    :height="40"
                     :value="'비밀번호 찾기'"
                     :bgColors="['#1769ff', '#e1e1e1']"
                     :state="canFind == 2"
@@ -104,12 +104,12 @@ const doFind = async () => {
 
 <style scoped>
 .find {
-    max-width: 480px;
+    max-width: 440px;
     margin-top: 60px;
 }
 
 .title {
-    font-size: 36px;
+    font-size: 24px;
     color: #374553;
 }
 </style>

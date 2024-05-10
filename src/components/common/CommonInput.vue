@@ -32,12 +32,11 @@ const focusOut = () => (colors.value = "#999999");
         :style="{ height: height + 'px', border: '1px solid' + colors }"
     >
         <!-- 아이콘(앞) -->
-        <IconPerson v-if="icon.isStart && icon.name == 'id'" :width="32" :height="32" :color="colors" />
+        <IconPerson v-if="icon.isStart && icon.name == 'id'" :width="28" :height="28" :color="colors" />
         <IconLock v-if="icon.isStart && icon.name == 'password'" :width="28" :height="28" :color="colors" />
         <!-- 입력 박스 -->
         <input
             class="w-100 h-100 border-0"
-            type="text"
             :placeholder="placeholder"
             @focusin="focusIn"
             @focusout="focusOut"
@@ -55,5 +54,15 @@ input::placeholder {
 
 input:focus {
     outline: none;
+}
+
+@media (max-width: 575.98px) {
+    input {
+        font-size: 14px;
+    }
+
+    input::placeholder {
+        font-size: 14px;
+    }
 }
 </style>

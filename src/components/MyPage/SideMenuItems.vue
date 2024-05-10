@@ -6,6 +6,7 @@ import IconPlace from "@/components/icons/IconPlace.vue";
 import IconQuit from "@/components/icons/IconQuit.vue";
 
 defineProps({
+    type: String,
     menu: Number,
     idx: Number,
     title: String,
@@ -14,6 +15,7 @@ defineProps({
 
 <template>
     <div
+        v-if="type == 'desktop'"
         class="d-flex align-items-center justify-content-center column-gap-3 w-75 mt-4 border-bottom items"
         :style="{
             'border-color': menu == idx ? '#374553 !important' : '#999999 !important',
@@ -29,11 +31,31 @@ defineProps({
             {{ title }}
         </div>
     </div>
+    <div v-else>
+        <div class="d-flex flex-column align-items-center row-gap-2 menu-items">
+            <div class="d-flex align-items-center justify-content-center rounded-5 icons">
+                <IconPerson v-if="idx == 0" :width="28" :height="28" :color="menu == idx ? '#1769ff' : '#999999'" />
+                <IconLock v-if="idx == 1" :width="28" :height="28" :color="menu == idx ? '#1769ff' : '#999999'" />
+                <IconDeparture v-if="idx == 2" :width="28" :height="28" :color="menu == idx ? '#1769ff' : '#999999'" />
+                <IconPlace v-if="idx == 3" :width="28" :height="28" :color="menu == idx ? '#1769ff' : '#999999'" />
+                <IconQuit v-if="idx == 4" :width="28" :height="28" :color="menu == idx ? '#1769ff' : '#999999'" />
+            </div>
+            <div class="fw-medium item-title" :style="{ color: '#374559' }">
+                {{ title }}
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped>
 .items {
     height: 40px;
+}
+
+.icons {
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 991.98px) {

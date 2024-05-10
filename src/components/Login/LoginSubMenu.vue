@@ -15,4 +15,10 @@ import { RouterLink } from "vue-router";
 .router {
     color: #374553;
 }
+
+@media (max-width: 575.98px) {
+    .router {
+        font-size: 14px;
+    }
+}
 </style>
