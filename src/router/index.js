@@ -3,6 +3,8 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import MyPageView from "@/views/MyPageView.vue";
+import AttractionView from "@/views/AttractionView.vue";
+import AttractionDetailView from "@/views/AttractionDetailView.vue";
 import PasswordFindView from "@/views/PasswordFindView.vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
@@ -57,6 +59,16 @@ const router = createRouter({
                     return { name: "mypage" };
                 }
             },
+        },
+        {
+            path: "/attraction",
+            name: "attraction",
+            component: AttractionView,
+        },
+        {
+            path: "/attraction/:id",
+            name: "attractionDetail",
+            component: AttractionDetailView,
         },
         /*{
             path: "/about",
