@@ -9,6 +9,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         name: "최요하",
         nickname: "흰수염고래",
         email: "bluewhaleyh@gmail.com",
+        prefer_place: ["대구", "인천"],
     });
 
     /* getters */
