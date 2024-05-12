@@ -3,15 +3,14 @@
 import IconNoSearch from '../icons/IconNoSearch.vue';
 
 const props = defineProps({
-    dataList: Object,
+    dataList: Array,
     region: Object
 });
-const attractionList = props.dataList
 
 </script>
 
 <template>
-    <div v-if="attractionList.length">
+    <div v-if="dataList.length">
         <div class="d-flex mb-4 mt-3" style="width: 100%;">
                             <!-- 삼항 연산자를 이용하여 displayRegion 값이 null이 아닌 경우에만 출력 -->
             <div style="color: #1769FF;font-weight: 700;font-size: 25px; padding-left: 10%; padding-right: 5px;">
@@ -22,7 +21,7 @@ const attractionList = props.dataList
         </div>
         <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 g-4 mx-auto searchitem-card">
             <div class="col position-relative"
-                v-for="attraction in attractionList" :key="attraction.contentId">
+                v-for="attraction in dataList" :key="attraction.contentId">
                 <router-link :to="`attraction/${attraction.contentId}`">
                     <div class="card" style="box-sizing: border-box; border-radius: 25px; border:0">
                         <img v-if="attraction.firstImage" :src="attraction.firstImage"

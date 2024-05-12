@@ -7,7 +7,6 @@ import { ref } from 'vue';
 
 const region = ref('')
 const searchItem = (...args) => {
-  console.log(args[0]);
   region.value = args[0];
 
   // args(sido,category,keyword)로 서버에서 데이터 불러옴
