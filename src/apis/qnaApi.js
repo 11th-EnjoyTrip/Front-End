@@ -1,8 +1,8 @@
 import { api } from "./interceptors";
 
-export const doTest = () => {
+export const qnaList = () => {
     return api({
-        url: "/todos/1",
+        url: "/board/list",
         method: "get",
     });
 };

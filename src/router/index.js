@@ -6,6 +6,7 @@ import MyPageView from "@/views/MyPageView.vue";
 import AttractionView from "@/views/AttractionView.vue";
 import AttractionDetailView from "@/views/AttractionDetailView.vue";
 import PasswordFindView from "@/views/PasswordFindView.vue";
+import QnAView from "@/views/QnAView.vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
 const router = createRouter({
@@ -69,6 +70,11 @@ const router = createRouter({
             path: "/attraction/:id",
             name: "attractionDetail",
             component: AttractionDetailView,
+        },
+        {
+            path: "/qna",
+            name: "qna",
+            component: QnAView,
         },
         /*{
             path: "/about",

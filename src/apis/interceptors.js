@@ -1,11 +1,10 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://jsonplaceholder.typicode.com",
+    baseURL: "http://localhost:8080",
     headers: {
         "Content-Type": "application/json",
     },
-    withCredentials: true,
 });
 
 api.interceptors.request.use(
@@ -20,7 +19,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
     (response) => {
-        return response.data;
+        return response;
     },
     (error) => {
         console.log(error);
