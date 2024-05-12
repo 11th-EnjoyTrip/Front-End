@@ -29,7 +29,12 @@ const deleteQnA = async () => {
             </div>
         </div>
         <hr />
-        <div class="w-full mt-3 contents">{{ detail.content }}</div>
+        <div class="w-full mt-3 contents">
+            <div v-for="(line, idx) in detail.content" :key="idx">
+                <br v-if="line.length == 0" />
+                <div v-else>{{ line }}</div>
+            </div>
+        </div>
         <hr />
         <div class="w-100 d-flex justify-content-end column-gap-3">
             <button

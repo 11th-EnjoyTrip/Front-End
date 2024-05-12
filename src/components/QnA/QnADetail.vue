@@ -10,6 +10,7 @@ onMounted(async () => {
     await qnaDetail(router.currentRoute.value.params.id)
         .then((response) => {
             detail.value = { ...response.data };
+            detail.value.content = detail.value.content.split("\n");
         })
         .catch((error) => console.log(error));
 });
