@@ -10,6 +10,7 @@ import QnAView from "@/views/QnAView.vue";
 import QnAList from "@/components/QnA/QnAList.vue";
 import QnADetail from "@/components/QnA/QnADetail.vue";
 import QnAEdit from "@/components/QnA/QnAEdit.vue";
+import QnAAdd from "@/components/QnA/QnAAdd.vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
 const router = createRouter({
@@ -93,6 +94,11 @@ const router = createRouter({
                     path: ":id/edit",
                     name: "edit",
                     component: QnAEdit,
+                },
+                {
+                    path: "add",
+                    name: "add",
+                    component: QnAAdd,
                 },
             ],
         },

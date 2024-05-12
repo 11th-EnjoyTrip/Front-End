@@ -35,3 +35,11 @@ export const qnaSearch = (keyword) => {
         method: "get",
     });
 };
+
+export const qnaAdd = (newQnA) => {
+    return api({
+        url: "/board/write",
+        method: "post",
+        data: { ...newQnA },
+    });
+};

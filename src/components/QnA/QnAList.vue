@@ -48,7 +48,15 @@ const searchQnA = async () => {
 
 <template>
     <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto table-container">
-        <div class="mx-auto fw-bold title">QnA 게시판</div>
+        <div class="w-100 mx-auto fw-bold title position-relative">
+            <div class="w-50 text-center mx-auto fw-bold title">QnA 게시판</div>
+            <button
+                class="position-absolute top-0 end-0 h-100 rounded-5 border-0 px-3 add-btn"
+                @click="router.push('/qna/add')"
+            >
+                게시글 추가
+            </button>
+        </div>
         <div class="w-50 mx-auto mt-3">
             <CommonInput
                 :height="50"
@@ -58,6 +66,7 @@ const searchQnA = async () => {
                 @searchQnA="searchQnA"
             />
         </div>
+
         <div class="w-100 mt-5">
             <a-table :columns="columns" :data-source="qnas" bordered>
                 <template #bodyCell="{ column, text, record }">
@@ -90,5 +99,14 @@ const searchQnA = async () => {
 a {
     text-decoration: none;
     color: #646f7c;
+}
+
+.add-btn {
+    font-size: 14px;
+}
+
+.add-btn:hover {
+    background-color: #1769ff;
+    color: white;
 }
 </style>
