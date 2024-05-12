@@ -1,6 +1,7 @@
 <script setup>
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { useRouter } from "vue-router";
+import { qnaDelete } from "@/apis/qnaApi";
 
 defineProps({
     detail: Object,
@@ -8,6 +9,11 @@ defineProps({
 
 const store = useUserInfoStore();
 const router = useRouter();
+const deleteQnA = async () => {
+    await qnaDelete(router.currentRoute.value.params.id)
+        .then(() => router.replace("/qna"))
+        .catch((error) => console.log(error));
+};
 </script>
 
 <template>
@@ -16,7 +22,7 @@ const router = useRouter();
         <div class="px-2 mt-2 info">
             <div>{{ detail.writer }}</div>
             <div class="mt-1">
-                {{ new Date(detail.reg_data).getFullYear() }}년 {{ new Date(detail.reg_data).getMonth() }}월
+                {{ new Date(detail.reg_data).getFullYear() }}년 {{ new Date(detail.reg_data).getMonth() + 1 }}월
                 {{ new Date(detail.reg_data).getDate() }}일 {{ new Date(detail.reg_data).getHours() }}:{{
                     new Date(detail.reg_data).getMinutes()
                 }}:{{ new Date(detail.reg_data).getSeconds() }}
@@ -25,13 +31,21 @@ const router = useRouter();
         <hr />
         <div class="w-full mt-3 contents">{{ detail.content }}</div>
         <hr />
-        <div v-if="detail.writer == store.getUserInfo.id" class="w-100 d-flex justify-content-end column-gap-3">
-            <button class="border-0 rounded-5 btn edit-btn" @click="router.push(`/qna/${detail.id}/edit`)">
+        <div class="w-100 d-flex justify-content-end column-gap-3">
+            <button
+                v-if="detail.writer == store.getUserInfo.id"
+                class="border-0 rounded-5 btn edit-btn"
+                @click="router.push(`/qna/${detail.id}/edit`)"
+            >
                 게시글 수정
             </button>
-            <button class="border-0 rounded-5 btn delete-btn">게시글 삭제</button>
-        </div>
-        <div v-else class="w-100 d-flex justify-content-end">
+            <button
+                v-if="detail.writer == store.getUserInfo.id"
+                class="border-0 rounded-5 btn delete-btn"
+                @click="deleteQnA"
+            >
+                게시글 삭제
+            </button>
             <button class="border-0 rounded-5 btn before-btn" @click="router.back()">뒤로가기</button>
         </div>
     </div>

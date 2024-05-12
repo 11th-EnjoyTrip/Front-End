@@ -42,7 +42,7 @@ const editQnA = async () => {
             <div class="px-2 mt-2 info">
                 <div>{{ before.writer }}</div>
                 <div class="mt-1">
-                    {{ new Date().getFullYear() }}년 {{ new Date().getMonth() }}월 {{ new Date().getDate() }}일
+                    {{ new Date().getFullYear() }}년 {{ new Date().getMonth() + 1 }}월 {{ new Date().getDate() }}일
                 </div>
             </div>
             <hr />
@@ -50,6 +50,7 @@ const editQnA = async () => {
             <hr />
             <div class="w-100 d-flex justify-content-end column-gap-3">
                 <button class="border-0 rounded-5 btn edit-btn" @click="editQnA">게시글 수정</button>
+                <button class="border-0 rounded-5 btn before-btn" @click="router.back()">뒤로가기</button>
             </div>
         </div>
     </div>

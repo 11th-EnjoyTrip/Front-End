@@ -21,3 +21,10 @@ export const qnaEdit = (newQnA) => {
         data: { ...newQnA },
     });
 };
+
+export const qnaDelete = (id) => {
+    return api({
+        url: `/board/${id}`,
+        method: "delete",
+    });
+};
