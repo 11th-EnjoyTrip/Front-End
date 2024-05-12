@@ -6,3 +6,18 @@ export const qnaList = () => {
         method: "get",
     });
 };
+
+export const qnaDetail = (id) => {
+    return api({
+        url: `/board/view/${id}`,
+        method: "get",
+    });
+};
+
+export const qnaEdit = (newQnA) => {
+    return api({
+        url: `/board/${newQnA.id}`,
+        method: "put",
+        data: { ...newQnA },
+    });
+};
