@@ -31,7 +31,7 @@ const isEditing = ref(false);
 const doEdit = async () => {
     if (!isEditing.value) {
         isEditing.value = true;
-    } else if (props.canChange) {
+    } else {
         const store = useUserInfoStore();
         await nicknameChange(store.getUserInfo.id, newValue.value)
             .then((response) => {
@@ -40,6 +40,7 @@ const doEdit = async () => {
             })
             .catch((error) => {
                 console.log(error);
+                isEditing.value = false;
             });
     }
 };
@@ -84,7 +85,7 @@ const doEdit = async () => {
                 :style="{
                     color: isEditing ? '#ffffff' : '#999999',
                     'background-color': isEditing ? '#1769ff' : '#ffffff',
-                    'font-size': '12px',
+                    'font-size': '14px',
                     'text-decoration': isEditing ? 'none' : 'underline',
                 }"
                 @click="doEdit"
@@ -115,11 +116,6 @@ const doEdit = async () => {
 
 .title-icon {
     display: none !important;
-}
-
-.edit-btn {
-    font-size: 12px;
-    color: #999999;
 }
 
 .edit-icon {

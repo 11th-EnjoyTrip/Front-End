@@ -1,6 +1,7 @@
 <script setup>
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
+import PreferContents from "@/components/MyPage/PreferContents.vue";
 import { ref, watch } from "vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { nicknameCheck } from "@/apis/authApi.js";
@@ -72,6 +73,7 @@ watch(nickname, async () => {
                     v-model="store.getUserInfo.email"
                 />
             </div>
+            <div><PreferContents v-model="store.getUserInfo.prefer_place" /></div>
         </div>
     </div>
 </template>

@@ -3,6 +3,7 @@ import NavComp from "@/components/Nav/NavComp.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
+import SignUpPreferContents from "@/components/SignUp/SignUpPreferContents.vue";
 import { ref, computed, watch } from "vue";
 import { signup, idCheck, nicknameCheck, emailCheck } from "@/apis/authApi.js";
 import { useRouter } from "vue-router";
@@ -13,6 +14,7 @@ const inputCheck = ref("");
 const inputName = ref("");
 const inputNickname = ref("");
 const inputEmail = ref("");
+const inputPrefers = ref([]);
 const messages = ref([
     {
         state: false,
@@ -40,6 +42,7 @@ const messages = ref([
     },
 ]);
 const canSignup = computed(() => {
+    console.log(messages.value.filter((item) => item.state).length);
     return messages.value.filter((item) => item.state).length;
 });
 
@@ -143,7 +146,9 @@ const doSignup = async () => {
             name: inputName.value,
             nickname: inputNickname.value,
             email: inputEmail.value,
+            prefers: [...inputPrefers.value],
         };
+        console.log(signupInfo);
 
         await signup(signupInfo)
             .then((response) => {
@@ -163,7 +168,7 @@ const doSignup = async () => {
     <div class="row">
         <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto signup">
             <div class="mx-auto fw-bold title">회원가입</div>
-            <div class="d-flex flex-column row-gap-3 mt-5">
+            <div class="d-flex flex-column row-gap-4 mt-5">
                 <div>
                     <CommonInput2 :height="40" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
                     <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
@@ -205,13 +210,14 @@ const doSignup = async () => {
                     />
                     <CommonMessage :isSuccess="messages[5].state" :message="messages[5].message" />
                 </div>
+                <div><SignUpPreferContents v-model="inputPrefers" /></div>
             </div>
             <div class="mt-4 px-5">
                 <CommonButton
                     :height="40"
                     :value="'회원가입'"
                     :bgColors="['#1769ff', '#e1e1e1']"
-                    :state="canSignup == 5"
+                    :state="canSignup == 6"
                     :click="doSignup"
                 />
             </div>
@@ -228,5 +234,60 @@ const doSignup = async () => {
 .title {
     font-size: 24px;
     color: #374553;
+}
+
+.content-box {
+    border-color: #374553 !important;
+    height: 60px;
+}
+
+.prefer-title {
+    color: #646f7c;
+    font-size: 14px;
+}
+
+.title-icon {
+    display: none !important;
+}
+
+.contents {
+    color: #374553;
+    font-size: 14px;
+}
+
+.dropdown-items {
+    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.05);
+    animation: moveDown 0.3s ease forwards;
+}
+
+.item {
+    font-size: 14px;
+    color: #374559;
+}
+
+.item:hover {
+    color: #1769ff;
+    font-weight: bold;
+    background-color: #f7f7f7;
+}
+
+@keyframes moveDown {
+    0% {
+        top: 0px;
+    }
+    100% {
+        top: 32px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .prefer-title {
+        display: none !important;
+    }
+
+    .title-icon {
+        display: flex !important;
+        align-items: center;
+    }
 }
 </style>
