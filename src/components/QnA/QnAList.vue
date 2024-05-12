@@ -71,11 +71,11 @@ const searchQnA = async () => {
             <a-table :columns="columns" :data-source="qnas" bordered>
                 <template #bodyCell="{ column, text, record }">
                     <div class="w-100" @click="detailQnA(record.id)">
-                        <div v-if="column.dataIndex == 'reg_data'" @click="console.log(record.id)" class="w-100">
+                        <div v-if="column.dataIndex == 'reg_data'" class="w-100">
                             {{ new Date(text).getFullYear() }}년 {{ new Date(text).getMonth() + 1 }}월
                             {{ new Date(text).getDate() }}일
                         </div>
-                        <div v-else @click="detailQnA(record.id)">
+                        <div v-else>
                             {{ text }}
                         </div>
                     </div>
