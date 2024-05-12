@@ -28,3 +28,10 @@ export const qnaDelete = (id) => {
         method: "delete",
     });
 };
+
+export const qnaSearch = (keyword) => {
+    return api({
+        url: `/board/search/${keyword}`,
+        method: "get",
+    });
+};
