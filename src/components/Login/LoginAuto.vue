@@ -30,4 +30,10 @@ watch(newValue, () => {
 .auto-ment {
     color: #374553;
 }
+
+@media (max-width: 575.98px) {
+    .auto-ment {
+        font-size: 14px;
+    }
+}
 </style>

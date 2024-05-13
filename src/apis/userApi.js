@@ -11,6 +11,16 @@ export const nicknameChange = (id, nickname) => {
     });
 };
 
+export const preferChange = (newPrefers) => {
+    return api({
+        url: "",
+        method: "put",
+        data: {
+            prefer: [...newPrefers],
+        },
+    });
+};
+
 export const passwordCheck = (id, password) => {
     return api({
         url: "",

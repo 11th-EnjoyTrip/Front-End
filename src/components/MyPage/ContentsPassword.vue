@@ -84,7 +84,7 @@ const doChangePassword = async () => {
             <div>
                 <CommonInput2
                     :height="60"
-                    :placeholder="'8자 이상 소문자, 숫자'"
+                    :placeholder="'기존 비밀번호'"
                     :title="'기존 비밀번호'"
                     :type="'password'"
                     v-model="before"
@@ -94,7 +94,7 @@ const doChangePassword = async () => {
             <div>
                 <CommonInput2
                     :height="60"
-                    :placeholder="'8자 이상 소문자, 숫자'"
+                    :placeholder="'새로운 비밀번호'"
                     :title="'새로운 비밀번호'"
                     :type="'password'"
                     v-model="after"

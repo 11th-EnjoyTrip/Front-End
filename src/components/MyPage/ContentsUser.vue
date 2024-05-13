@@ -1,6 +1,7 @@
 <script setup>
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
+import PreferContents from "@/components/MyPage/PreferContents.vue";
 import { ref, watch } from "vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { nicknameCheck } from "@/apis/authApi.js";
@@ -31,7 +32,7 @@ watch(nickname, async () => {
 </script>
 
 <template>
-    <div class="col-7 mx-auto">
+    <div class="col-9 col-lg-9 mx-auto">
         <div class="fw-bold fs-5 text-center">회원정보 관리</div>
         <div class="mt-5 d-flex flex-column row-gap-3">
             <div>
@@ -72,6 +73,7 @@ watch(nickname, async () => {
                     v-model="store.getUserInfo.email"
                 />
             </div>
+            <div><PreferContents v-model="store.getUserInfo.prefer_place" /></div>
         </div>
     </div>
 </template>

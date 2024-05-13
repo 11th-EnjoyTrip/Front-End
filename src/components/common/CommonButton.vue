@@ -17,6 +17,7 @@ defineProps({
             height: height + 'px',
             'background-color': state ? bgColors[0] : bgColors[1],
             color: state ? '#ffffff' : '#374553',
+            'font-size': '14px',
         }"
         :value="value"
         @click="click"

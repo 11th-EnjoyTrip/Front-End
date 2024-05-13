@@ -57,9 +57,9 @@ watch([inputId, inputPwd], () => {
 
 <template>
     <div class="row">
-        <div class="d-flex flex-column h-auto col-10 col-sm-12 mx-auto login">
+        <div class="d-flex flex-column h-auto col-8 col-sm-12 mx-auto login">
             <div class="w-auto mx-auto">
-                <CommonLogo :length="44" :size="36" :title="'EnjoyTrip'" />
+                <CommonLogo :length="44" :size="36" :title="'Travelogue'" />
             </div>
             <div class="d-flex flex-column align-items-center h-auto row-gap-2 mt-5 w-100">
                 <CommonInput

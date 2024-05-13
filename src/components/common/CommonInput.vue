@@ -13,7 +13,7 @@ const props = defineProps({
         required: true,
     },
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "searchQnA"]);
 
 const newValue = ref(props.modelValue);
 watch(newValue, () => {
@@ -32,30 +32,45 @@ const focusOut = () => (colors.value = "#999999");
         :style="{ height: height + 'px', border: '1px solid' + colors }"
     >
         <!-- 아이콘(앞) -->
-        <IconPerson v-if="icon.isStart && icon.name == 'id'" :width="32" :height="32" :color="colors" />
+        <IconPerson v-if="icon.isStart && icon.name == 'id'" :width="28" :height="28" :color="colors" />
         <IconLock v-if="icon.isStart && icon.name == 'password'" :width="28" :height="28" :color="colors" />
-        <IconSearch v-if="icon.isStart && icon.name== 'search'" :width="28" :height="28" :color="colors" />
+        <IconSearch v-if="icon.isStart && icon.name == 'search'" :width="28" :height="28" :color="colors" />
         <!-- 입력 박스 -->
         <input
             class="w-100 h-100 border-0"
-            type="text"
             :placeholder="placeholder"
             @focusin="focusIn"
             @focusout="focusOut"
             v-model="newValue"
         />
         <!-- 아이콘(뒤) -->
-        <IconSearch v-if="!icon.isStart && icon.name == 'search'" :width="28" :height="28" :color="'#646f7c'" />
+        <IconSearch
+            v-if="!icon.isStart && icon.name == 'search'"
+            :width="28"
+            :height="28"
+            :color="'#646f7c'"
+            @click="emit('searchQnA')"
+        />
     </div>
 </template>
 
 <style scoped>
 input::placeholder {
-    color: #CCCCCC;
-    font-weight: bold;
+    color: #cccccc;
+    font-weight: semibold;
 }
 
 input:focus {
     outline: none;
+}
+
+@media (max-width: 575.98px) {
+    input {
+        font-size: 14px;
+    }
+
+    input::placeholder {
+        font-size: 14px;
+    }
 }
 </style>
