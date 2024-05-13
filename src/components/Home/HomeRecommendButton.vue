@@ -1,28 +1,28 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
+import { useHomeInfoStore } from "@/stores/homeMenu";
 
-const categoryList = ref([
-    { name: "관광지", id: 0 },
-    { name: "문화시설", id: 1 },
-    { name: "숙박", id: 2 },
-    { name: "행사 / 공연 / 축제", id: 3 },
-    { name: "레포츠", id: 4 },
-    { name: "쇼핑", id: 5 },
-    { name: "음식점", id: 6 },
-]);
+const categoryList = ["관광지", "문화시설", "숙박", "행사 / 공연 / 축제", "레포츠", "쇼핑", "음식점"];
+const store = useHomeInfoStore();
 const picked = ref([]);
 const pickedIdx = ref(0);
 
 onMounted(() => {
     let idx;
+
     while (picked.value.length != 3) {
         idx = Math.floor(Math.random() * 7);
-        if (picked.value.includes(categoryList.value[idx].name)) continue;
-        picked.value.push(categoryList.value[idx].name);
+
+        if (picked.value.includes(categoryList[idx])) continue;
+
+        picked.value.push(categoryList[idx]);
     }
 });
 
-const changeMenu = (idx) => (pickedIdx.value = idx);
+watch(pickedIdx, async () => {
+    store.changeContentType(picked.value[pickedIdx.value]);
+    await store.queryContents(store.getContentTypeId);
+});
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const changeMenu = (idx) => (pickedIdx.value = idx);
             :key="category"
             class="px-3 py-1 rounded-5 fw-semibold"
             :class="{ unselected: pickedIdx != idx, selected: pickedIdx == idx }"
-            @click="changeMenu(idx)"
+            @click="pickedIdx = idx"
         >
             {{ category }}
         </div>

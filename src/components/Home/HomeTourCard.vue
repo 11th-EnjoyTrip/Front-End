@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+defineProps({
+    attraction: Object,
+});
+</script>
 
 <template>
     <div class="w-100 h-100 card-tour">

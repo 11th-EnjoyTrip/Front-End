@@ -2,6 +2,7 @@
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 import { ref } from "vue";
 import HomeRecommendCard from "@/components/Home/HomeRecommendCard.vue";
+import { useHomeInfoStore } from "@/stores/homeMenu";
 
 const settings = ref({
     itemsToShow: 1,
@@ -24,13 +25,15 @@ const breakpoints = ref({
         snapAlign: "center",
     },
 });
+
+const store = useHomeInfoStore();
 </script>
 
 <template>
     <div class="w-100 mx-auto mt-3">
         <Carousel v-bind="settings" :breakpoints="breakpoints" :wrap-around="true" :autoplay="3000">
-            <Slide v-for="slide in 10" :key="slide">
-                <HomeRecommendCard />
+            <Slide v-for="content in store.getContents" :key="content.contentId">
+                <HomeRecommendCard :content="content" />
             </Slide>
 
             <template #addons>

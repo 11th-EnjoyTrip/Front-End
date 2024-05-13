@@ -1,6 +1,10 @@
 <script setup>
 import IconPhone from "@/components/icons/IconPhone.vue";
 import IconHomepage from "@/components/icons/IconHomepage.vue";
+
+defineProps({
+    content: Object,
+});
 </script>
 
 <template>
