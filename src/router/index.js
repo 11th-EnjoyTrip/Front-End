@@ -6,6 +6,11 @@ import MyPageView from "@/views/MyPageView.vue";
 import AttractionView from "@/views/AttractionView.vue";
 import AttractionDetailView from "@/views/AttractionDetailView.vue";
 import PasswordFindView from "@/views/PasswordFindView.vue";
+import QnAView from "@/views/QnAView.vue";
+import QnAList from "@/components/QnA/QnAList.vue";
+import QnADetail from "@/components/QnA/QnADetail.vue";
+import QnAEdit from "@/components/QnA/QnAEdit.vue";
+import QnAAdd from "@/components/QnA/QnAAdd.vue";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
 const router = createRouter({
@@ -70,14 +75,33 @@ const router = createRouter({
             name: "attractionDetail",
             component: AttractionDetailView,
         },
-        /*{
-            path: "/about",
-            name: "about",
-            // route level code-splitting
-            // this generates a separate chunk (About.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () => import("../views/AboutView.vue"),
-        },*/
+        {
+            path: "/qna",
+            name: "qna",
+            component: QnAView,
+            children: [
+                {
+                    path: "",
+                    name: "list",
+                    component: QnAList,
+                },
+                {
+                    path: ":id",
+                    name: "detail",
+                    component: QnADetail,
+                },
+                {
+                    path: ":id/edit",
+                    name: "edit",
+                    component: QnAEdit,
+                },
+                {
+                    path: "add",
+                    name: "add",
+                    component: QnAAdd,
+                },
+            ],
+        },
     ],
 });
 

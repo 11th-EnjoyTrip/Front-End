@@ -1,9 +1,10 @@
 <script setup></script>
 
 <template>
-    <div class="d-flex align-items-center m-auto nav-lower">
+    <div class="d-flex align-items-center m-auto column-gap-4 nav-lower">
         <!-- 컨텐츠 네비게이션 리스트 -->
         <RouterLink to="/attraction" class="fw-medium contents-search router">관광지검색</RouterLink>
+        <RouterLink to="/qna" class="fw-medium contents-search router">QnA 게시판</RouterLink>
     </div>
 </template>
 
