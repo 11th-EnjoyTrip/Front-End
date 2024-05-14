@@ -73,7 +73,7 @@ const router = createRouter({
         {
             path: "/attraction/:id",
             name: "attractionDetail",
-            component: AttractionDetailView,
+            component : ()=> import('@/views/AttractionDetailView.vue'),
         },
         {
             path: "/qna",

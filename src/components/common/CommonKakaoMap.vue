@@ -58,23 +58,24 @@ const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
   @onLoadKakaoMap="onLoadKakaoMap" >
     <template v-for="(data, index) in dataList" :key="index">
       <KakaoMapMarker
-          :lat="data.latitude"
-          :lng="data.longitude"
-          :clickable="true"
-          @onClickKakaoMapMarker="onClickMapMarker(index)"
-      />
-      <KakaoMapCustomOverlay
         :lat="data.latitude"
         :lng="data.longitude"
-        :yAnchor="1.27"
-        @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
-        :visible="visibleRef[index].value"
-      >
-        <router-link :to="`attraction/${data.contentId}`" >
-            <CommonKakaoMapInfoWindow :title="data.title" :content-type-name="data.contentTypeName" :first-image="data.firstImage"/>
-        </router-link>
-        
-      </KakaoMapCustomOverlay>
+        :clickable="true"
+        @onClickKakaoMapMarker="onClickMapMarker(index)"
+    />
+    <KakaoMapCustomOverlay
+      :lat="data.latitude"
+      :lng="data.longitude"
+      :yAnchor="1.27"
+      @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
+      :visible="visibleRef[index].value"
+    >
+      <router-link :to="`attraction/${data.contentId}`" >
+          <CommonKakaoMapInfoWindow :title="data.title" :content-type-name="data.contentTypeName" :first-image="data.firstImage"/>
+      </router-link>
+      
+    </KakaoMapCustomOverlay>
+
     </template>
   </KakaoMap>
 </template>

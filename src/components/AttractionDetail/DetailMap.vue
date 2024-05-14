@@ -4,7 +4,7 @@
        <div style="font-weight: 700;font-size: 22px;line-height: 32px; color: #14181B; margin-left: 10px">
         위치</div> 
         <div class="mt-3 map-item">
-            <CommonKakaoMap :isDraggable="false" :dataList="[itemContent]"  />
+            <CommonKakaoMap :isDraggable="false" :dataList="[{...content}]"  />
         </div>
     </div>
 </template>
@@ -13,8 +13,8 @@
 import CommonKakaoMap from '@/components/common/CommonKakaoMap.vue';
 import {ref} from 'vue';
 
-const props = defineProps({
-    itemContent: Object
+defineProps({
+    content: Object
 })
 </script>
 

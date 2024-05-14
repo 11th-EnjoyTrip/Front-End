@@ -1,11 +1,19 @@
 <script setup>
 
+import { useAttractionStore } from "@/stores/attraction";
 import IconNoSearch from '../icons/IconNoSearch.vue';
 
 const props = defineProps({
     dataList: Array,
     region: Object
 });
+
+const store = useAttractionStore();
+
+const searchAttr = async(attrId) => {
+    await store.changeAttrId(attrId);
+    console.log(1)
+}
 
 </script>
 
@@ -22,7 +30,7 @@ const props = defineProps({
         <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 g-4 mx-auto searchitem-card">
             <div class="col position-relative"
                 v-for="attraction in dataList" :key="attraction.contentId">
-                <router-link :to="`attraction/${attraction.contentId}`">
+                <router-link :to="`attraction/${attraction.contentId}`" @click="searchAttr(attraction.contentId)">
                     <div class="card" style="box-sizing: border-box; border-radius: 25px; border:0">
                         <img v-if="attraction.firstImage" :src="attraction.firstImage"
                             style="border-radius: 25px;border: 1px solid rgba(0, 0, 0, 0.1); ">
