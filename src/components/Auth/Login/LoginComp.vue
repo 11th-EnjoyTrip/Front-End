@@ -2,10 +2,10 @@
 import CommonLogo from "@/components/common/CommonLogo.vue";
 import CommonInput from "@/components/common/CommonInput.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
-import LoginAuto from "@/components/Login/LoginAuto.vue";
+import LoginAuto from "@/components/Auth/Login/LoginAuto.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
-import LoginSubMenu from "@/components/Login/LoginSubMenu.vue";
-import { ref, watch, onMounted } from "vue";
+import LoginSubMenu from "@/components/Auth/Login/LoginSubMenu.vue";
+import { ref, watch } from "vue";
 import { login } from "@/apis/authApi.js";
 import { useRouter } from "vue-router";
 import { useUserInfoStore } from "@/stores/userInfo.js";
@@ -53,14 +53,11 @@ const doLogin = async () => {
 watch([inputId, inputPwd], () => {
     canLogin.value = checkInfo();
 });
-
-const show = ref(false);
-onMounted(() => (show.value = !show.value));
 </script>
 
 <template>
-    <Transition name="bounce">
-        <div v-if="show" class="row">
+    <Transition name="bounce" appear>
+        <div class="row">
             <div class="d-flex flex-column h-auto col-8 col-sm-12 mx-auto login">
                 <div class="w-auto mx-auto">
                     <CommonLogo :length="44" :size="36" :title="'Travelogue'" />
@@ -104,13 +101,9 @@ onMounted(() => (show.value = !show.value));
     animation: bounce 0.5s;
 }
 
-.bounce-leave-active {
-    animation: bounce 0.5s reverse;
-}
-
 @keyframes bounce {
     0% {
-        transform: scale(0.95);
+        transform: scale(0.975);
     }
     100% {
         transform: scale(1);

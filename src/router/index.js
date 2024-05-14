@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
-import LoginView from "@/views/LoginView.vue";
-import SignUpView from "@/views/SignUpView.vue";
+import AuthView from "@/views/AuthView.vue";
+import LoginComp from "@/components/Auth/Login/LoginComp.vue";
+import SignUpComp from "@/components/Auth/SignUp/SignUpComp.vue";
+import PasswordFindComp from "@/components/Auth/PasswordFind/PasswordFindComp.vue";
 import MyPageView from "@/views/MyPageView.vue";
 import AttractionView from "@/views/AttractionView.vue";
 import AttractionDetailView from "@/views/AttractionDetailView.vue";
-import PasswordFindView from "@/views/PasswordFindView.vue";
+
 import QnAView from "@/views/QnAView.vue";
 import QnAList from "@/components/QnA/QnAList.vue";
 import QnADetail from "@/components/QnA/QnADetail.vue";
@@ -22,26 +24,32 @@ const router = createRouter({
             component: HomeView,
         },
         {
-            path: "/login",
-            name: "login",
-            component: LoginView,
-            beforeEnter: (to, from) => {
-                const store = useUserInfoStore();
-                if (store.getLoginState) {
-                    return { name: "mypage" };
-                }
-            },
-        },
-        {
-            path: "/signup",
-            name: "signup",
-            component: SignUpView,
-            beforeEnter: (to, from) => {
-                const store = useUserInfoStore();
-                if (store.getLoginState) {
-                    return { name: "mypage" };
-                }
-            },
+            path: "/auth",
+            name: "auth",
+            component: AuthView,
+            children: [
+                {
+                    path: "login",
+                    name: "auth-login",
+                    component: LoginComp,
+                },
+                {
+                    path: "signup",
+                    name: "auth-signup",
+                    component: SignUpComp,
+                    beforeEnter: (to, from) => {
+                        const store = useUserInfoStore();
+                        if (store.getLoginState) {
+                            return { name: "mypage" };
+                        }
+                    },
+                },
+                {
+                    path: "find",
+                    name: "auth-find",
+                    component: PasswordFindComp,
+                },
+            ],
         },
         {
             path: "/mypage",
@@ -51,17 +59,6 @@ const router = createRouter({
                 const store = useUserInfoStore();
                 if (!store.getLoginState) {
                     return { name: "login" };
-                }
-            },
-        },
-        {
-            path: "/find",
-            name: "passwordFind",
-            component: PasswordFindView,
-            beforeEnter: (to, from) => {
-                const store = useUserInfoStore();
-                if (store.getLoginState) {
-                    return { name: "mypage" };
                 }
             },
         },
