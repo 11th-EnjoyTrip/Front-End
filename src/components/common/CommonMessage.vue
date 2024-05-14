@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="mt-1" :style="{ color: isSuccess ? '#1769ff' : '#ff2c51', 'font-size': '12px' }">
+    <div class="mt-1" :style="{ color: isSuccess ? '#1769ff' : '#ff2c51', 'font-size': '13px' }">
         {{ message }}
     </div>
 </template>
