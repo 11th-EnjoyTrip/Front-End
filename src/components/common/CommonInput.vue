@@ -58,6 +58,7 @@ const focusOut = () => (colors.value = "#999999");
 input::placeholder {
     color: #cccccc;
     font-weight: semibold;
+    font-size: 14px;
 }
 
 input:focus {

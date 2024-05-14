@@ -59,8 +59,8 @@ const searchQnA = async () => {
         </div>
         <div class="w-50 mx-auto mt-3">
             <CommonInput
-                :height="50"
-                :placeholder="'입력한 키워드가 포함된 제목의 글을 검색합니다'"
+                :height="40"
+                :placeholder="'제목 키워드'"
                 :icon="{ isStart: false, name: 'search' }"
                 v-model="keyword"
                 @searchQnA="searchQnA"
