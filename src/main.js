@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import { useKakao } from "vue3-kakao-maps/@utils";
 import "ant-design-vue/dist/reset.css";
+import "vue3-carousel/dist/carousel.css";
 
 useKakao("467c6aedcee5e042222b042e9896462b");
 
