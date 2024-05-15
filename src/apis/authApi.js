@@ -29,21 +29,21 @@ export const signup = (signupInfo) => {
     });
 };
 
-export const login = (loginInfo) => {
-    return api({
-        url: "",
-        method: "post",
-        data: { ...loginInfo },
-    });
-};
-
 export const passwordFind = (id, email) => {
     return api({
-        url: "",
+        url: "/member/findPwd",
         method: "post",
         data: {
             id: id,
             email: email,
         },
+    });
+};
+
+export const login = (loginInfo) => {
+    return api({
+        url: "",
+        method: "post",
+        data: { ...loginInfo },
     });
 };

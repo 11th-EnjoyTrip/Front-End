@@ -49,13 +49,11 @@ const doFind = async () => {
     if (canFind.value == 2) {
         await passwordFind(inputId.value, inputEmail.value)
             .then((response) => {
-                console.log(response.data);
-                result.value = response.data;
+                result.value = response.data.pwd;
                 modalState.value = true;
                 isSuccess.value = true;
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 modalState.value = true;
                 isSuccess.value = false;
             });
@@ -98,7 +96,8 @@ const doFind = async () => {
     </Transition>
     <ModalPasswordFindResult
         :modalState="modalState"
-        :isSucess="isSuccess"
+        :isSuccess="isSuccess"
+        :id="inputId"
         :result="result"
         @close="modalState = false"
     />
