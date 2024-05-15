@@ -3,8 +3,7 @@ import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import PreferContents from "@/components/MyPage/PreferContents.vue";
 import { ref, watch, onMounted } from "vue";
-import { nicknameCheck } from "@/apis/authApi.js";
-import { getUserInfo } from "@/apis/userApi.js";
+import { getUserInfo, nicknameCheck } from "@/apis/userApi.js";
 import { jwtDecode } from "jwt-decode";
 
 const userInfo = {
@@ -60,8 +59,8 @@ watch(userInfo.nickname, async () => {
 
 <template>
     <div class="position-absolute w-100">
-        <div class="fw-bold fs-5 text-center">회원정보 관리</div>
-        <div class="mt-5 d-flex flex-column row-gap-3">
+        <div class="text-center fw-bold fs-5">회원정보 관리</div>
+        <div class="row-gap-3 mt-5 d-flex flex-column">
             <div>
                 <CommonInput2
                     :height="60"
