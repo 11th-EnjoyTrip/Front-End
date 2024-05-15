@@ -96,7 +96,6 @@ const doFind = async () => {
             </div>
         </div>
     </Transition>
-
     <ModalPasswordFindResult
         :modalState="modalState"
         :isSucess="isSuccess"

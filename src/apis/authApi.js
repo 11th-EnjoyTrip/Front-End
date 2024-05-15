@@ -1,48 +1,39 @@
 import { api } from "./interceptors";
 
-export const login = (loginInfo) => {
-    return api({
-        url: "",
-        method: "post",
-        data: { ...loginInfo },
-    });
-};
-
-export const signup = (signupInfo) => {
-    return api({
-        url: "",
-        method: "post",
-        data: { ...signupInfo },
-    });
-};
-
 export const idCheck = (id) => {
     return api({
-        url: "",
+        url: `/member/checkId/${id}`,
         method: "get",
-        params: {
-            id: id,
-        },
     });
 };
 
 export const nicknameCheck = (nickname) => {
     return api({
-        url: "",
+        url: `/member/checkNickname/${nickname}`,
         method: "get",
-        params: {
-            nickname: nickname,
-        },
     });
 };
 
 export const emailCheck = (email) => {
     return api({
-        url: "",
+        url: `/member/checkEmail/${email}`,
         method: "get",
-        params: {
-            email: email,
-        },
+    });
+};
+
+export const signup = (signupInfo) => {
+    return api({
+        url: `/member/regist`,
+        method: "post",
+        data: { ...signupInfo },
+    });
+};
+
+export const login = (loginInfo) => {
+    return api({
+        url: "",
+        method: "post",
+        data: { ...loginInfo },
     });
 };
 
