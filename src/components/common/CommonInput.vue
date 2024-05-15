@@ -20,9 +20,9 @@ watch(newValue, () => {
     emit("update:modelValue", newValue.value);
 });
 
-const colors = ref("#999999");
+const colors = ref("#e1e1e1");
 const focusIn = () => (colors.value = "#646f7c");
-const focusOut = () => (colors.value = "#999999");
+const focusOut = () => (colors.value = "#e1e1e1");
 </script>
 
 <template>
@@ -42,6 +42,7 @@ const focusOut = () => (colors.value = "#999999");
             @focusin="focusIn"
             @focusout="focusOut"
             v-model="newValue"
+            autofocus
         />
         <!-- 아이콘(뒤) -->
         <IconSearch
@@ -58,6 +59,7 @@ const focusOut = () => (colors.value = "#999999");
 input::placeholder {
     color: #cccccc;
     font-weight: semibold;
+    font-size: 14px;
 }
 
 input:focus {
@@ -66,10 +68,6 @@ input:focus {
 
 @media (max-width: 575.98px) {
     input {
-        font-size: 14px;
-    }
-
-    input::placeholder {
         font-size: 14px;
     }
 }

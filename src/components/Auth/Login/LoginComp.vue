@@ -2,9 +2,9 @@
 import CommonLogo from "@/components/common/CommonLogo.vue";
 import CommonInput from "@/components/common/CommonInput.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
-import LoginAuto from "@/components/Login/LoginAuto.vue";
+import LoginAuto from "@/components/Auth/Login/LoginAuto.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
-import LoginSubMenu from "@/components/Login/LoginSubMenu.vue";
+import LoginSubMenu from "@/components/Auth/Login/LoginSubMenu.vue";
 import { ref, watch } from "vue";
 import { login } from "@/apis/authApi.js";
 import { useRouter } from "vue-router";
@@ -56,42 +56,57 @@ watch([inputId, inputPwd], () => {
 </script>
 
 <template>
-    <div class="row">
-        <div class="d-flex flex-column h-auto col-8 col-sm-12 mx-auto login">
-            <div class="w-auto mx-auto">
-                <CommonLogo :length="44" :size="36" :title="'Travelogue'" />
-            </div>
-            <div class="d-flex flex-column align-items-center h-auto row-gap-2 mt-5 w-100">
-                <CommonInput
+    <Transition name="bounce" appear>
+        <div class="row">
+            <div class="d-flex flex-column h-auto col-8 col-sm-12 mx-auto login">
+                <div class="w-auto mx-auto">
+                    <CommonLogo :length="44" :size="36" :title="'Travelogue'" />
+                </div>
+                <div class="d-flex flex-column align-items-center h-auto row-gap-2 mt-5 w-100">
+                    <CommonInput
+                        :height="50"
+                        :placeholder="'아이디'"
+                        :icon="{ isStart: true, name: 'id' }"
+                        v-model="inputId"
+                    />
+                    <CommonInput
+                        :height="50"
+                        :placeholder="'비밀번호'"
+                        :icon="{ isStart: true, name: 'password' }"
+                        v-model="inputPwd"
+                    />
+                </div>
+                <CommonMessage :isSuccess="messageInfo.state" :message="messageInfo.message" />
+                <LoginAuto v-model="selectAutoLogin" />
+                <CommonButton
                     :height="50"
-                    :placeholder="'아이디'"
-                    :icon="{ isStart: true, name: 'id' }"
-                    v-model="inputId"
+                    :value="'로그인'"
+                    :bgColors="['#1769ff', '#e1e1e1']"
+                    :state="canLogin"
+                    :click="doLogin"
                 />
-                <CommonInput
-                    :height="50"
-                    :placeholder="'비밀번호'"
-                    :icon="{ isStart: true, name: 'password' }"
-                    v-model="inputPwd"
-                />
+                <LoginSubMenu />
             </div>
-            <CommonMessage :isSuccess="messageInfo.state" :message="messageInfo.message" />
-            <LoginAuto v-model="selectAutoLogin" />
-            <CommonButton
-                :height="50"
-                :value="'로그인'"
-                :bgColors="['#1769ff', '#e1e1e1']"
-                :state="canLogin"
-                :click="doLogin"
-            />
-            <LoginSubMenu />
         </div>
-    </div>
+    </Transition>
 </template>
 
 <style scoped>
 .login {
     max-width: 360px;
     margin-top: 120px;
+}
+
+.bounce-enter-active {
+    animation: bounce 0.5s;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(0.975);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 </style>

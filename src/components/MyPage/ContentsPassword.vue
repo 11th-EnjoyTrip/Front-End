@@ -78,7 +78,7 @@ const doChangePassword = async () => {
 </script>
 
 <template>
-    <div class="col-7 mx-auto">
+    <div class="position-absolute w-100">
         <div class="fw-bold fs-5 text-center">비밀번호 변경</div>
         <div class="mt-5 d-flex flex-column row-gap-3">
             <div>
@@ -102,9 +102,9 @@ const doChangePassword = async () => {
                 <CommonMessage :isSuccess="messages[1].state" :message="messages[1].message" />
             </div>
         </div>
-        <div class="mt-5 w-100 d-flex align-items-center">
+        <div class="mt-5 w-75 mx-auto d-flex align-items-center">
             <CommonButton
-                :height="50"
+                :height="40"
                 :value="'비밀번호 변경'"
                 :bgColors="['#1769ff', '#e1e1e1']"
                 :state="canChange == 2"

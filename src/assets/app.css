@@ -4,6 +4,10 @@
     font-family: "Pretendard";
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .router {
     text-decoration: none;
 }

@@ -53,7 +53,7 @@ const doQuit = async () => {
 </script>
 
 <template>
-    <div class="col-7 mx-auto">
+    <div class="position-absolute w-100">
         <div class="fw-bold fs-5 text-center">회원 탈퇴</div>
         <div class="mt-5 d-flex flex-column row-gap-3">
             <div>
@@ -67,9 +67,9 @@ const doQuit = async () => {
                 <CommonMessage :isSuccess="messages.state" :message="messages.message" />
             </div>
         </div>
-        <div class="mt-5 w-100 d-flex align-items-center">
+        <div class="mt-5 w-75 mx-auto d-flex align-items-center">
             <CommonButton
-                :height="50"
+                :height="40"
                 :value="'회원 탈퇴'"
                 :bgColors="['#ff2c51', '#e1e1e1']"
                 :state="canQuit"
