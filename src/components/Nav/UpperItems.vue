@@ -1,8 +1,16 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { useRouter } from "vue-router";
 
 const store = useUserInfoStore();
+const router = useRouter();
+const logout = () => {
+    store.changeLoginState(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    router.replace("/");
+};
 </script>
 
 <template>
@@ -11,13 +19,9 @@ const store = useUserInfoStore();
         <RouterLink to="/auth/login" class="router" v-if="!store.getLoginState">로그인</RouterLink>
         <RouterLink to="/auth/signup" class="router" v-if="!store.getLoginState">회원가입</RouterLink>
         <!-- 사용자 로그인 후 -->
-        <RouterLink to="/auth/logout" class="router" v-if="store.getLoginState">로그아웃</RouterLink>
+        <button class="router" @click="logout" v-if="store.getLoginState">로그아웃</button>
         <RouterLink to="/mypage" class="router" v-if="store.getLoginState">마이페이지</RouterLink>
     </div>
 </template>
 
-<style scoped>
-.router {
-    color: #646f7c;
-}
-</style>
+<style scoped></style>

@@ -2,11 +2,19 @@
 import { ref } from "vue";
 import IconPerson from "@/components/icons/IconPerson.vue";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { useRouter } from "vue-router";
 
 const displayState = ref("none");
 const changeState = () =>
     displayState.value == "none" ? (displayState.value = "flex") : (displayState.value = "none");
 const store = useUserInfoStore();
+const router = useRouter();
+const logout = () => {
+    store.changeLoginState(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    router.replace("/");
+};
 </script>
 
 <template>
@@ -22,7 +30,7 @@ const store = useUserInfoStore();
             <RouterLink to="/auth/login" class="router" v-if="!store.getLoginState">로그인</RouterLink>
             <RouterLink to="/auth/signup" class="router" v-if="!store.getLoginState">회원가입</RouterLink>
             <!-- 사용자 로그인 후 -->
-            <RouterLink to="/auth/logout" class="router" v-if="store.getLoginState">로그아웃</RouterLink>
+            <button class="router" @click="logout" v-if="store.getLoginState">로그아웃</button>
             <RouterLink to="/mypage" class="router" v-if="store.getLoginState">마이페이지</RouterLink>
         </div>
     </div>
