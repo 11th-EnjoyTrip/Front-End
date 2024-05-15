@@ -10,6 +10,8 @@ import { login } from "@/apis/authApi.js";
 import { useRouter } from "vue-router";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 
+const router = useRouter();
+const store = useUserInfoStore();
 const inputId = ref("");
 const inputPwd = ref("");
 const selectAutoLogin = ref(false);
@@ -24,22 +26,12 @@ const checkInfo = () => {
     return false;
 };
 const doLogin = async () => {
-    const loginInfo = {
-        id: inputId.value,
-        password: inputPwd.value,
-        autoLogin: selectAutoLogin.value,
-    };
-
     if (canLogin.value) {
-        await login(loginInfo)
+        await login(inputId.value, inputPwd.value)
             .then((response) => {
-                console.log(response.data);
-
-                const router = useRouter();
-                const store = useUserInfoStore();
-
+                localStorage.setItem("accessToken", response.data["access-token"]);
+                localStorage.setItem("refreshToken", response.data["refresh-token"]);
                 store.changeLoginState(true);
-                store.changeUserInfo(response.data.id);
                 router.replace("/");
             })
             .catch((error) => {

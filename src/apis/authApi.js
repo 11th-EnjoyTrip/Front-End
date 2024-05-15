@@ -40,10 +40,13 @@ export const passwordFind = (id, email) => {
     });
 };
 
-export const login = (loginInfo) => {
+export const login = (id, password) => {
     return api({
-        url: "",
+        url: "/member/login",
         method: "post",
-        data: { ...loginInfo },
+        data: {
+            id: id,
+            password: password,
+        },
     });
 };

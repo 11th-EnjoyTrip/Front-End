@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
-    const loginState = ref(false);
+    const loginState = ref(localStorage.getItem("accessToken") ? true : false);
     const userInfo = ref({
         id: "test23",
         name: "최요하",
