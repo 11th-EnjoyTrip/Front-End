@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { storeToRefs } from "pinia";
-import HomeView from "@/views/HomeView.vue";
+
 import AuthView from "@/views/AuthView.vue";
 import LoginComp from "@/components/Auth/Login/LoginComp.vue";
 import SignUpComp from "@/components/Auth/SignUp/SignUpComp.vue";
 import PasswordFindComp from "@/components/Auth/PasswordFind/PasswordFindComp.vue";
+
 import MyPageView from "@/views/MyPageView.vue";
+
 import AttractionView from "@/views/AttractionView.vue";
 import AttractionDetailView from "@/views/AttractionDetailView.vue";
 import QnAView from "@/views/QnAView.vue";
@@ -40,7 +42,8 @@ const router = createRouter({
         {
             path: "/",
             name: "home",
-            component: HomeView,
+            component: () => import("@/views/HomeView.vue"),
+            beforeEnter: isValidUser,
         },
         {
             path: "/auth",

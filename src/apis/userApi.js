@@ -74,3 +74,16 @@ export const passwordFind = (id, email) => {
         },
     });
 };
+
+export const nicknameChange = () => {
+    return api({});
+};
+export const passwordChange = () => {
+    return api({});
+};
+export const passwordCheck = () => {
+    return api({});
+};
+export const userQuit = () => {
+    return api({});
+};

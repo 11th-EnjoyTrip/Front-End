@@ -16,7 +16,7 @@ const props = defineProps({
     type: String,
     page: String,
     canChange: Boolean,
-    modelValue: Object,
+    modelValue: String,
 });
 const emit = defineEmits(["update:modelValue"]);
 const newValue = ref(props.modelValue);

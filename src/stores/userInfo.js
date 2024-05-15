@@ -48,7 +48,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
             })
             .catch(async () => {
                 console.log("access token 만료");
-                await regenerateToken(access.Id);
+                //await regenerateToken(access.Id);
             });
     };
 
