@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
 import { getUserInfo, regenerateAccess, logout } from "@/apis/userApi";
+import { useRouter } from "vue-router";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
@@ -11,11 +12,20 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     /* getters */
 
     /* actions */
-    const resetUserInfo = () => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        loginState.value = false;
-        userInfo.value = null;
+    const logoutUser = async (id) => {
+        const router = useRouter();
+
+        await logout(id)
+            .then(() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                loginState.value = false;
+                userInfo.value = null;
+                router.replace("/auth/login");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
     const regenerateToken = async (id) => {
         await regenerateAccess(id)
@@ -25,13 +35,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
             .catch(async () => {
                 console.log("refresh token 만료");
 
-                await logout(id)
-                    .then(() => {
-                        resetUserInfo();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                await logoutUser(id);
             });
     };
     const queryUserInfo = async (accessToken) => {
@@ -51,7 +55,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     return {
         loginState,
         userInfo,
-        resetUserInfo,
+        logoutUser,
         regenerateToken,
         queryUserInfo,
     };
