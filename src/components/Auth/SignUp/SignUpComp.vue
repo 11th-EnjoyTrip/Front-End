@@ -6,7 +6,7 @@ import CommonMessage from "@/components/common/CommonMessage.vue";
 import SignUpPreferContents from "@/components/Auth/SignUp/SignUpPreferContents.vue";
 import ModalSignUpResult from "@/components/Modal/ModalSignUpResult.vue";
 import { ref, computed, watch } from "vue";
-import { idCheck, nicknameCheck, emailCheck, signup } from "@/apis/authApi.js";
+import { idCheck, nicknameCheck, emailCheck, signup } from "@/apis/userApi.js";
 
 const inputId = ref("");
 const inputPwd = ref("");

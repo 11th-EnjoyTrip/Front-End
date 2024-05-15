@@ -1,39 +1,58 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
+import { jwtDecode } from "jwt-decode";
+import { getUserInfo, regenerateAccess, logout } from "@/apis/userApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
-    const loginState = ref(localStorage.getItem("accessToken") ? true : false);
-    const userInfo = ref({
-        id: "test23",
-        name: "최요하",
-        nickname: "흰수염고래",
-        email: "bluewhaleyh@gmail.com",
-        prefer_place: ["대구", "인천"],
-    });
+    const loginState = ref(false);
+    const userInfo = ref(null);
 
     /* getters */
-    const getLoginState = computed(() => {
-        return loginState.value;
-    });
-    const getUserInfo = computed(() => {
-        return userInfo.value;
-    });
 
     /* actions */
-    const changeLoginState = (newState) => {
-        loginState.value = newState;
+    const resetUserInfo = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        loginState.value = false;
+        userInfo.value = null;
     };
-    const changeUserInfo = (userId) => {
-        userInfo.value.id = userId;
+    const regenerateToken = async (id) => {
+        await regenerateAccess(id)
+            .then((response) => {
+                localStorage.setItem("accessToken", response.data["access-token"]);
+            })
+            .catch(async () => {
+                console.log("refresh token 만료");
+
+                await logout(id)
+                    .then(() => {
+                        resetUserInfo();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            });
+    };
+    const queryUserInfo = async (accessToken) => {
+        const access = jwtDecode(accessToken);
+
+        await getUserInfo(access.Id)
+            .then((response) => {
+                loginState.value = true;
+                userInfo.value = response.data.info;
+            })
+            .catch(async () => {
+                console.log("access token 만료");
+                await regenerateToken(access.Id);
+            });
     };
 
     return {
         loginState,
         userInfo,
-        getLoginState,
-        getUserInfo,
-        changeLoginState,
-        changeUserInfo,
+        resetUserInfo,
+        regenerateToken,
+        queryUserInfo,
     };
 });

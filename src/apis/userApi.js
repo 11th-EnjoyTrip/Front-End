@@ -1,29 +1,61 @@
 import { api } from "./interceptors";
 
-export const nicknameChange = (id, nickname) => {
+export const getUserInfo = (id) => {
     return api({
-        url: "",
+        url: `/member/info/${id}`,
+        method: "get",
+    });
+};
+
+export const regenerateAccess = (id) => {
+    return api({
+        url: "/member/refresh",
         method: "post",
         data: {
             id: id,
-            nickname: nickname,
         },
     });
 };
 
-export const preferChange = (newPrefers) => {
+export const logout = (id) => {
     return api({
-        url: "",
-        method: "put",
-        data: {
-            prefer: [...newPrefers],
-        },
+        url: `/member/logout/${id}`,
+        method: "get",
     });
 };
 
-export const passwordCheck = (id, password) => {
+export const idCheck = (id) => {
     return api({
-        url: "",
+        url: `/member/checkId/${id}`,
+        method: "get",
+    });
+};
+
+export const nicknameCheck = (nickname) => {
+    return api({
+        url: `/member/checkNickname/${nickname}`,
+        method: "get",
+    });
+};
+
+export const emailCheck = (email) => {
+    return api({
+        url: `/member/checkEmail/${email}`,
+        method: "get",
+    });
+};
+
+export const signup = (signupInfo) => {
+    return api({
+        url: `/member/regist`,
+        method: "post",
+        data: { ...signupInfo },
+    });
+};
+
+export const login = (id, password) => {
+    return api({
+        url: "/member/login",
         method: "post",
         data: {
             id: id,
@@ -32,23 +64,13 @@ export const passwordCheck = (id, password) => {
     });
 };
 
-export const passwordChange = (id, newPassword) => {
+export const passwordFind = (id, email) => {
     return api({
-        url: "",
+        url: "/member/findPwd",
         method: "post",
         data: {
             id: id,
-            password: newPassword,
-        },
-    });
-};
-
-export const userQuit = (id) => {
-    return api({
-        url: "",
-        method: "patch",
-        data: {
-            id: id,
+            email: email,
         },
     });
 };

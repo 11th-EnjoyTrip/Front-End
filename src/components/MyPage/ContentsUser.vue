@@ -2,31 +2,58 @@
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import PreferContents from "@/components/MyPage/PreferContents.vue";
-import { ref, watch } from "vue";
-import { useUserInfoStore } from "@/stores/userInfo.js";
+import { ref, watch, onMounted } from "vue";
 import { nicknameCheck } from "@/apis/authApi.js";
+import { getUserInfo } from "@/apis/userApi.js";
+import { jwtDecode } from "jwt-decode";
 
-const store = useUserInfoStore();
-const nickname = ref(store.getUserInfo.nickname);
+const userInfo = {
+    id: ref(""),
+    name: ref(""),
+    email: ref(""),
+    nickname: ref(""),
+    location: "대구",
+};
 const messages = ref({
     state: false,
     message: "",
 });
+const isFirst = ref(0);
 
-watch(nickname, async () => {
-    if (nickname.value.length == 0) {
-        messages.value.state = false;
-        messages.value.message = "닉네임을 입력해주세요";
-    } else {
-        await nicknameCheck(nickname.value)
-            .then(() => {
-                messages.value.state = true;
-                messages.value.message = "사용 가능한 닉네임 입니다";
-            })
-            .catch(() => {
-                messages.value.state = false;
-                messages.value.message = "중복된 닉네임 입니다";
-            });
+onMounted(async () => {
+    await getUserInfo(jwtDecode(localStorage.getItem("Authorization")).Id)
+        .then((response) => {
+            userInfo.id.value = response.data.info.id;
+            userInfo.name.value = response.data.info.name;
+            userInfo.nickname.value = response.data.info.nickname;
+            userInfo.email.value = response.data.info.email;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
+
+watch(userInfo.nickname, async () => {
+    if (isFirst.value == 0) {
+        isFirst.value = 1;
+        return;
+    }
+
+    if (isFirst.value > 0) {
+        if (userInfo.nickname.length == 0) {
+            messages.value.state = false;
+            messages.value.message = "닉네임을 입력해주세요";
+        } else {
+            await nicknameCheck(userInfo.nickname.value)
+                .then(() => {
+                    messages.value.state = true;
+                    messages.value.message = "사용 가능한 닉네임 입니다";
+                })
+                .catch(() => {
+                    messages.value.state = false;
+                    messages.value.message = "중복된 닉네임 입니다";
+                });
+        }
     }
 });
 </script>
@@ -41,7 +68,7 @@ watch(nickname, async () => {
                     :placeholder="'아이디'"
                     :title="'아이디'"
                     :page="'edit'"
-                    v-model="store.getUserInfo.id"
+                    v-model="userInfo.id"
                 />
             </div>
             <div>
@@ -50,7 +77,7 @@ watch(nickname, async () => {
                     :placeholder="'이름'"
                     :title="'이름'"
                     :page="'edit'"
-                    v-model="store.getUserInfo.name"
+                    v-model="userInfo.name"
                 />
             </div>
             <div>
@@ -60,7 +87,7 @@ watch(nickname, async () => {
                     :title="'닉네임'"
                     :page="'edit'"
                     :canChange="messages.state"
-                    v-model="nickname"
+                    v-model="userInfo.nickname"
                 />
                 <CommonMessage :isSuccess="messages.state" :message="messages.message" />
             </div>
@@ -70,10 +97,10 @@ watch(nickname, async () => {
                     :placeholder="'이메일'"
                     :title="'이메일'"
                     :page="'edit'"
-                    v-model="store.getUserInfo.email"
+                    v-model="userInfo.email"
                 />
             </div>
-            <div><PreferContents v-model="store.getUserInfo.prefer_place" /></div>
+            <div><PreferContents v-model="userInfo.location" /></div>
         </div>
     </div>
 </template>

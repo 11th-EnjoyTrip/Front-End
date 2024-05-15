@@ -4,7 +4,7 @@ import { ref, computed, watch } from "vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
-import { passwordFind } from "@/apis/authApi.js";
+import { passwordFind } from "@/apis/userApi.js";
 import ModalPasswordFindResult from "@/components/Modal/ModalPasswordFindResult.vue";
 
 const inputId = ref("");

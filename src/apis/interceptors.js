@@ -3,9 +3,9 @@ import axios from "axios";
 export const api = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
-        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("accessToken"),
+        refreshToken: localStorage.getItem("refreshToken"),
     },
-    withCredential: true,
 });
 
 api.interceptors.request.use(

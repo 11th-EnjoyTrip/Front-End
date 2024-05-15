@@ -6,12 +6,12 @@ import LoginAuto from "@/components/Auth/Login/LoginAuto.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import LoginSubMenu from "@/components/Auth/Login/LoginSubMenu.vue";
 import { ref, watch } from "vue";
-import { login } from "@/apis/authApi.js";
+import { login } from "@/apis/userApi.js";
 import { useRouter } from "vue-router";
 import { useUserInfoStore } from "@/stores/userInfo.js";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
-const store = useUserInfoStore();
 const inputId = ref("");
 const inputPwd = ref("");
 const selectAutoLogin = ref(false);
@@ -26,16 +26,18 @@ const checkInfo = () => {
     return false;
 };
 const doLogin = async () => {
+    const store = useUserInfoStore();
+    const { loginState } = storeToRefs(store);
+
     if (canLogin.value) {
         await login(inputId.value, inputPwd.value)
             .then((response) => {
                 localStorage.setItem("accessToken", response.data["access-token"]);
                 localStorage.setItem("refreshToken", response.data["refresh-token"]);
-                store.changeLoginState(true);
+                loginState.value = true;
                 router.replace("/");
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 messageInfo.value.message = "아이디 또는 비밀번호가 일치하지 않습니다";
             });
     } else {
