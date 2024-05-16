@@ -29,6 +29,17 @@ export const signup = (signupInfo) => {
     });
 };
 
+export const login = (id, password) => {
+    return api({
+        url: "/member/login",
+        method: "post",
+        data: {
+            id: id,
+            password: password,
+        },
+    });
+};
+
 export const getUserInfo = () => {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
 
@@ -38,33 +49,21 @@ export const getUserInfo = () => {
     });
 };
 
-export const regenerateAccess = (id) => {
-    api.defaults.headers["refreshToken"] = localStorage.getItem("refreshToken");
+export const regenerateAccess = () => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
 
     return api({
         url: "/member/refresh",
         method: "post",
-        data: {
-            id: id,
-        },
     });
 };
 
-export const logout = (id) => {
+export const logout = () => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
     return api({
-        url: `/member/logout/${id}`,
+        url: `/member/logout`,
         method: "get",
-    });
-};
-
-export const login = (id, password) => {
-    return api({
-        url: "/member/login",
-        method: "post",
-        data: {
-            id: id,
-            password: password,
-        },
     });
 };
 

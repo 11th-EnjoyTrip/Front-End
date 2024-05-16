@@ -1,8 +1,6 @@
 <script setup>
 import CommonLogo from "@/components/common/CommonLogo.vue";
 import CommonInput from "@/components/common/CommonInput.vue";
-import CommonMessage from "@/components/common/CommonMessage.vue";
-import LoginAuto from "@/components/Auth/Login/LoginAuto.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import LoginSubMenu from "@/components/Auth/Login/LoginSubMenu.vue";
 import { ref, watch } from "vue";
@@ -10,21 +8,20 @@ import { login } from "@/apis/userApi.js";
 import { useRouter } from "vue-router";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { storeToRefs } from "pinia";
+import { message } from "ant-design-vue";
 
 const router = useRouter();
 const inputId = ref("");
 const inputPwd = ref("");
-const selectAutoLogin = ref(false);
 const canLogin = ref(false);
-const messageInfo = ref({
-    state: false,
-    message: "",
-});
 
 const checkInfo = () => {
     if (inputId.value.length > 0 && inputPwd.value.length > 0) return true;
     return false;
 };
+watch([inputId, inputPwd], () => {
+    canLogin.value = checkInfo();
+});
 const doLogin = async () => {
     const store = useUserInfoStore();
     const { loginState } = storeToRefs(store);
@@ -38,15 +35,12 @@ const doLogin = async () => {
                 router.replace("/");
             })
             .catch(() => {
-                messageInfo.value.message = "아이디 또는 비밀번호가 일치하지 않습니다";
+                message.error("아이디 또는 비밀번호가 잘못 입력되었습니다");
             });
     } else {
-        messageInfo.value.message = "아이디 또는 비밀번호를 입력해주세요";
+        message.warning("아이디 또는 비밀번호를 입력해주세요");
     }
 };
-watch([inputId, inputPwd], () => {
-    canLogin.value = checkInfo();
-});
 </script>
 
 <template>
@@ -70,8 +64,6 @@ watch([inputId, inputPwd], () => {
                         v-model="inputPwd"
                     />
                 </div>
-                <CommonMessage :isSuccess="messageInfo.state" :message="messageInfo.message" />
-                <LoginAuto v-model="selectAutoLogin" />
                 <CommonButton
                     :height="50"
                     :value="'로그인'"

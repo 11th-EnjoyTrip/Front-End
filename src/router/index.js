@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { storeToRefs } from "pinia";
+import { message } from "ant-design-vue";
 
 import AuthView from "@/views/AuthView.vue";
 import LoginComp from "@/components/Auth/Login/LoginComp.vue";
@@ -24,6 +25,7 @@ const isValidUser = async (to, from, next) => {
     const { loginState, userInfo } = storeToRefs(store);
 
     if (accessToken == undefined) {
+        message.error("로그인 후에 이용 가능한 서비스입니다", 5);
         next("/auth/login");
     } else {
         await queryUserInfo();
