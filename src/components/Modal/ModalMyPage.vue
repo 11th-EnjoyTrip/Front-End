@@ -1,13 +1,8 @@
 <script setup>
 import { useRouter } from "vue-router";
-
 defineProps({
     modalState: Boolean,
-    isSuccess: Boolean,
-    id: String,
-    result: String,
 });
-
 const emit = defineEmits(["close"]);
 const router = useRouter();
 const move = () => {
@@ -23,29 +18,15 @@ const move = () => {
                 v-if="modalState"
                 class="position-fixed top-0 left-0 w-100 h-100 row justify-content-center align-items-center modal-background"
             >
-                <div v-if="isSuccess" class="col-6 col-sm-7 bg-white rounded-3 modal-container">
-                    <div class="fw-semibold">
-                        <span class="fw-bold fs-5 modal-title">{{ id }}</span> 님의 비밀번호는
-                    </div>
-                    <div class="fw-semibold mt-3 px-3">
-                        <span class="fw-bold fs-5">"{{ result }}"</span> 입니다.
+                <div
+                    class="col-7 col-sm-4 bg-white rounded-3 d-flex flex-column justify-content-center align-items-center modal-container"
+                >
+                    <div class="fw-semibold modal-body">
+                        로그인이 <span class="fail">만료</span>되었습니다<br />로그인 페이지로 이동합니다
                     </div>
                     <button
                         class="w-100 mt-4 py-2 text-white fw-bold border-0 rounded-3 modal-default-button"
                         @click="move"
-                    >
-                        확인
-                    </button>
-                </div>
-
-                <div
-                    v-else
-                    class="col-7 col-sm-7 bg-white rounded-3 d-flex flex-column justify-content-center align-items-center modal-container"
-                >
-                    <div class="modal-body"><span class="modal-title">유효하지 않은 사용자</span> 입니다.</div>
-                    <button
-                        class="w-100 mt-4 py-2 text-white fw-bold border-0 rounded-3 modal-default-button"
-                        @click="$emit('close')"
                     >
                         확인
                     </button>
@@ -77,15 +58,22 @@ const move = () => {
     font-size: 14px;
 }
 
-.modal-title {
+.success {
     color: #1769ff;
     font-weight: 700;
     font-size: 16px;
 }
 
+.fail {
+    color: #ff2c51;
+    font-weight: 700;
+    font-size: 16px;
+}
+
 .modal-default-button {
-    background-color: #73afff;
+    background-color: #ff2c51;
     font-size: 14px;
+    color: white;
 }
 
 .modal-enter-from {

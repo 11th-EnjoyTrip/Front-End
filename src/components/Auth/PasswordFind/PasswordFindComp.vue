@@ -4,7 +4,7 @@ import { ref, computed, watch } from "vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
-import { passwordFind } from "@/apis/authApi.js";
+import { passwordFind } from "@/apis/userApi.js";
 import ModalPasswordFindResult from "@/components/Modal/ModalPasswordFindResult.vue";
 
 const inputId = ref("");
@@ -49,13 +49,11 @@ const doFind = async () => {
     if (canFind.value == 2) {
         await passwordFind(inputId.value, inputEmail.value)
             .then((response) => {
-                console.log(response.data);
-                result.value = response.data;
+                result.value = response.data.pwd;
                 modalState.value = true;
                 isSuccess.value = true;
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 modalState.value = true;
                 isSuccess.value = false;
             });
@@ -96,10 +94,10 @@ const doFind = async () => {
             </div>
         </div>
     </Transition>
-
     <ModalPasswordFindResult
         :modalState="modalState"
-        :isSucess="isSuccess"
+        :isSuccess="isSuccess"
+        :id="inputId"
         :result="result"
         @close="modalState = false"
     />

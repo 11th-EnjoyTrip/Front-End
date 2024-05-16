@@ -4,9 +4,9 @@ import CommonButton from "@/components/common/CommonButton.vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import SignUpPreferContents from "@/components/Auth/SignUp/SignUpPreferContents.vue";
+import ModalSignUpResult from "@/components/Modal/ModalSignUpResult.vue";
 import { ref, computed, watch } from "vue";
-import { signup, idCheck, nicknameCheck, emailCheck } from "@/apis/authApi.js";
-import { useRouter } from "vue-router";
+import { idCheck, nicknameCheck, emailCheck, signup } from "@/apis/userApi.js";
 
 const inputId = ref("");
 const inputPwd = ref("");
@@ -14,7 +14,7 @@ const inputCheck = ref("");
 const inputName = ref("");
 const inputNickname = ref("");
 const inputEmail = ref("");
-const inputPrefers = ref([]);
+const inputPrefers = ref(["대구"]);
 const messages = ref([
     {
         state: false,
@@ -41,8 +41,9 @@ const messages = ref([
         message: "",
     },
 ]);
+const modalState = ref(false);
+const isSuccess = ref(false);
 const canSignup = computed(() => {
-    console.log(messages.value.filter((item) => item.state).length);
     return messages.value.filter((item) => item.state).length;
 });
 
@@ -143,21 +144,20 @@ const doSignup = async () => {
         const signupInfo = {
             id: inputId.value,
             password: inputPwd.value,
-            name: inputName.value,
+            username: inputName.value,
             nickname: inputNickname.value,
             email: inputEmail.value,
-            prefers: [...inputPrefers.value],
+            location: "대구",
         };
-        console.log(signupInfo);
 
         await signup(signupInfo)
-            .then((response) => {
-                console.log(response.data);
-                const router = useRouter();
-                router.replace("/login");
+            .then(() => {
+                modalState.value = true;
+                isSuccess.value = true;
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                modalState.value = true;
+                isSuccess.value = false;
             });
     }
 };
@@ -225,6 +225,7 @@ const doSignup = async () => {
             </div>
         </div>
     </Transition>
+    <ModalSignUpResult :modalState="modalState" :isSuccess="isSuccess" @close="modalState = false" />
 </template>
 
 <style scoped>

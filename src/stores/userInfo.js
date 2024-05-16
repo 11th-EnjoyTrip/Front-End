@@ -1,39 +1,40 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
+import { getUserInfo } from "@/apis/userApi";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
-    const loginState = ref(true);
-    const userInfo = ref({
-        id: "test23",
-        name: "최요하",
-        nickname: "흰수염고래",
-        email: "bluewhaleyh@gmail.com",
-        prefer_place: ["대구", "인천"],
-    });
+    const loginState = ref(false);
+    const userInfo = ref(null);
+    const isEditing = ref(false);
+    const trueLogout = ref(false);
 
     /* getters */
-    const getLoginState = computed(() => {
-        return loginState.value;
-    });
-    const getUserInfo = computed(() => {
-        return userInfo.value;
-    });
 
     /* actions */
-    const changeLoginState = (newState) => {
-        loginState.value = newState;
+    const queryUserInfo = async () => {
+        await getUserInfo()
+            .then((response) => {
+                loginState.value = true;
+                userInfo.value = response.data.info;
+            })
+            .catch(async () => {
+                console.log("access token 만료");
+            });
     };
-    const changeUserInfo = (userId) => {
-        userInfo.value.id = userId;
+    const resetInfo = () => {
+        loginState.value = false;
+        userInfo.value = null;
+        isEditing.value = false;
+        trueLogout.value = false;
     };
 
     return {
         loginState,
         userInfo,
-        getLoginState,
-        getUserInfo,
-        changeLoginState,
-        changeUserInfo,
+        isEditing,
+        trueLogout,
+        queryUserInfo,
+        resetInfo,
     };
 });

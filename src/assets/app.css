@@ -10,6 +10,9 @@ body {
 
 .router {
     text-decoration: none;
+    color: #646f7c;
+    background-color: white;
+    border: none;
 }
 
 .img-btn {
