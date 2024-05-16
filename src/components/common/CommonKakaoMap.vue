@@ -1,13 +1,15 @@
 <script setup>
-import { computed, ref,watch } from 'vue';
+import { computed, ref,watch,nextTick } from 'vue';
 import { KakaoMap, KakaoMapCustomOverlay, KakaoMapMarker } from 'vue3-kakao-maps';
 import CommonKakaoMapInfoWindow from './CommonKakaoMapInfoWindow.vue';
 
 const props = defineProps({
-  isDraggable: Boolean,
+  isDraggable: {
+    type: Boolean,
+    default: true
+  },
   content: Array
 });
-
 const map = ref();
 const overlay = ref(null);
 let visibleRef = props.content.map((item, index) => index === 0 ? ref(true) : ref(false));
@@ -42,25 +44,24 @@ const setBounds = () => {
   if (map.value !== undefined) {
     map.value.setBounds(bounds);
   }
+  map.value.setDraggable(props.isDraggable);
 };
 
 const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
   overlay.value = newCustomOverlay;
 };
 
+
 watch(() => props.content.length, () => {
-  console.log(111);
-  console.log(props.content)
   onLoadKakaoMap(map.value);
   visibleRef = props.content.map((item, index) => index === 0 ? ref(true) : ref(false));
-  console.log(visibleRef.value)
 });
 
 </script>
 
-<template>
-  <KakaoMap :draggable="isDraggable" width="100%" class="kakao-map-item" :lat="content[0].latitude" :lng="content[0].longitude" 
-  @onLoadKakaoMap="onLoadKakaoMap">
+<template style="background-color: white;" >
+  <KakaoMap width="100%" class="kakao-map-item" :lat="content[0].latitude" :lng="content[0].longitude" 
+  @onLoadKakaoMap="onLoadKakaoMap" >
     <div v-for="(data, index) in content" :key="index">
       <KakaoMapMarker
         :lat="data.latitude"
@@ -71,13 +72,13 @@ watch(() => props.content.length, () => {
     <KakaoMapCustomOverlay
       :lat="data.latitude"
       :lng="data.longitude"
-      :yAnchor="1.27"
+      :y-anchor="1.3"
       :z-index="20"
       @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
       :visible="visibleRef[index].value"
     >
       <router-link :to="`attraction/${data.contentId}`" >
-          <CommonKakaoMapInfoWindow :title="data.title" :content-type-name="data.contentTypeName" :first-image="data.firstImage"/>
+          <CommonKakaoMapInfoWindow  :title="data.title" :content-type-name="data.contentTypeName" :first-image="data.firstImage"/>
       </router-link>
       
     </KakaoMapCustomOverlay>

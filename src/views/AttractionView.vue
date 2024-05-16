@@ -62,7 +62,7 @@ onMounted(() => {
     <NavComp :withLower="true" />
     <SearchBox @search-item="searchItem" />
     <div class="mt-4 mb-5 map-item">
-        <CommonKakaoMap :isDraggable="true" :content="attractionListData" />
+        <CommonKakaoMap :content="attractionListData" />
     </div>
     <hr width="90%" style="max-width: 1200px;" class="mx-auto" />
     <SearchItemCard :regionName="regionName" :dataList="attractionListData" />
