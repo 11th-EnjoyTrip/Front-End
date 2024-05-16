@@ -12,7 +12,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     /* getters */
 
     /* actions */
-    const logoutUser = async () => {
+    const logoutUser = async (trueLogout) => {
         const router = useRouter();
 
         await logout()
@@ -21,8 +21,14 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 localStorage.removeItem("refreshToken");
                 loginState.value = false;
                 userInfo.value = null;
-                message.error("로그인이 만료되었습니다", 5);
-                router.replace("/auth/login");
+
+                if (!trueLogout) {
+                    message.error("로그인이 만료되었습니다", 5);
+                    router.replace("/auth/login");
+                } else {
+                    message.success("로그아웃에 성공했습니다", 3);
+                    router.replace("/");
+                }
             })
             .catch((error) => {
                 console.log(error);

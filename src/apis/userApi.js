@@ -62,7 +62,7 @@ export const logout = () => {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
 
     return api({
-        url: `/member/logout`,
+        url: "/member/logout",
         method: "get",
     });
 };

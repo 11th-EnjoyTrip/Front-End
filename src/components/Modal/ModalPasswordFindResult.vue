@@ -1,10 +1,19 @@
 <script setup>
+import { useRouter } from "vue-router";
+
 defineProps({
     modalState: Boolean,
     isSuccess: Boolean,
     id: String,
     result: String,
 });
+
+const emit = defineEmits(["close"]);
+const router = useRouter();
+const move = () => {
+    emit("close");
+    router.replace("/auth/login");
+};
 </script>
 
 <template>
@@ -14,7 +23,7 @@ defineProps({
                 v-if="modalState"
                 class="position-fixed top-0 left-0 w-100 h-100 row justify-content-center align-items-center modal-background"
             >
-                <div v-if="isSuccess" class="col-6 col-sm-4 bg-white rounded-3 modal-container">
+                <div v-if="isSuccess" class="col-6 col-sm-7 bg-white rounded-3 modal-container">
                     <div class="fw-semibold">
                         <span class="fw-bold fs-5 modal-title">{{ id }}</span> 님의 비밀번호는
                     </div>
@@ -23,7 +32,7 @@ defineProps({
                     </div>
                     <button
                         class="w-100 mt-4 py-2 text-white fw-bold border-0 rounded-3 modal-default-button"
-                        @click="$emit('close')"
+                        @click="move"
                     >
                         확인
                     </button>
@@ -31,7 +40,7 @@ defineProps({
 
                 <div
                     v-else
-                    class="col-7 col-sm-4 bg-white rounded-3 d-flex flex-column justify-content-center align-items-center modal-container"
+                    class="col-7 col-sm-7 bg-white rounded-3 d-flex flex-column justify-content-center align-items-center modal-container"
                 >
                     <div class="modal-body"><span class="modal-title">유효하지 않은 사용자</span> 입니다.</div>
                     <button

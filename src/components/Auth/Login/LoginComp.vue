@@ -50,7 +50,7 @@ const doLogin = async () => {
                 <div class="w-auto mx-auto">
                     <CommonLogo :length="44" :size="36" :title="'Travelogue'" />
                 </div>
-                <div class="d-flex flex-column align-items-center h-auto row-gap-2 mt-5 w-100">
+                <div class="d-flex flex-column align-items-center h-auto row-gap-2 mt-5 mb-4 w-100">
                     <CommonInput
                         :height="50"
                         :placeholder="'아이디'"

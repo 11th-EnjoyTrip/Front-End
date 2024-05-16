@@ -14,7 +14,7 @@ const { loginState } = storeToRefs(store);
         <RouterLink to="/auth/login" class="router" v-if="!loginState">로그인</RouterLink>
         <RouterLink to="/auth/signup" class="router" v-if="!loginState">회원가입</RouterLink>
         <!-- 사용자 로그인 후 -->
-        <button class="router" @click="logoutUser" v-if="loginState">로그아웃</button>
+        <button class="router" @click="logoutUser(true)" v-if="loginState">로그아웃</button>
         <RouterLink to="/mypage" class="router" v-if="loginState">마이페이지</RouterLink>
     </div>
 </template>
