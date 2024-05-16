@@ -2,15 +2,13 @@
 import NavComp from "@/components/Nav/NavComp.vue";
 import DetailContents from '@/components/AttractionDetail/DetailContents.vue';
 import DetailMap from '@/components/AttractionDetail/DetailMap.vue';
-import { useAttractionStore } from "@/stores/attraction";
-import { storeToRefs } from "pinia";
 import { useRouter } from 'vue-router';
-import { onMounted, onUpdated } from "vue";
+import { onMounted } from "vue";
 import { attractionDetail } from "@/apis/attractionApi";
 import {ref, computed} from "vue"
 
 const router = useRouter();
-const content = ref({});
+const content = ref(null);
 
 onMounted(async () => {
   await attractionDetail(router.currentRoute.value.params.id)
@@ -21,19 +19,16 @@ onMounted(async () => {
 })
 
 const getContent = computed(() => {
+  console.log(1211)
   return content.value;
 })
 
-// const store = useAttractionStore();
-// const { content } = storeToRefs(store);
-
 </script>
-
 
 <template>
   <div>
     <NavComp :withLower="true" />
-    <div class="mx-auto m-5 attraction-detail-view">
+    <div v-if="content" class="mx-auto m-5 attraction-detail-view">
       <div class="card g-4" style="box-sizing: border-box; border-radius: 25px; border:0;">
         <img v-if="content.firstImage" :src="content.firstImage" style="border-radius: 20px;border: 1px solid rgba(0, 0, 0, 0.1);">
       </div>

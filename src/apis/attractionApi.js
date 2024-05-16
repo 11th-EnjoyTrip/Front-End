@@ -1,13 +1,14 @@
 import { api } from "./interceptors";
 
-export const attractionList = (region,category,keyword) => {
+export const attractionList = (region,category,keyword,page) => {
     return api({
         url: "/attraction",
         method: "get",
         params: {
             region: region,
             category: category,
-            keyword: keyword
+            keyword: keyword,
+            page: page
         }
     });
 };

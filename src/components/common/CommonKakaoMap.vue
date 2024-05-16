@@ -1,18 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref,watch } from 'vue';
 import { KakaoMap, KakaoMapCustomOverlay, KakaoMapMarker } from 'vue3-kakao-maps';
 import CommonKakaoMapInfoWindow from './CommonKakaoMapInfoWindow.vue';
 
 const props = defineProps({
   isDraggable: Boolean,
-  dataList: Array
+  content: Array
 });
-console.log(props.dataList)
+
 const map = ref();
-
 const overlay = ref(null);
-
-const visibleRef = props.dataList.map((item, index) => index === 0 ? ref(true) : ref(false));
+const visibleRef = props.content.map((item, index) => index === 0 ? ref(true) : ref(false));
 
 //마커 클릭 시 인포윈도우의 visible 값을 반전
 const onClickMapMarker = (index) => {
@@ -23,18 +21,18 @@ const onClickMapMarker = (index) => {
 let bounds;
 
 const onLoadKakaoMap = (mapRef) => {
+
   map.value = mapRef;
   bounds = new kakao.maps.LatLngBounds();
   let point;
 
-  props.dataList.forEach((markerInfo) => {
+  props.content.forEach((markerInfo) => {
     // 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
     point = new kakao.maps.LatLng(markerInfo.latitude, markerInfo.longitude);
 
     // LatLngBounds 객체에 좌표를 추가합니다
     bounds.extend(point);
   });
-
   setBounds();
 };
 
@@ -51,22 +49,29 @@ const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
 };
 
 
+watch(() => props.content.length, () => {
+  console.log(111);
+  console.log(props.content)
+  onLoadKakaoMap(map.value);
+});
+
 </script>
 
 <template>
-  <KakaoMap :draggable="isDraggable" width="100%" class="kakao-map-item" :lat="dataList[0].latitude" :lng="dataList[0].longitude" 
+  <KakaoMap :draggable="isDraggable" width="100%" class="kakao-map-item" :lat="content[0].latitude" :lng="content[0].longitude" 
   @onLoadKakaoMap="onLoadKakaoMap" >
-    <template v-for="(data, index) in dataList" :key="index">
+    <div v-for="(data, index) in content" :key="index">
       <KakaoMapMarker
         :lat="data.latitude"
         :lng="data.longitude"
         :clickable="true"
         @onClickKakaoMapMarker="onClickMapMarker(index)"
-    />
+      />
     <KakaoMapCustomOverlay
       :lat="data.latitude"
       :lng="data.longitude"
       :yAnchor="1.27"
+      :z-index="20"
       @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
       :visible="visibleRef[index].value"
     >
@@ -75,8 +80,7 @@ const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
       </router-link>
       
     </KakaoMapCustomOverlay>
-
-    </template>
+    </div>
   </KakaoMap>
 </template>
 
@@ -85,7 +89,6 @@ const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
 .kakao-map-item{
   border-radius: 14px;
 }
-
 
 a {
   text-decoration: none;

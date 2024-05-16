@@ -1,7 +1,6 @@
 <script setup>
 import IconQuote from '@/components/icons/IconQuote.vue'
 
-
 defineProps({
     content: Object
 })

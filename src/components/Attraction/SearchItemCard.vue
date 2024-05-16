@@ -5,16 +5,14 @@ import IconNoSearch from '../icons/IconNoSearch.vue';
 
 const props = defineProps({
     dataList: Array,
-    region: Object
+    regionName: String
 });
 
 const store = useAttractionStore();
 
 const searchAttr = async(attrId) => {
     await store.changeAttrId(attrId);
-    console.log(1)
 }
-
 </script>
 
 <template>
@@ -22,7 +20,7 @@ const searchAttr = async(attrId) => {
         <div class="d-flex mb-4 mt-3" style="width: 100%;">
                             <!-- 삼항 연산자를 이용하여 displayRegion 값이 null이 아닌 경우에만 출력 -->
             <div style="color: #1769FF;font-weight: 700;font-size: 25px; padding-left: 10%; padding-right: 5px;">
-                {{ region.value }} 관광지
+                {{ regionName }} 관광지
             </div>
             
             <div class="mt-2">로 여기 어때요?</div>
@@ -31,11 +29,11 @@ const searchAttr = async(attrId) => {
             <div class="col position-relative"
                 v-for="attraction in dataList" :key="attraction.contentId">
                 <router-link :to="`attraction/${attraction.contentId}`" @click="searchAttr(attraction.contentId)">
-                    <div class="card" style="box-sizing: border-box; border-radius: 25px; border:0">
+                    <div class="card" style="box-sizing: border-box; border-radius: 25px; border:0;">
                         <img v-if="attraction.firstImage" :src="attraction.firstImage"
-                            style="border-radius: 25px;border: 1px solid rgba(0, 0, 0, 0.1); ">
+                            style="border-radius: 25px;border: 1px solid rgba(0, 0, 0, 0.1); max-height: 178px;">
                         <img v-else src="@/assets/noPicture2.png"
-                            style="border-radius: 25px;border: 1px solid rgba(0, 0, 0, 0.1); ">
+                            style="border-radius: 25px;border: 1px solid rgba(0, 0, 0, 0.1);  max-height: 178px;">
                         <div class="card-body position-absolute bottom-0 start-0 ms-2 mb-2"
                             style="background: radial-gradient(50% 50% at 50% 50%, rgba(40, 38, 38, 0.32) 50%,
                             rgba(40, 38, 38, 0.23) 70%, rgba(225, 225, 225, 0) 100%) !important;">

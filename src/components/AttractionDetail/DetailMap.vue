@@ -1,22 +1,21 @@
+<script setup>
+import CommonKakaoMap from '@/components/common/CommonKakaoMap.vue';
+import {computed} from 'vue'
+defineProps({
+    content: Object
+})
+
+</script>
 
 <template>
     <div class="mt-5">
        <div style="font-weight: 700;font-size: 22px;line-height: 32px; color: #14181B; margin-left: 10px">
         위치</div> 
         <div class="mt-3 map-item">
-            <CommonKakaoMap :isDraggable="false" :dataList="[{...content}]"  />
+            <CommonKakaoMap :isDraggable="false" :content="[{...content}]"  />
         </div>
     </div>
 </template>
-
-<script setup>
-import CommonKakaoMap from '@/components/common/CommonKakaoMap.vue';
-import {ref} from 'vue';
-
-defineProps({
-    content: Object
-})
-</script>
 
 <style scoped>
 .map-item{
