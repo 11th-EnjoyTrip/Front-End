@@ -2,48 +2,32 @@
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import PreferContents from "@/components/MyPage/PreferContents.vue";
-import { ref, watch, onMounted } from "vue";
-import { getUserInfo, nicknameCheck } from "@/apis/userApi.js";
-import { jwtDecode } from "jwt-decode";
+import { ref, watch } from "vue";
+import { nicknameCheck } from "@/apis/userApi.js";
+import { useUserInfoStore } from "@/stores/userInfo.js";
+import { storeToRefs } from "pinia";
 
-const userInfo = {
-    id: ref(""),
-    name: ref(""),
-    email: ref(""),
-    nickname: ref(""),
-    location: "대구",
-};
+const store = useUserInfoStore();
+const { userInfo } = storeToRefs(store);
+const newNickname = ref(userInfo.value.nickname);
 const messages = ref({
     state: false,
     message: "",
 });
 const isFirst = ref(0);
 
-onMounted(async () => {
-    await getUserInfo(jwtDecode(localStorage.getItem("Authorization")).Id)
-        .then((response) => {
-            userInfo.id.value = response.data.info.id;
-            userInfo.name.value = response.data.info.name;
-            userInfo.nickname.value = response.data.info.nickname;
-            userInfo.email.value = response.data.info.email;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-});
-
-watch(userInfo.nickname, async () => {
+watch(newNickname, async () => {
     if (isFirst.value == 0) {
         isFirst.value = 1;
         return;
     }
 
     if (isFirst.value > 0) {
-        if (userInfo.nickname.length == 0) {
+        if (newNickname.value.length == 0) {
             messages.value.state = false;
             messages.value.message = "닉네임을 입력해주세요";
         } else {
-            await nicknameCheck(userInfo.nickname.value)
+            await nicknameCheck(newNickname.value)
                 .then(() => {
                     messages.value.state = true;
                     messages.value.message = "사용 가능한 닉네임 입니다";
@@ -76,7 +60,7 @@ watch(userInfo.nickname, async () => {
                     :placeholder="'이름'"
                     :title="'이름'"
                     :page="'edit'"
-                    v-model="userInfo.name"
+                    v-model="userInfo.username"
                 />
             </div>
             <div>
@@ -86,7 +70,7 @@ watch(userInfo.nickname, async () => {
                     :title="'닉네임'"
                     :page="'edit'"
                     :canChange="messages.state"
-                    v-model="userInfo.nickname"
+                    v-model="newNickname"
                 />
                 <CommonMessage :isSuccess="messages.state" :message="messages.message" />
             </div>

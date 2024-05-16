@@ -1,13 +1,17 @@
 import { api } from "./interceptors";
 
-export const getUserInfo = (id) => {
+export const getUserInfo = () => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
     return api({
-        url: `/member/info/${id}`,
+        url: `/member/info`,
         method: "get",
     });
 };
 
 export const regenerateAccess = (id) => {
+    api.defaults.headers["refreshToken"] = localStorage.getItem("refreshToken");
+
     return api({
         url: "/member/refresh",
         method: "post",
@@ -75,8 +79,11 @@ export const passwordFind = (id, email) => {
     });
 };
 
-export const nicknameChange = () => {
-    return api({});
+export const nicknameChange = (newNickname) => {
+    return api({
+        url: `/member/updateNickname/${newNickname}`,
+        method: "get",
+    });
 };
 export const passwordChange = () => {
     return api({});

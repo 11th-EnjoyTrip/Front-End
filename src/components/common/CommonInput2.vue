@@ -5,10 +5,16 @@ import IconTag from "@/components/icons/IconTag.vue";
 import IconMail from "@/components/icons/IconMail.vue";
 import IconNickname from "@/components/icons/IconNickname.vue";
 import IconEdit from "@/components/icons/IconEdit.vue";
+import ModalMyPage from "@/components/Modal/ModalMyPage.vue";
 import { ref, watch } from "vue";
 import { nicknameChange } from "@/apis/userApi.js";
 import { useUserInfoStore } from "@/stores/userInfo.js";
+import { storeToRefs } from "pinia";
 
+const store = useUserInfoStore();
+const { queryUserInfo } = store;
+const { loginState, userInfo } = storeToRefs(store);
+const modalState = ref(false);
 const props = defineProps({
     height: Number,
     placeholder: String,
@@ -29,16 +35,29 @@ const doEdit = async () => {
     if (!isEditing.value) {
         isEditing.value = true;
     } else {
-        const store = useUserInfoStore();
-        await nicknameChange(store.getUserInfo.id, newValue.value)
-            .then((response) => {
-                console.log(response.data);
+        await nicknameChange(newValue.value)
+            .then(() => {
                 isEditing.value = false;
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 isEditing.value = false;
             });
+    }
+};
+
+const validationCheck = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken == undefined) {
+        modalState.value = false;
+    } else {
+        await queryUserInfo(accessToken);
+
+        if (!loginState || userInfo.value == null) {
+            modalState.value = false;
+        } else {
+            await doEdit();
+        }
     }
 };
 </script>
@@ -85,7 +104,7 @@ const doEdit = async () => {
                     'font-size': '14px',
                     'text-decoration': isEditing ? 'none' : 'underline',
                 }"
-                @click="doEdit"
+                @click="validationCheck"
             >
                 수정
             </button>

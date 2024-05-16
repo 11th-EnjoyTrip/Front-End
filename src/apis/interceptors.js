@@ -2,11 +2,11 @@ import axios from "axios";
 
 export const api = axios.create({
     baseURL: "http://localhost:8080",
-    headers: {
-        Authorization: localStorage.getItem("accessToken"),
-        refreshToken: localStorage.getItem("refreshToken"),
-    },
 });
+
+api.defaults.headers.common["Authorization"] = "";
+api.defaults.headers.post["Content-Type"] = "application/json";
+api.defaults.headers.get["Content-Type"] = "application/json";
 
 api.interceptors.request.use(
     (config) => {

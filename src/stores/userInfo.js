@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { jwtDecode } from "jwt-decode";
 import { getUserInfo, regenerateAccess, logout } from "@/apis/userApi";
 import { useRouter } from "vue-router";
 
@@ -38,10 +37,8 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 await logoutUser(id);
             });
     };
-    const queryUserInfo = async (accessToken) => {
-        const access = jwtDecode(accessToken);
-
-        await getUserInfo(access.Id)
+    const queryUserInfo = async () => {
+        await getUserInfo()
             .then((response) => {
                 loginState.value = true;
                 userInfo.value = response.data.info;

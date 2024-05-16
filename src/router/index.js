@@ -26,7 +26,7 @@ const isValidUser = async (to, from, next) => {
     if (accessToken == undefined) {
         next("/auth/login");
     } else {
-        await queryUserInfo(accessToken);
+        await queryUserInfo();
 
         if (!loginState || userInfo.value == null) {
             next("/auth/login");
@@ -43,7 +43,6 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: () => import("@/views/HomeView.vue"),
-            beforeEnter: isValidUser,
         },
         {
             path: "/auth",
