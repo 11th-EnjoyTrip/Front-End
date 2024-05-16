@@ -50,7 +50,7 @@ export const getUserInfo = () => {
 };
 
 export const regenerateAccess = () => {
-    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+    api.defaults.headers["refreshToken"] = localStorage.getItem("refreshToken");
 
     return api({
         url: "/member/refresh",
@@ -78,18 +78,42 @@ export const passwordFind = (id, email) => {
     });
 };
 
-export const nicknameChange = (newNickname) => {
+export const passwordCheck = (password) => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
     return api({
-        url: `/member/updateNickname/${newNickname}`,
-        method: "get",
+        url: "/member/checkpassword",
+        method: "post",
+        data: {
+            password: password,
+        },
     });
 };
-export const passwordChange = () => {
-    return api({});
+
+export const nicknameChange = (newNickname) => {
+    return api({
+        url: "/member/updateNickname",
+        method: "patch",
+        data: {
+            nickname: newNickname,
+        },
+    });
 };
-export const passwordCheck = () => {
-    return api({});
+
+export const passwordChange = (newPassword) => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
+    return api({
+        url: `/member/updatePassword/${newPassword}`,
+        method: "patch",
+    });
 };
+
 export const userQuit = () => {
-    return api({});
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
+    return api({
+        url: "/member/deleteMember",
+        method: "delete",
+    });
 };

@@ -22,15 +22,17 @@ const isValidUser = async (to, from, next) => {
     const store = useUserInfoStore();
     const accessToken = localStorage.getItem("accessToken");
     const { queryUserInfo } = store;
-    const { loginState, userInfo } = storeToRefs(store);
+    const { loginState, userInfo, trueLogout } = storeToRefs(store);
 
     if (accessToken == undefined) {
         message.error("로그인 후에 이용 가능한 서비스입니다", 5);
         next("/auth/login");
     } else {
+        trueLogout.value = false;
         await queryUserInfo();
 
         if (!loginState || userInfo.value == null) {
+            message.error("재로그인이 필요합니다", 5);
             next("/auth/login");
         } else {
             next();

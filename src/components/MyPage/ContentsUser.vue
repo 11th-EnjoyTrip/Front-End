@@ -8,7 +8,7 @@ import { useUserInfoStore } from "@/stores/userInfo.js";
 import { storeToRefs } from "pinia";
 
 const store = useUserInfoStore();
-const { userInfo } = storeToRefs(store);
+const { userInfo, isEditing } = storeToRefs(store);
 const newNickname = ref(userInfo.value.nickname);
 const messages = ref({
     state: false,
@@ -72,7 +72,7 @@ watch(newNickname, async () => {
                     :canChange="messages.state"
                     v-model="newNickname"
                 />
-                <CommonMessage :isSuccess="messages.state" :message="messages.message" />
+                <CommonMessage v-show="isEditing" :isSuccess="messages.state" :message="messages.message" />
             </div>
             <div>
                 <CommonInput2

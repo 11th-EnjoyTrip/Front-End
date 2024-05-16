@@ -3,10 +3,11 @@ import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import { ref, computed, watch } from "vue";
-import { passwordCheck, passwordChange } from "@/apis/userApi.js";
-import { useUserInfoStore } from "@/stores/userInfo.js";
+import { passwordChange, passwordCheck } from "@/apis/userApi.js";
+import { message } from "ant-design-vue";
+import { useRouter } from "vue-router";
 
-const store = useUserInfoStore();
+const router = useRouter();
 const before = ref("");
 const after = ref("");
 const messages = ref([
@@ -29,25 +30,15 @@ watch(before, async () => {
         messages.value[0].message = "비밀번호를 입력해주세요";
         messages.value[1].message = "";
     } else {
-        await passwordCheck(store.getUserInfo.id, before.value)
-            .then((response) => {
-                console.log(response.data);
+        await passwordCheck(before.value)
+            .then(() => {
                 messages.value[0].state = true;
-                messages.value[0].message = "";
+                messages.value[0].message = "비밀번호가 정상적으로 입력되었습니다";
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 messages.value[0].state = false;
-                messages.value[0].message = "부정확한 비밀번호 입니다";
+                messages.value[0].message = "일치하지 않는 비밀번호입니다";
             });
-
-        if (before.value == after.value) {
-            messages.value[1].state = true;
-            messages.value[1].message = "비밀번호가 일치합니다";
-        } else {
-            messages.value[1].state = false;
-            messages.value[1].message = "비밀번호가 일치하지 않습니다";
-        }
     }
 });
 watch(after, () => {
@@ -56,23 +47,32 @@ watch(after, () => {
         messages.value[1].message = "비밀번호를 입력해주세요";
     } else {
         if (after.value == before.value) {
-            messages.value[1].state = true;
+            messages.value[1].state = false;
             messages.value[1].message = "비밀번호가 일치합니다";
         } else {
-            messages.value[1].state = false;
-            messages.value[1].message = "비밀번호가 일치하지 않습니다";
+            const regex = /^(?=.*[a-z])(?=.*\d)[a-z\d]{8,}$/g;
+            if (!regex.test(after.value)) {
+                messages.value[1].state = false;
+                messages.value[1].message = "비밀번호 형식에 맞지 않습니다";
+            } else {
+                messages.value[1].state = true;
+                messages.value[1].message = "사용 가능한 비밀번호 입니다";
+            }
         }
     }
 });
 const doChangePassword = async () => {
     if (canChange.value == 2) {
-        await passwordChange(store.getUserInfo.id, after.value)
-            .then((response) => {
-                console.log(response);
+        await passwordChange(after.value)
+            .then(() => {
+                message.success("비밀번호 변경에 성공했습니다");
+                router.go(0);
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                message.error("비밀번호 변경에 실패했습니다");
             });
+    } else {
+        message.warn("모든 항목을 제대로 입력해주세요");
     }
 };
 </script>

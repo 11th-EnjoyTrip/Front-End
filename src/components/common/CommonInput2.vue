@@ -5,16 +5,14 @@ import IconTag from "@/components/icons/IconTag.vue";
 import IconMail from "@/components/icons/IconMail.vue";
 import IconNickname from "@/components/icons/IconNickname.vue";
 import IconEdit from "@/components/icons/IconEdit.vue";
-import ModalMyPage from "@/components/Modal/ModalMyPage.vue";
 import { ref, watch } from "vue";
 import { nicknameChange } from "@/apis/userApi.js";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { storeToRefs } from "pinia";
+import { message } from "ant-design-vue";
 
 const store = useUserInfoStore();
-const { queryUserInfo } = store;
-const { loginState, userInfo } = storeToRefs(store);
-const modalState = ref(false);
+const { isEditing, trueLogout } = storeToRefs(store);
 const props = defineProps({
     height: Number,
     placeholder: String,
@@ -30,33 +28,23 @@ watch(newValue, () => {
     emit("update:modelValue", newValue.value);
 });
 
-const isEditing = ref(false);
 const doEdit = async () => {
     if (!isEditing.value) {
         isEditing.value = true;
     } else {
-        await nicknameChange(newValue.value)
-            .then(() => {
-                isEditing.value = false;
-            })
-            .catch(() => {
-                isEditing.value = false;
-            });
-    }
-};
-
-const validationCheck = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (accessToken == undefined) {
-        modalState.value = false;
-    } else {
-        await queryUserInfo(accessToken);
-
-        if (!loginState || userInfo.value == null) {
-            modalState.value = false;
+        if (newValue.value.length == 0) {
+            message.warn("닉네임을 입력해주세요");
         } else {
-            await doEdit();
+            trueLogout.value = false;
+            await nicknameChange(newValue.value)
+                .then(() => {
+                    message.success("닉네임 변경에 성공했습니다");
+                    isEditing.value = false;
+                })
+                .catch((error) => {
+                    if (error.response.status == 409) message.error("중복된 닉네임입니다");
+                    else if (error.response.status != 401) message.error("닉네임 변경에 실패했습니다");
+                });
         }
     }
 };
@@ -104,7 +92,7 @@ const validationCheck = async () => {
                     'font-size': '14px',
                     'text-decoration': isEditing ? 'none' : 'underline',
                 }"
-                @click="validationCheck"
+                @click="doEdit"
             >
                 수정
             </button>
