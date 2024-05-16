@@ -14,6 +14,8 @@ import "ant-design-vue/dist/reset.css";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 
+import MasonryWall from '@yeger/vue-masonry-wall';
+
 useKakao("467c6aedcee5e042222b042e9896462b");
 
 const app = createApp(App);
@@ -21,6 +23,7 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(Antd);
+app.use(MasonryWall);
 
 app.component("infinite-loading", InfiniteLoading);
 

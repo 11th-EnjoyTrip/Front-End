@@ -31,6 +31,7 @@ const getContent = computed(() => {
     <div v-if="content" class="mx-auto m-5 attraction-detail-view">
       <div class="card g-4" style="box-sizing: border-box; border-radius: 25px; border:0;">
         <img v-if="content.firstImage" :src="content.firstImage" style="border-radius: 20px;border: 1px solid rgba(0, 0, 0, 0.1);">
+        <img v-else src="@/assets/noPicture2.png" width="100%" height="40%" style="border-radius: 20px;border: 1px solid rgba(0, 0, 0, 0.1);">
       </div>
       <DetailContents :content="getContent"/>
       <DetailMap :content="getContent"/>

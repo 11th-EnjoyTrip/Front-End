@@ -10,22 +10,22 @@ const props = defineProps({
 <template>
     <div class="card" style="padding: 1px; background-color: white; border: 0.64785px solid #EEEEEE;
                 box-shadow: 0px 2.5914px 2.5914px rgba(0, 0, 0, 0.25);border-radius: 9.71774px; display: flex;">
-            <div class="img-card">
-                <img v-if="firstImage" :src="firstImage" width="100%" height="120px" style="border-radius: 9.71774px 9.71774px 0px 0px; min-width: 210px;"/>
-                <img v-else src="@/assets/noPicture2.png" width="100%" height="120px" style="border-radius: 9.71774px 9.71774px 0px 0px; min-width: 210px;">
-              </div>
-            <div class="d-flex" style="flex-wrap: wrap; justify-content: space-between; margin: 8px;">
-              <div class="d-flex">
-                <div style="font-weight: 700;font-size: 15px; text-overflow: ellipsis;">{{ title }}</div>
-                <div style="margin-left: 3px; margin-top: 6px; border-left: 0.64785px solid #666666; color: #666666;  height : 12px;"></div>
-                <div class="content-type" style="">{{ contentTypeName }}</div>
-              </div>
-              <div class="d-flex info-text">
-                <IconClick width="16" height="16" color="#666666" />
-                <div style="margin-top: 2px;">클릭시 상세보기</div>
-              </div>
-            </div> 
-          </div>
+      <div class="img-card">
+          <img v-if="firstImage" :src="firstImage" width="100%" height="100%" style="border-radius: 9.71774px 9.71774px 0px 0px; "/>
+          <img v-else src="@/assets/noPicture2.png" width="100%" height="100%" style="border-radius: 9.71774px 9.71774px 0px 0px; ">
+      </div>
+      <div class="d-flex" style="flex-wrap: wrap; justify-content: space-between; margin: 8px;">
+        <div class="d-flex">
+          <div style="font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; height: 20px;">{{ title }}</div>
+          <div style="margin-left: 3px; margin-top: 6px; border-left: 0.64785px solid #666666; color: #666666;  height : 12px;"></div>
+          <div class="content-type" style="">{{ contentTypeName }}</div>
+        </div>
+        <div class="d-flex info-text">
+          <IconClick :width="16" :height="16" :color="'#666666'" />
+          <div style="margin-top: 2px;">클릭시 상세보기</div>
+        </div>
+      </div> 
+    </div>
 </template>
 
 <style scoped>

@@ -17,38 +17,37 @@ const searchItem = async(...args) => {
   region.value = args[0].value;
   regionName.value = args[1].value;
   categorys.value = args[2].value;
-  keyword.value = args[3].value; 
+  keyword.value = args[3].value;
 
   // args(sido,categorys,keyword)로 서버에서 데이터 불러옴
-  page = 1;
+  page = 0;
   await loadAttractionList();
 
 };
 
 // 서버에서 불러온 데이터
 const attractionListData = ref(null)
-let page = 1;
+let page = 0;
 
 const loadAttractionList = async $state => {
-  console.log("loading...")
-  try {
-    console.log(region.value)
-    const response =  await attractionList(region.value, categorys.value, keyword.value,page);
-    console.log(response.data)
 
+  try {
+    const response =  await attractionList(region.value, categorys.value, keyword.value,page);
     const jsonData = response.data;
 
     if (jsonData.length < 20) {
+      attractionListData.value = jsonData;
       $state.complete();
     } else {
-      attractionListData.value = page === 1 ? jsonData : [...attractionListData.value, ...jsonData];
-      console.log(attractionListData.value)
-      // $state.loaded();
+      if (page === 0) {
+        attractionListData.value = jsonData;
+      } else {
+        attractionListData.value = [...attractionListData.value.map(obj => ({ ...obj })),...jsonData];
+      }
     }
     page++;
   } catch (error) {
     console.error("Error fetching attraction list:", error);
-    // $state.error();
   }
 };
 
@@ -65,7 +64,7 @@ onMounted(() => {
     <div class="mt-4 mb-5 map-item">
         <CommonKakaoMap :isDraggable="true" :content="attractionListData" />
     </div>
-    <hr width="80%" class="mx-auto" />
+    <hr width="90%" style="max-width: 1200px;" class="mx-auto" />
     <SearchItemCard :regionName="regionName" :dataList="attractionListData" />
     <InfiniteLoading @infinite="loadAttractionList"/>
   </div>
@@ -75,7 +74,8 @@ onMounted(() => {
 .map-item{
   box-sizing: border-box;
   margin : auto;
-  width: 80%;
+  width: 90%;
+  max-width: 1200px;
   border: 2.33648px solid #EEEEEE;
   border-radius: 15.5765px;
 }

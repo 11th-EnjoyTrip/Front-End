@@ -237,7 +237,8 @@ const doSearch = () => {
 .input-group {
     margin-top: 30px;
     padding: 15px;
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     background: #ffffff;
     border: 1.20907px solid #eeeeee;
     box-shadow: 0px 2.41814px 19.3451px rgba(0, 0, 0, 0.25);

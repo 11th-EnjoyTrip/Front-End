@@ -10,7 +10,7 @@ const props = defineProps({
 
 const map = ref();
 const overlay = ref(null);
-const visibleRef = props.content.map((item, index) => index === 0 ? ref(true) : ref(false));
+let visibleRef = props.content.map((item, index) => index === 0 ? ref(true) : ref(false));
 
 //마커 클릭 시 인포윈도우의 visible 값을 반전
 const onClickMapMarker = (index) => {
@@ -21,7 +21,6 @@ const onClickMapMarker = (index) => {
 let bounds;
 
 const onLoadKakaoMap = (mapRef) => {
-
   map.value = mapRef;
   bounds = new kakao.maps.LatLngBounds();
   let point;
@@ -33,6 +32,7 @@ const onLoadKakaoMap = (mapRef) => {
     // LatLngBounds 객체에 좌표를 추가합니다
     bounds.extend(point);
   });
+  
   setBounds();
 };
 
@@ -48,18 +48,19 @@ const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
   overlay.value = newCustomOverlay;
 };
 
-
 watch(() => props.content.length, () => {
   console.log(111);
   console.log(props.content)
   onLoadKakaoMap(map.value);
+  visibleRef = props.content.map((item, index) => index === 0 ? ref(true) : ref(false));
+  console.log(visibleRef.value)
 });
 
 </script>
 
 <template>
   <KakaoMap :draggable="isDraggable" width="100%" class="kakao-map-item" :lat="content[0].latitude" :lng="content[0].longitude" 
-  @onLoadKakaoMap="onLoadKakaoMap" >
+  @onLoadKakaoMap="onLoadKakaoMap">
     <div v-for="(data, index) in content" :key="index">
       <KakaoMapMarker
         :lat="data.latitude"
