@@ -225,7 +225,7 @@ const doSignup = async () => {
             </div>
         </div>
     </Transition>
-    <ModalSignUpResult :modalState="modalState" :isSucess="isSuccess" @close="modalState = false" />
+    <ModalSignUpResult :modalState="modalState" :isSuccess="isSuccess" @close="modalState = false" />
 </template>
 
 <style scoped>

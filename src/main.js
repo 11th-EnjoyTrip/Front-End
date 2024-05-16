@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { createPersistedState } from "pinia-plugin-persistedstate";
 
 import Antd from "ant-design-vue";
 import App from "./App.vue";
@@ -15,8 +16,15 @@ import "vue3-carousel/dist/carousel.css";
 useKakao("467c6aedcee5e042222b042e9896462b");
 
 const app = createApp(App);
+const pinia = createPinia();
+pinia.use(
+    createPersistedState({
+        storage: localStorage,
+        auto: true,
+    })
+);
 
-app.use(createPinia());
+app.use(pinia);
 app.use(router);
 app.use(Antd);
 

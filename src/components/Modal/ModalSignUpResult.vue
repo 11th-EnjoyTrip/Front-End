@@ -82,7 +82,7 @@ const move = () => {
 }
 
 .modal-default-button {
-    background-color: #ff2c51;
+    background-color: #1769ff;
     font-size: 14px;
     color: white;
 }

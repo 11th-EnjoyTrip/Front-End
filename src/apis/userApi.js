@@ -1,5 +1,34 @@
 import { api } from "./interceptors";
 
+export const idCheck = (id) => {
+    return api({
+        url: `/member/checkId/${id}`,
+        method: "get",
+    });
+};
+
+export const nicknameCheck = (nickname) => {
+    return api({
+        url: `/member/checkNickname/${nickname}`,
+        method: "get",
+    });
+};
+
+export const emailCheck = (email) => {
+    return api({
+        url: `/member/checkEmail/${email}`,
+        method: "get",
+    });
+};
+
+export const signup = (signupInfo) => {
+    return api({
+        url: "/member/regist",
+        method: "post",
+        data: { ...signupInfo },
+    });
+};
+
 export const getUserInfo = () => {
     api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
 
@@ -25,35 +54,6 @@ export const logout = (id) => {
     return api({
         url: `/member/logout/${id}`,
         method: "get",
-    });
-};
-
-export const idCheck = (id) => {
-    return api({
-        url: `/member/checkId/${id}`,
-        method: "get",
-    });
-};
-
-export const nicknameCheck = (nickname) => {
-    return api({
-        url: `/member/checkNickname/${nickname}`,
-        method: "get",
-    });
-};
-
-export const emailCheck = (email) => {
-    return api({
-        url: `/member/checkEmail/${email}`,
-        method: "get",
-    });
-};
-
-export const signup = (signupInfo) => {
-    return api({
-        url: `/member/regist`,
-        method: "post",
-        data: { ...signupInfo },
     });
 };
 
