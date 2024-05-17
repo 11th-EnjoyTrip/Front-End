@@ -4,7 +4,8 @@ import CommonButton from "../common/CommonButton.vue";
 import ModalSearchResult from "@/components/Modal/ModalSearchResult.vue";
 import { ref } from "vue";
 
-const sido = ref("");
+const sidoName = ref("");
+const sido = ref();
 const sidoList = ref([
     { name: "지역 전체", id: 0 },
     { name: "서울", id: 1 },
@@ -22,19 +23,21 @@ const sidoList = ref([
 const category = ref([]);
 
 const categoryList = ref([
-    { name: "관광지", id: 0 },
-    { name: "문화시설", id: 1 },
-    { name: "숙박", id: 2 },
-    { name: "행사 / 공연 / 축제", id: 3 },
-    { name: "레포츠", id: 4 },
-    { name: "쇼핑", id: 5 },
-    { name: "음식점", id: 6 },
+    { name: "관광지", id: 12 },
+    { name: "문화시설", id: 14 },
+    { name: "숙박", id: 32 },
+    { name: "행사 / 공연 / 축제", id: 15 },
+    { name: "레포츠", id: 28 },
+    { name: "쇼핑", id: 38 },
+    { name: "음식점", id: 39 },
 ]);
 
 const keyword = ref("");
 
-const updateSido = (value) => {
-    sido.value = value;
+const updateSido = (item) => {
+    console.log(item)
+    sido.value = item.id;
+    sidoName.value = item.name;
 };
 const updateCategory = (item) => {
     const index = category.value.findIndex((cat) => cat.id === item.id);
@@ -50,6 +53,7 @@ const updateCategory = (item) => {
 
 const toggleAllCategories = () => {
     if (document.getElementById("flexSwitchCheckChecked").checked) {
+
         // 체크되었을 때: 모든 카테고리를 선택
         category.value = JSON.parse(JSON.stringify(categoryList.value));
     } else {
@@ -65,18 +69,21 @@ const result = ref("");
 
 // 검색 이벤트
 const doSearch = () => {
-    // 서버 연동
-    console.log(category.value.length);
+    console.log(sido.value)
     // 유효성 체크
-    if (sido.value == "" || category.value.length == 0) {
+    if (sido.value == undefined || category.value.length == 0) {
         modalState.value = true;
         isSuccess.value = false;
         result.value = "지역을 입력하시거나 <br/> 관광지 유형을 선택해 주세요.";
     } else {
         // 성공한 경우
         isSuccess.value = true;
+
+        //카테고리 형식 변경
+        const categorys = ref(category.value.map((cat)=>cat.id).join(","))
+  
         // 부모 컴포넌트로 전달
-        emit("searchItem", sido, category, keyword);
+        emit("searchItem", sido,sidoName, categorys, keyword);
     }
 };
 </script>
@@ -89,11 +96,11 @@ const doSearch = () => {
                 <input
                     class="btn m-xxl-0 input-border"
                     style="font-size: 20px; font-weight: 700; border-radius: 0; text-align: left; border-color: #ffffff"
-                    :style="{ color: sido === '' ? '#CCCCCC' : 'black' }"
+                    :style="{ color: sidoName === '' ? '#CCCCCC' : 'black' }"
                     type="button"
                     data-bs-toggle="dropdown"
                     data-bs-auto-close="true"
-                    :value="sido == '' ? '어디로 여행가세요?' : sido"
+                    :value="sidoName == '' ? '어디로 여행가세요?' : sidoName"
                 />
                 <ul
                     class="dropdown-menu"
@@ -105,11 +112,11 @@ const doSearch = () => {
                             <a
                                 class="dropdown-item pb-2 ps-0"
                                 style="font-weight: 700; font-size: 14px"
-                                :style="{ color: sido === sidoItem.name ? '#1769FF' : 'black' }"
+                                :style="{ color: sidoName === sidoItem.name ? '#1769FF' : 'black' }"
                                 href="#"
-                                @click="updateSido(sidoItem.name)"
-                                >{{ sidoItem.name }}</a
-                            >
+                                @click="updateSido(sidoItem)"
+                                >{{ sidoItem.name }}
+                            </a>
                         </li>
                     </div>
                 </ul>
@@ -128,10 +135,8 @@ const doSearch = () => {
                             ? '관광지 유형을 선택해주세요'
                             : category.length == 7
                             ? '관광지 유형 전체'
-                            : category.map((cat) => cat.name).join(', ')
-                    "
-                />
-
+                            : category.map((cat) => cat.name).join(', ')"
+                    />
                 <ul
                     class="dropdown-menu p-4"
                     style="
@@ -202,7 +207,6 @@ const doSearch = () => {
                     v-model="keyword"
                 />
             </div>
-
             <div class="col-xl-2 col-lg-12 d-flex justify-content-end">
                 <CommonButton
                     class="search-button"
@@ -233,7 +237,8 @@ const doSearch = () => {
 .input-group {
     margin-top: 30px;
     padding: 15px;
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     background: #ffffff;
     border: 1.20907px solid #eeeeee;
     box-shadow: 0px 2.41814px 19.3451px rgba(0, 0, 0, 0.25);

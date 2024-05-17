@@ -1,3 +1,12 @@
+<script setup>
+import IconQuote from '@/components/icons/IconQuote.vue'
+
+defineProps({
+    content: Object
+})
+
+</script>
+
 <template>
     <div class="mx-auto detail-content pt-4">
         <div style="color: #646F7C; font-weight: 700;font-size: 20px;line-height: 29px; ">
@@ -41,14 +50,7 @@
         </div>
     </div>
 </template>
-<script setup>
-import IconQuote from '@/components/icons/IconQuote.vue'
 
-const props = defineProps({
-    itemContent: Object
-})
-const content = props.itemContent
-</script>
 <style scoped>
 .content-box{
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15) !important;

@@ -3,90 +3,70 @@ import SearchBox from "@/components/Attraction/SearchBox.vue";
 import NavComp from "@/components/Nav/NavComp.vue";
 import CommonKakaoMap from "@/components/common/CommonKakaoMap.vue";
 import SearchItemCard from "@/components/Attraction/SearchItemCard.vue";
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
+import { attractionList } from "@/apis/attractionApi";
+import InfiniteLoading from "v3-infinite-loading";
+import "v3-infinite-loading/lib/style.css";
 
-const region = ref('')
-const searchItem = (...args) => {
-  console.log(args[0]);
-  region.value = args[0];
+const region = ref('0')
+const regionName = ref('')
+const categorys = ref('12,14,32,15,28,38,39')
+const keyword = ref('')
 
-  // args(sido,category,keyword)로 서버에서 데이터 불러옴
-  // TODO: 서버 연동
+const searchItem = async(...args) => {
+  region.value = args[0].value;
+  regionName.value = args[1].value;
+  categorys.value = args[2].value;
+  keyword.value = args[3].value;
+
+  // args(sido,categorys,keyword)로 서버에서 데이터 불러옴
+  page = 0;
+  await loadAttractionList();
+
 };
 
 // 서버에서 불러온 데이터
-const attractionList = ref([
-    {
-        contentId : 125266,
-        contentTypeId : 12,
-        contentTypeName : '관광지',
-        title : '국립 청태산자연휴양림',
-        firstImage : "https://tong.visitkorea.or.kr/cms/resource/21/2657021_image2_1.jpg",
-        sidoCode : 32,
-        sidoName: '강원도',
-        latitude:37.52251412,
-        longitude:128.2919115
-    },
-    {
-        contentId : 132366,
-        contentTypeId : 38,
-        contentTypeName : '쇼핑',
-        title : '포항 죽도시장',
-        firstImage : "https://tong.visitkorea.or.kr/cms/resource/88/2678388_image2_1.jpg",
-        sidoCode : 32,
-        sidoName: '강원도',
-        latitude: 36.03646287,
-        longitude: 129.3681706
-    },
-    // {
-    //     contentId : 132367,
-    //     contentTypeId : 38,
-    //     contentTypeName : '쇼핑',
-    //     title : '포항 죽도시장',
-    //     firstImage : '',
-    //     sidoCode : 32,
-    //     sidoName : '강원도'
-    // },
-    // {
-    //     contentId : 125266,
-    //     contentTypeId : 12,
-    //     contentTypeName : '관광지',
-    //     title : '국립 청태산자연휴양림',
-    //     firstImage : "https://tong.visitkorea.or.kr/cms/resource/21/2657021_image2_1.jpg",
-    //     sidoCode : 32,
-    //     sidoName : '강원도'
-    // },
-    // {
-    //     contentId : 132366,
-    //     contentTypeId : 38,
-    //     contentTypeName : '쇼핑',
-    //     title : '포항 죽도시장',
-    //     firstImage : "https://tong.visitkorea.or.kr/cms/resource/88/2678388_image2_1.jpg",
-    //     sidoCode : 32,
-    //     sidoName : '강원도'
-    // },
-    // {
-    //     contentId : 132367,
-    //     contentTypeId : 38,
-    //     contentTypeName : '쇼핑',
-    //     title : '포항 죽도시장',
-    //     firstImage : '',
-    //     sidoCode : 32,
-    //     sidoName : '강원도'
-    // },
-])
+const attractionListData = ref(null)
+let page = 0;
+
+const loadAttractionList = async $state => {
+
+  try {
+    const response =  await attractionList(region.value, categorys.value, keyword.value,page);
+    const jsonData = response.data;
+
+    if (jsonData.length < 20) {
+      attractionListData.value = jsonData;
+      $state.complete();
+    } else {
+      if (page === 0) {
+        attractionListData.value = jsonData;
+      } else {
+        attractionListData.value = [...attractionListData.value.map(obj => ({ ...obj })),...jsonData];
+      }
+    }
+    page++;
+  } catch (error) {
+    console.error("Error fetching attraction list:", error);
+  }
+};
+
+onMounted(() => {
+  loadAttractionList();
+})
 
 </script>
 
 <template>
-  <div>
+  <div v-if="attractionListData">
     <NavComp :withLower="true" />
     <SearchBox @search-item="searchItem" />
     <div class="mt-4 mb-5 map-item">
-        <CommonKakaoMap :isDraggable="true" :dataList="attractionList" />
+        <CommonKakaoMap :content="attractionListData" />
     </div>
-    <hr width="80%" class="mx-auto" />
-    <SearchItemCard :region="region" :dataList="attractionList"/>
+    <hr width="90%" style="max-width: 1200px;" class="mx-auto" />
+    <SearchItemCard :regionName="regionName" :dataList="attractionListData" />
+    <InfiniteLoading @infinite="loadAttractionList"/>
   </div>
 </template>
 
@@ -94,7 +74,8 @@ const attractionList = ref([
 .map-item{
   box-sizing: border-box;
   margin : auto;
-  width: 80%;
+  width: 90%;
+  max-width: 1200px;
   border: 2.33648px solid #EEEEEE;
   border-radius: 15.5765px;
 }
