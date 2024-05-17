@@ -67,6 +67,11 @@ watch(() => props.content.length, () => {
         :lat="data.latitude"
         :lng="data.longitude"
         :clickable="true"
+        :image="{
+        imageSrc: `/src/assets/marker/${data.contentTypeId}.png`,
+        imageWidth: 42,
+        imageHeight: 42,
+      }"
         @onClickKakaoMapMarker="onClickMapMarker(index)"
       />
     <KakaoMapCustomOverlay
