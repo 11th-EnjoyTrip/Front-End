@@ -11,11 +11,54 @@ defineProps({
 </script>
 
 <template>
-    <ContentsUser v-if="menu == 0" />
-    <ContentsPassword v-if="menu == 1" />
-    <ContentsPlan v-if="menu == 2" />
-    <ContentsHotPlace v-if="menu == 3" />
-    <ContentsQuit v-if="menu == 4" />
+    <div class="col-9 mx-auto scrolls">
+        <div class="position-relative w-100">
+            <Transition name="come">
+                <ContentsUser v-if="menu == 0" />
+            </Transition>
+            <Transition name="come">
+                <ContentsPassword v-if="menu == 1" />
+            </Transition>
+            <Transition name="come">
+                <ContentsPlan v-if="menu == 2" />
+            </Transition>
+            <Transition name="come">
+                <ContentsHotPlace v-if="menu == 3" />
+            </Transition>
+            <Transition name="come">
+                <ContentsQuit v-if="menu == 4" />
+            </Transition>
+        </div>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.come-enter-active {
+    animation: come-in 0.3s ease-in-out forwards;
+}
+
+.come-leave-active {
+    animation: come-out 0.3s ease-in-out forwards;
+}
+
+@keyframes come-in {
+    0% {
+        transform: translateX(5%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+@keyframes come-out {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(5%);
+        opacity: 0;
+    }
+}
+</style>

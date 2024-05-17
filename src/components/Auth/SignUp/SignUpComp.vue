@@ -3,10 +3,10 @@ import NavComp from "@/components/Nav/NavComp.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
-import SignUpPreferContents from "@/components/SignUp/SignUpPreferContents.vue";
+import SignUpPreferContents from "@/components/Auth/SignUp/SignUpPreferContents.vue";
+import ModalSignUpResult from "@/components/Modal/ModalSignUpResult.vue";
 import { ref, computed, watch } from "vue";
-import { signup, idCheck, nicknameCheck, emailCheck } from "@/apis/authApi.js";
-import { useRouter } from "vue-router";
+import { idCheck, nicknameCheck, emailCheck, signup } from "@/apis/userApi.js";
 
 const inputId = ref("");
 const inputPwd = ref("");
@@ -14,7 +14,7 @@ const inputCheck = ref("");
 const inputName = ref("");
 const inputNickname = ref("");
 const inputEmail = ref("");
-const inputPrefers = ref([]);
+const inputPrefers = ref(["대구"]);
 const messages = ref([
     {
         state: false,
@@ -41,8 +41,9 @@ const messages = ref([
         message: "",
     },
 ]);
+const modalState = ref(false);
+const isSuccess = ref(false);
 const canSignup = computed(() => {
-    console.log(messages.value.filter((item) => item.state).length);
     return messages.value.filter((item) => item.state).length;
 });
 
@@ -143,21 +144,20 @@ const doSignup = async () => {
         const signupInfo = {
             id: inputId.value,
             password: inputPwd.value,
-            name: inputName.value,
+            username: inputName.value,
             nickname: inputNickname.value,
             email: inputEmail.value,
-            prefers: [...inputPrefers.value],
+            location: "대구",
         };
-        console.log(signupInfo);
 
         await signup(signupInfo)
-            .then((response) => {
-                console.log(response.data);
-                const router = useRouter();
-                router.replace("/login");
+            .then(() => {
+                modalState.value = true;
+                isSuccess.value = true;
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                modalState.value = true;
+                isSuccess.value = false;
             });
     }
 };
@@ -165,64 +165,67 @@ const doSignup = async () => {
 
 <template>
     <NavComp :withLower="false" />
-    <div class="row">
-        <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto signup">
-            <div class="mx-auto fw-bold title">회원가입</div>
-            <div class="d-flex flex-column row-gap-4 mt-5">
-                <div>
-                    <CommonInput2 :height="40" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
-                    <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
+    <Transition name="bounce" appear>
+        <div class="row">
+            <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto signup">
+                <div class="mx-auto fw-bold title">회원가입</div>
+                <div class="d-flex flex-column row-gap-4 mt-5">
+                    <div>
+                        <CommonInput2 :height="40" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
+                        <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
+                    </div>
+                    <div>
+                        <CommonInput2
+                            :height="40"
+                            :placeholder="'8자 이상 소문자, 숫자'"
+                            :title="'비밀번호'"
+                            :type="'password'"
+                            v-model="inputPwd"
+                        />
+                        <CommonMessage :isSuccess="messages[1].state" :message="messages[1].message" />
+                    </div>
+                    <div>
+                        <CommonInput2
+                            :height="40"
+                            :placeholder="'비밀번호 재입력'"
+                            :title="'비밀번호 확인'"
+                            :type="'password'"
+                            v-model="inputCheck"
+                        />
+                        <CommonMessage :isSuccess="messages[2].state" :message="messages[2].message" />
+                    </div>
+                    <div>
+                        <CommonInput2 :height="40" :placeholder="'이름'" :title="'이름'" v-model="inputName" />
+                        <CommonMessage :isSuccess="messages[3].state" :message="messages[3].message" />
+                    </div>
+                    <div>
+                        <CommonInput2 :height="40" :placeholder="'닉네임'" :title="'닉네임'" v-model="inputNickname" />
+                        <CommonMessage :isSuccess="messages[4].state" :message="messages[4].message" />
+                    </div>
+                    <div>
+                        <CommonInput2
+                            :height="40"
+                            :placeholder="'email@domain.com'"
+                            :title="'이메일'"
+                            v-model="inputEmail"
+                        />
+                        <CommonMessage :isSuccess="messages[5].state" :message="messages[5].message" />
+                    </div>
+                    <div><SignUpPreferContents v-model="inputPrefers" /></div>
                 </div>
-                <div>
-                    <CommonInput2
+                <div class="mt-4 px-5">
+                    <CommonButton
                         :height="40"
-                        :placeholder="'8자 이상 소문자, 숫자'"
-                        :title="'비밀번호'"
-                        :type="'password'"
-                        v-model="inputPwd"
+                        :value="'회원가입'"
+                        :bgColors="['#1769ff', '#e1e1e1']"
+                        :state="canSignup == 6"
+                        :click="doSignup"
                     />
-                    <CommonMessage :isSuccess="messages[1].state" :message="messages[1].message" />
                 </div>
-                <div>
-                    <CommonInput2
-                        :height="40"
-                        :placeholder="'비밀번호 재입력'"
-                        :title="'비밀번호 확인'"
-                        :type="'password'"
-                        v-model="inputCheck"
-                    />
-                    <CommonMessage :isSuccess="messages[2].state" :message="messages[2].message" />
-                </div>
-                <div>
-                    <CommonInput2 :height="40" :placeholder="'이름'" :title="'이름'" v-model="inputName" />
-                    <CommonMessage :isSuccess="messages[3].state" :message="messages[3].message" />
-                </div>
-                <div>
-                    <CommonInput2 :height="40" :placeholder="'닉네임'" :title="'닉네임'" v-model="inputNickname" />
-                    <CommonMessage :isSuccess="messages[4].state" :message="messages[4].message" />
-                </div>
-                <div>
-                    <CommonInput2
-                        :height="40"
-                        :placeholder="'email@domain.com'"
-                        :title="'이메일'"
-                        v-model="inputEmail"
-                    />
-                    <CommonMessage :isSuccess="messages[5].state" :message="messages[5].message" />
-                </div>
-                <div><SignUpPreferContents v-model="inputPrefers" /></div>
-            </div>
-            <div class="mt-4 px-5">
-                <CommonButton
-                    :height="40"
-                    :value="'회원가입'"
-                    :bgColors="['#1769ff', '#e1e1e1']"
-                    :state="canSignup == 6"
-                    :click="doSignup"
-                />
             </div>
         </div>
-    </div>
+    </Transition>
+    <ModalSignUpResult :modalState="modalState" :isSuccess="isSuccess" @close="modalState = false" />
 </template>
 
 <style scoped>
@@ -288,6 +291,23 @@ const doSignup = async () => {
     .title-icon {
         display: flex !important;
         align-items: center;
+    }
+}
+
+.bounce-enter-active {
+    animation: bounce 0.5s;
+}
+
+.bounce-leave-active {
+    animation: bounce 0.5s reverse;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(0.975);
+    }
+    100% {
+        transform: scale(1);
     }
 }
 </style>

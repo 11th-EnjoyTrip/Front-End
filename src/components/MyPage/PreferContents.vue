@@ -2,11 +2,19 @@
 import IconArrowDown from "@/components/icons/IconArrowDown.vue";
 import IconPlace from "@/components/icons/IconPlace.vue";
 import IconCheck from "@/components/icons/IconCheck.vue";
-import { ref } from "vue";
-import { useUserInfoStore } from "@/stores/userInfo.js";
-import { preferChange } from "@/apis/userApi";
+import { ref, watch } from "vue";
+
+const props = defineProps({
+    modelValue: String,
+});
+const emit = defineEmits(["update:modelValue"]);
+const curSidos = ref(props.modelValue);
+watch(curSidos, () => {
+    emit("update:modelValue", curSidos.value.svalue);
+});
 
 const sidoList = ref([
+    { name: "지역 무관", id: 0 },
     { name: "서울", id: 1 },
     { name: "인천", id: 2 },
     { name: "대전", id: 3 },
@@ -18,23 +26,8 @@ const sidoList = ref([
     { name: "경기도", id: 31 },
     { name: "강원도", id: 32 },
 ]);
-const store = useUserInfoStore();
-const curSidos = ref(store.userInfo.prefer_place);
-const changeSidos = async (sido, isAdd) => {
-    if (isAdd) {
-        curSidos.value.push(sido);
-        curSidos.value.sort();
-    } else {
-        curSidos.value.splice(curSidos.value.indexOf(sido), 1);
-    }
-
-    await preferChange(curSidos.value)
-        .then((response) => {
-            console.log(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+const changeSidos = async (sido) => {
+    curSidos.value = sido;
 };
 const displayState = ref("none");
 const doEdit = () => {
@@ -54,12 +47,7 @@ const doEdit = () => {
         </div>
         <div class="col-8 d-flex align-items-center position-relative">
             <div class="contents">
-                <div v-if="curSidos.length > 0">
-                    <span v-for="(val, idx) in curSidos" :key="val"
-                        >{{ val }}{{ idx + 1 == curSidos.length ? "" : " / " }}</span
-                    >
-                </div>
-                <div v-else>지역 무관</div>
+                <span v-for="val in curSidos" :key="val">{{ val }}</span>
             </div>
             <div
                 class="w-50 flex-column position-absolute mt-3 py-2 rounded-3 bg-white dropdown-items"
@@ -69,10 +57,10 @@ const doEdit = () => {
                     v-for="sido in sidoList"
                     :key="sido.name"
                     class="w-100 d-flex justify-content-between px-3 py-2 item"
-                    @click="changeSidos(sido.name, !curSidos.includes(sido.name))"
+                    @click="changeSidos(sido.name)"
                 >
                     <div>{{ sido.name }}</div>
-                    <div v-if="curSidos.includes(sido.name)">
+                    <div v-if="curSidos == sido.name">
                         <IconCheck :width="20" :height="20" :color="'#1769ff'" />
                     </div>
                 </div>

@@ -2,11 +2,14 @@
 import { ref } from "vue";
 import IconPerson from "@/components/icons/IconPerson.vue";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { storeToRefs } from "pinia";
 
 const displayState = ref("none");
 const changeState = () =>
     displayState.value == "none" ? (displayState.value = "flex") : (displayState.value = "none");
 const store = useUserInfoStore();
+const { logoutUser } = store;
+const { loginState } = storeToRefs(store);
 </script>
 
 <template>
@@ -19,11 +22,11 @@ const store = useUserInfoStore();
             :style="{ display: displayState }"
         >
             <!-- 사용자 로그인 전 -->
-            <RouterLink to="/login" class="router" v-if="!store.getLoginState">로그인</RouterLink>
-            <RouterLink to="/signup" class="router" v-if="!store.getLoginState">회원가입</RouterLink>
+            <RouterLink to="/auth/login" class="router" v-if="!loginState">로그인</RouterLink>
+            <RouterLink to="/auth/signup" class="router" v-if="!loginState">회원가입</RouterLink>
             <!-- 사용자 로그인 후 -->
-            <RouterLink to="/login" class="router" v-if="store.getLoginState">로그아웃</RouterLink>
-            <RouterLink to="/signup" class="router" v-if="store.getLoginState">마이페이지</RouterLink>
+            <button class="router" @click="logoutUser(true)" v-if="loginState">로그아웃</button>
+            <RouterLink to="/mypage" class="router" v-if="loginState">마이페이지</RouterLink>
         </div>
     </div>
 </template>

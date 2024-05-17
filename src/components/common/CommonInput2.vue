@@ -8,7 +8,11 @@ import IconEdit from "@/components/icons/IconEdit.vue";
 import { ref, watch } from "vue";
 import { nicknameChange } from "@/apis/userApi.js";
 import { useUserInfoStore } from "@/stores/userInfo.js";
+import { storeToRefs } from "pinia";
+import { message } from "ant-design-vue";
 
+const store = useUserInfoStore();
+const { isEditing, trueLogout } = storeToRefs(store);
 const props = defineProps({
     height: Number,
     placeholder: String,
@@ -16,10 +20,7 @@ const props = defineProps({
     type: String,
     page: String,
     canChange: Boolean,
-    modelValue: {
-        type: String,
-        required: true,
-    },
+    modelValue: String,
 });
 const emit = defineEmits(["update:modelValue"]);
 const newValue = ref(props.modelValue);
@@ -27,21 +28,24 @@ watch(newValue, () => {
     emit("update:modelValue", newValue.value);
 });
 
-const isEditing = ref(false);
 const doEdit = async () => {
     if (!isEditing.value) {
         isEditing.value = true;
     } else {
-        const store = useUserInfoStore();
-        await nicknameChange(store.getUserInfo.id, newValue.value)
-            .then((response) => {
-                console.log(response.data);
-                isEditing.value = false;
-            })
-            .catch((error) => {
-                console.log(error);
-                isEditing.value = false;
-            });
+        if (newValue.value.length == 0) {
+            message.warn("닉네임을 입력해주세요");
+        } else {
+            trueLogout.value = false;
+            await nicknameChange(newValue.value)
+                .then(() => {
+                    message.success("닉네임 변경에 성공했습니다");
+                    isEditing.value = false;
+                })
+                .catch((error) => {
+                    if (error.response.status == 409) message.error("중복된 닉네임입니다");
+                    else if (error.response.status != 401) message.error("닉네임 변경에 실패했습니다");
+                });
+        }
     }
 };
 </script>

@@ -9,10 +9,9 @@ defineProps({
 </script>
 
 <template>
-    <!-- 버튼 -->
     <input
         type="button"
-        class="border-0 rounded-5 fw-bold mt-4 w-100"
+        class="border-0 rounded-5 fw-bold mt-4 w-100 common-btn"
         :style="{
             height: height + 'px',
             'background-color': state ? bgColors[0] : bgColors[1],
@@ -24,4 +23,8 @@ defineProps({
     />
 </template>
 
-<style scoped></style>
+<style scoped>
+.common-btn {
+    transition: background-color 0.5s ease;
+}
+</style>

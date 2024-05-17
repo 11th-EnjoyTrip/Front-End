@@ -3,10 +3,13 @@ import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import { ref, computed, watch } from "vue";
-import { useUserInfoStore } from "@/stores/userInfo.js";
 import { passwordCheck, userQuit } from "@/apis/userApi.js";
 import { useRouter } from "vue-router";
+import { useUserInfoStore } from "@/stores/userInfo";
 
+const store = useUserInfoStore();
+const { resetInfo } = store;
+const router = useRouter();
 const inputPwd = ref("");
 const messages = ref({
     state: false,
@@ -15,20 +18,17 @@ const messages = ref({
 const canQuit = computed(() => {
     return messages.value.state;
 });
-const store = useUserInfoStore();
 watch(inputPwd, async () => {
     if (inputPwd.value.length == 0) {
         messages.value.state = false;
         messages.value.message = "비밀번호를 입력해주세요";
     } else {
-        await passwordCheck(store.getUserInfo.id, inputPwd.value)
-            .then((response) => {
-                console.log(response.data);
+        await passwordCheck(inputPwd.value)
+            .then(() => {
                 messages.value.state = true;
                 messages.value.message = "탈퇴가 가능합니다";
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 messages.value.state = false;
                 messages.value.message = "비밀번호가 일치하지 않습니다";
             });
@@ -36,13 +36,12 @@ watch(inputPwd, async () => {
 });
 const doQuit = async () => {
     if (canQuit.value) {
-        await userQuit(store.getUserInfo.id)
-            .then((response) => {
-                console.log(response.data);
-                store.changeLoginState(false);
-                store.changeUserInfo("");
-
-                const router = useRouter();
+        await userQuit()
+            .then(() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                localStorage.removeItem("userInfo");
+                resetInfo();
                 router.replace("/");
             })
             .catch((error) => {
@@ -53,7 +52,7 @@ const doQuit = async () => {
 </script>
 
 <template>
-    <div class="col-7 mx-auto">
+    <div class="position-absolute w-100">
         <div class="fw-bold fs-5 text-center">회원 탈퇴</div>
         <div class="mt-5 d-flex flex-column row-gap-3">
             <div>
@@ -67,9 +66,9 @@ const doQuit = async () => {
                 <CommonMessage :isSuccess="messages.state" :message="messages.message" />
             </div>
         </div>
-        <div class="mt-5 w-100 d-flex align-items-center">
+        <div class="mt-5 w-75 mx-auto d-flex align-items-center">
             <CommonButton
-                :height="50"
+                :height="40"
                 :value="'회원 탈퇴'"
                 :bgColors="['#ff2c51', '#e1e1e1']"
                 :state="canQuit"
