@@ -11,7 +11,9 @@ import PasswordFindComp from "@/components/Auth/PasswordFind/PasswordFindComp.vu
 import MyPageView from "@/views/MyPageView.vue";
 
 import AttractionView from "@/views/AttractionView.vue";
-import AttractionDetailView from "@/views/AttractionDetailView.vue";
+
+import TripPlanView from "@/views/TripPlanView.vue";
+
 import QnAView from "@/views/QnAView.vue";
 import QnAList from "@/components/QnA/QnAList.vue";
 import QnADetail from "@/components/QnA/QnADetail.vue";
@@ -25,14 +27,14 @@ const isValidUser = async (to, from, next) => {
     const { loginState, userInfo, trueLogout } = storeToRefs(store);
 
     if (accessToken == undefined) {
-        message.error("로그인 후에 이용 가능한 서비스입니다", 5);
+        message.error("로그인 후에 이용 가능한 서비스입니다", 2);
         next("/auth/login");
     } else {
         trueLogout.value = false;
         await queryUserInfo();
 
         if (!loginState || userInfo.value == null) {
-            message.error("재로그인이 필요합니다", 5);
+            message.error("재로그인이 필요합니다", 2);
             next("/auth/login");
         } else {
             next();
@@ -84,7 +86,7 @@ const router = createRouter({
         {
             path: "/attraction/:id",
             name: "attractionDetail",
-            component : ()=> import('@/views/AttractionDetailView.vue'),
+            component: () => import("@/views/AttractionDetailView.vue"),
         },
         {
             path: "/qna",
@@ -112,6 +114,24 @@ const router = createRouter({
                     name: "add",
                     component: QnAAdd,
                     beforeEnter: isValidUser,
+                },
+            ],
+        },
+        {
+            path: "/plan",
+            name: "plan",
+            component: TripPlanView,
+            // beforeEnter: isValidUser,
+            children: [
+                {
+                    path: "list",
+                    name: "plan-list",
+                    component: () => import("@/components/TripPlan/TripPlanList.vue"),
+                },
+                {
+                    path: ":id",
+                    name: "plan-detail",
+                    component: () => import("@/components/TripPlan/TripPlanDetail.vue"),
                 },
             ],
         },

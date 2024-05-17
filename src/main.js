@@ -16,7 +16,7 @@ import "vue3-carousel/dist/carousel.css";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 
-import MasonryWall from '@yeger/vue-masonry-wall';
+import MasonryWall from "@yeger/vue-masonry-wall";
 
 useKakao("467c6aedcee5e042222b042e9896462b");
 
@@ -25,7 +25,7 @@ const pinia = createPinia();
 pinia.use(
     createPersistedState({
         storage: localStorage,
-        auto: true,
+        // auto: true,
     })
 );
 
