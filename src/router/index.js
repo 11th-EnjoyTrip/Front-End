@@ -126,12 +126,12 @@ const router = createRouter({
                 {
                     path: "list",
                     name: "plan-list",
-                    component: () => import("@/components/TripPlan/TripPlanList.vue"),
+                    component: () => import("@/components/TripPlan/List/TripPlanList.vue"),
                 },
                 {
                     path: ":id",
                     name: "plan-detail",
-                    component: () => import("@/components/TripPlan/TripPlanDetail.vue"),
+                    component: () => import("@/components/TripPlan/Detail/TripPlanDetail.vue"),
                 },
             ],
         },

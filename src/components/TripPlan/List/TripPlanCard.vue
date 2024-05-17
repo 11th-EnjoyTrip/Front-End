@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import TripPlanCardCarousel from "@/components/TripPlan/TripPlanCardCarousel.vue";
+import TripPlanCardCarousel from "@/components/TripPlan/List/TripPlanCardCarousel.vue";
 import IconLike from "@/components/icons/IconLike.vue";
 
 defineProps({

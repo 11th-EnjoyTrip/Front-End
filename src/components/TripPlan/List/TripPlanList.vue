@@ -4,7 +4,7 @@ import CommonInput from "@/components/common/CommonInput.vue";
 // import { useRouter } from "vue-router";
 import { useTripPlanStore } from "@/stores/tripPlan";
 import { storeToRefs } from "pinia";
-import TripPlanCard from "@/components/TripPlan/TripPlanCard.vue";
+import TripPlanCard from "@/components/TripPlan/List/TripPlanCard.vue";
 
 const store = useTripPlanStore();
 // const { getTripPlanList, getTripPlanSearch } = store;
