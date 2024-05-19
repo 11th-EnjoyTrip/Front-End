@@ -5,6 +5,7 @@
         <!-- 컨텐츠 네비게이션 리스트 -->
         <RouterLink to="/attraction" class="fw-medium contents-search router">관광지검색</RouterLink>
         <RouterLink to="/qna" class="fw-medium contents-search router">QnA 게시판</RouterLink>
+        <RouterLink to="/plan/list" class="fw-medium contents-search router">여행계획 게시판</RouterLink>
     </div>
 </template>
 
