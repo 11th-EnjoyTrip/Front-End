@@ -28,7 +28,7 @@ const focusOut = () => (colors.value = "#e1e1e1");
 <template>
     <!-- 입력 -->
     <div
-        class="d-flex align-items-center rounded-5 overflow-hidden px-4 column-gap-2 w-100"
+        class="px-4 overflow-hidden d-flex align-items-center rounded-5 column-gap-2 w-100"
         :style="{ height: height + 'px', border: '1px solid' + colors }"
     >
         <!-- 아이콘(앞) -->
@@ -37,7 +37,8 @@ const focusOut = () => (colors.value = "#e1e1e1");
         <IconSearch v-if="icon.isStart && icon.name == 'search'" :width="28" :height="28" :color="colors" />
         <!-- 입력 박스 -->
         <input
-            class="w-100 h-100 border-0"
+            class="border-0 w-100 h-100"
+            :type="placeholder == '비밀번호' ? 'password' : 'text'"
             :placeholder="placeholder"
             @focusin="focusIn"
             @focusout="focusOut"

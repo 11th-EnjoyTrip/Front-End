@@ -1,6 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { getUserInfo } from "@/apis/userApi";
+import { getUserInfo, logout } from "@/apis/userApi";
+import { message } from "ant-design-vue";
+import { useRouter } from "vue-router";
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     /* states */
@@ -8,6 +10,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     const userInfo = ref(null);
     const isEditing = ref(false);
     const trueLogout = ref(false);
+    const router = useRouter();
 
     /* getters */
 
@@ -20,6 +23,21 @@ export const useUserInfoStore = defineStore("userInfo", () => {
             })
             .catch(async () => {
                 console.log("access token 만료");
+            });
+    };
+    const logoutUser = async () => {
+        await logout()
+            .then(() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                loginState.value = false;
+                userInfo.value = null;
+
+                message.success("로그아웃 되었습니다", 3);
+                router.replace("/");
+            })
+            .catch((err) => {
+                console.log(err);
             });
     };
     const resetInfo = () => {
@@ -35,6 +53,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         isEditing,
         trueLogout,
         queryUserInfo,
+        logoutUser,
         resetInfo,
     };
 });

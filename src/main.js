@@ -29,7 +29,7 @@ const pinia = createPinia();
 pinia.use(
     createPersistedState({
         storage: localStorage,
-        // auto: true,
+        auto: true,
     })
 );
 
