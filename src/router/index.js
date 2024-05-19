@@ -121,17 +121,18 @@ const router = createRouter({
             path: "/plan",
             name: "plan",
             component: TripPlanView,
-            // beforeEnter: isValidUser,
             children: [
                 {
                     path: "list",
                     name: "plan-list",
                     component: () => import("@/components/TripPlan/List/TripPlanList.vue"),
+                    beforeEnter: isValidUser,
                 },
                 {
                     path: ":id",
                     name: "plan-detail",
                     component: () => import("@/components/TripPlan/Detail/TripPlanDetail.vue"),
+                    beforeEnter: isValidUser,
                 },
             ],
         },

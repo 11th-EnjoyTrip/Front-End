@@ -18,14 +18,14 @@ const { loginState } = storeToRefs(store);
             <IconPerson :width="28" :height="28" :color="'#1769ff'" />
         </div>
         <div
-            class="flex-column position-absolute mt-3 rounded-3 bg-white dropdown-items"
+            class="mt-3 bg-white flex-column position-absolute rounded-3 dropdown-items"
             :style="{ display: displayState }"
         >
             <!-- 사용자 로그인 전 -->
             <RouterLink to="/auth/login" class="router" v-if="!loginState">로그인</RouterLink>
             <RouterLink to="/auth/signup" class="router" v-if="!loginState">회원가입</RouterLink>
             <!-- 사용자 로그인 후 -->
-            <button class="router" @click="logoutUser(true)" v-if="loginState">로그아웃</button>
+            <button class="router" @click="logoutUser" v-if="loginState">로그아웃</button>
             <RouterLink to="/mypage" class="router" v-if="loginState">마이페이지</RouterLink>
         </div>
     </div>

@@ -142,7 +142,7 @@ watch(inputEmail, async () => {
 const doSignup = async () => {
     if (canSignup.value == 6) {
         const signupInfo = {
-            id: inputId.value,
+            userid: inputId.value,
             password: inputPwd.value,
             username: inputName.value,
             nickname: inputNickname.value,
@@ -167,9 +167,9 @@ const doSignup = async () => {
     <NavComp :withLower="false" />
     <Transition name="bounce" appear>
         <div class="row">
-            <div class="d-flex flex-column h-auto col-8 col-sm-9 mx-auto signup">
+            <div class="h-auto mx-auto d-flex flex-column col-8 col-sm-9 signup">
                 <div class="mx-auto fw-bold title">회원가입</div>
-                <div class="d-flex flex-column row-gap-4 mt-5">
+                <div class="row-gap-4 mt-5 d-flex flex-column">
                     <div>
                         <CommonInput2 :height="40" :placeholder="'소문자, 숫자'" :title="'아이디'" v-model="inputId" />
                         <CommonMessage :isSuccess="messages[0].state" :message="messages[0].message" />
@@ -213,7 +213,7 @@ const doSignup = async () => {
                     </div>
                     <div><SignUpPreferContents v-model="inputPrefers" /></div>
                 </div>
-                <div class="mt-4 px-5">
+                <div class="px-5 mt-4">
                     <CommonButton
                         :height="40"
                         :value="'회원가입'"

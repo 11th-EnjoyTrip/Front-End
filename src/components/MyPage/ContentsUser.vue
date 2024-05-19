@@ -51,7 +51,7 @@ watch(newNickname, async () => {
                     :placeholder="'아이디'"
                     :title="'아이디'"
                     :page="'edit'"
-                    v-model="userInfo.id"
+                    v-model="userInfo.userid"
                 />
             </div>
             <div>
