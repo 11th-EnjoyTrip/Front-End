@@ -1,15 +1,15 @@
 <script setup>
-import DetailInfo from "@/components/TripPlan/Detail/DetailInfo.vue";
+import TripPlanDetailInfo from "@/components/TripPlan/Detail/TripPlanDetailInfo.vue";
+import TripPlanDays from "@/components/TripPlan/Days/TripPlanDays.vue";
 </script>
 
 <template>
     <div class="col-9 mx-auto detail-container">
         <div class="text-center fw-bold title">여행계획 정보</div>
         <div class="w-100 d-flex justify-content-evenly mt-5">
-            <DetailInfo />
+            <TripPlanDetailInfo />
         </div>
-
-        <div class="plan-days"></div>
+        <TripPlanDays />
     </div>
 </template>
 
