@@ -129,6 +129,12 @@ const router = createRouter({
                     beforeEnter: isValidUser,
                 },
                 {
+                    path: "add",
+                    name: "plan-add",
+                    component: () => import("@/components/TripPlan/Write/TripPlanAdd.vue"),
+                    beforeEnter: isValidUser,
+                },
+                {
                     path: ":id",
                     name: "plan-detail",
                     component: () => import("@/components/TripPlan/Detail/TripPlanDetail.vue"),

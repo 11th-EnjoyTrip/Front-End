@@ -4,9 +4,9 @@ import TripPlanDays from "@/components/TripPlan/Days/TripPlanDays.vue";
 </script>
 
 <template>
-    <div class="col-9 mx-auto detail-container">
+    <div class="mx-auto col-9 detail-container">
         <div class="text-center fw-bold title">여행계획 정보</div>
-        <div class="w-100 d-flex justify-content-evenly mt-5">
+        <div class="mt-5 w-100 d-flex justify-content-evenly">
             <TripPlanDetailInfo />
         </div>
         <TripPlanDays />
