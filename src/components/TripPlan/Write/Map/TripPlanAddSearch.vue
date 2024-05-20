@@ -3,6 +3,7 @@ import IconDeparture from "@/components/icons/IconDeparture.vue";
 import TripPlanAddSido from "@/components/TripPlan/Write/Map/TripPlanAddSido.vue";
 import TripPlanAddType from "@/components/TripPlan/Write/Map/TripPlanAddType.vue";
 import TripPlanAddKeyword from "@/components/TripPlan/Write/Map/TripPlanAddKeyword.vue";
+import TripPlanAddSearchResult from "@/components/TripPlan/Write/Map/TripPlanAddSearchResult.vue";
 </script>
 
 <template>
@@ -29,6 +30,9 @@ import TripPlanAddKeyword from "@/components/TripPlan/Write/Map/TripPlanAddKeywo
                 <TripPlanAddKeyword />
             </div>
         </div>
+        <div class="px-3 mt-4">
+            <TripPlanAddSearchResult />
+        </div>
     </div>
 </template>
 
@@ -43,11 +47,16 @@ import TripPlanAddKeyword from "@/components/TripPlan/Write/Map/TripPlanAddKeywo
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     z-index: 10;
+    overflow-y: scroll;
+}
+
+.add-search::-webkit-scrollbar {
+    width: 0;
 }
 
 .add-search-title {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 16px;
     color: #374553;
 }
 
