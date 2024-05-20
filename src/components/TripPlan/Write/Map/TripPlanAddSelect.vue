@@ -35,7 +35,6 @@ const openDays = ref(false);
         </div>
         <div class="d-flex justify-content-center column-gap-2 w-100 mt-2">
             <button class="add-select-btn" @click="openDays = true">상세 계획 펼치기</button>
-            <button class="add-select-btn">여행지 선택 완료</button>
         </div>
     </div>
     <div v-if="openDays" class="add-container add-days">
