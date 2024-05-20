@@ -21,9 +21,9 @@ onMounted(async () => {
 });
 
 const getContent = computed(() => {
-    console.log(1211);
-    return content.value;
-});
+  return content.value;
+})
+
 </script>
 
 <template>

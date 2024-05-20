@@ -24,14 +24,8 @@ const searchAttr = async (attrId) => {
             <div class="mt-2">로 여기 어때요?</div>
         </div>
         <div class="mx-auto searchitem-card">
-            <masonry-wall
-                class="col position-relative"
-                :items="dataList"
-                :ssr-columns="1"
-                :column-width="300"
-                :gap="20"
-            >
-                <template #default="{ item, index }">
+            <masonry-wall class="col position-relative" :items="dataList" :ssr-columns="1" :column-width="300" :gap="20">
+                <template #default="{ item }">
                     <div>
                         <router-link :to="`attraction/${item.contentId}`" @click="searchAttr(item.contentId)">
                             <div class="card" style="box-sizing: border-box; border-radius: 25px; border: 0">
