@@ -34,7 +34,7 @@ export const login = (id, password) => {
         url: "/member/login",
         method: "post",
         data: {
-            id: id,
+            userid: id,
             password: password,
         },
     });
@@ -72,7 +72,7 @@ export const passwordFind = (id, email) => {
         url: "/member/findPwd",
         method: "post",
         data: {
-            id: id,
+            userid: id,
             email: email,
         },
     });

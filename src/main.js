@@ -16,7 +16,11 @@ import "vue3-carousel/dist/carousel.css";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 
-import MasonryWall from '@yeger/vue-masonry-wall';
+import MasonryWall from "@yeger/vue-masonry-wall";
+
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 
 useKakao("467c6aedcee5e042222b042e9896462b");
 
@@ -34,6 +38,7 @@ app.use(router);
 app.use(Antd);
 app.use(MasonryWall);
 
+app.component("QuillEditor", QuillEditor);
 app.component("infinite-loading", InfiniteLoading);
 
 app.mount("#app");
