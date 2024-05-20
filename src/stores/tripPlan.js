@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { tripPlanDetail, tripPlanList, tripPlanSearch } from "@/apis/tripPlanApi.js";
 
@@ -23,8 +23,16 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
         [127.0495556, 127.4170933, 126.793668, 128.9829083, 128.6017],
         [127.0495556, 127.4170933, 126.793668, 128.9829083],
     ]);
+    const pinLat = ref(0);
+    const pinLng = ref(0);
 
     /* getters */
+    const getLat = computed(() => {
+        return pinLat.value;
+    });
+    const getLng = computed(() => {
+        return pinLng.value;
+    });
 
     /* actions */
     const getTripPlanList = async () => {
@@ -63,6 +71,10 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
         markerList,
         latis,
         longs,
+        pinLat,
+        pinLng,
+        getLat,
+        getLng,
         getTripPlanList,
         getTripPlan,
         getTripPlanDetail,

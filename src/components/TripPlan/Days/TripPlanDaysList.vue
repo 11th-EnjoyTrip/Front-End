@@ -3,12 +3,13 @@ import ListCard from "@/components/TripPlan/Days/ListCard.vue";
 
 defineProps({
     day: Number,
+    type: String,
 });
 </script>
 
 <template>
     <div class="days-list">
-        <ListCard :day="day" />
+        <ListCard :day="day" :type="type" />
     </div>
 </template>
 

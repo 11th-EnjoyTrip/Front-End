@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 
 defineProps({
     day: Number,
+    type: String,
 });
 
 const store = useTripPlanStore();
@@ -24,7 +25,7 @@ const { days, listItem } = storeToRefs(store);
             <template #header>
                 <ListCardHeader :day="day" :idx="i" />
             </template>
-            <ListCardBody />
+            <ListCardBody :type="type" />
         </a-collapse-panel>
     </a-collapse>
 </template>
