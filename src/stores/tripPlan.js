@@ -5,6 +5,8 @@ import { tripPlanDetail, tripPlanList, tripPlanSearch } from "@/apis/tripPlanApi
 export const useTripPlanStore = defineStore("tripPlan", () => {
     /* states */
     const plans = ref([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+
+    ///////
     const planDetail = ref(null);
     const days = ref([3, 5, 4]);
     const listItem = ref(["1", "1", "1"]);

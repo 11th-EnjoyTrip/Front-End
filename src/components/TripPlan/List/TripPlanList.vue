@@ -1,23 +1,23 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import CommonInput from "@/components/common/CommonInput.vue";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useTripPlanStore } from "@/stores/tripPlan";
 import { storeToRefs } from "pinia";
 import TripPlanCard from "@/components/TripPlan/List/TripPlanCard.vue";
 
 const store = useTripPlanStore();
-// const { getTripPlanList, getTripPlanSearch } = store;
+const { getTripPlanList, getTripPlanSearch } = store;
 const { plans } = storeToRefs(store);
 const keyword = ref("");
-// const router = useRouter();
+const router = useRouter();
 
 onMounted(async () => {
-    // await getTripPlanList();
+    await getTripPlanList();
 });
-// const detailPlan = (id) => router.push(`/plan/${id}`);
+const detailPlan = (id) => router.push(`/plan/${id}`);
 const searchPlan = async () => {
-    // await getTripPlanSearch(keyword.value);
+    await getTripPlanSearch(keyword.value);
 };
 </script>
 
