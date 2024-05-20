@@ -60,37 +60,37 @@ watch(
 );
 </script>
 
-<template style="background-color: white">
-    <KakaoMap
-        width="100%"
-        class="kakao-map-item"
-        :lat="content[0].latitude"
-        :lng="content[0].longitude"
-        @onLoadKakaoMap="onLoadKakaoMap"
-    >
-        <div v-for="(data, index) in content" :key="index">
-            <KakaoMapMarker
-                :lat="data.latitude"
-                :lng="data.longitude"
-                :clickable="true"
-                @onClickKakaoMapMarker="onClickMapMarker(index)"
-            />
-            <KakaoMapCustomOverlay
-                :lat="data.latitude"
-                :lng="data.longitude"
-                :y-anchor="1.3"
-                :z-index="20"
-                @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
-                :visible="visibleRef[index].value"
-            >
-                <router-link :to="`attraction/${data.contentId}`">
-                    <CommonKakaoMapInfoWindow
-                        :title="data.title"
-                        :content-type-name="data.contentTypeName"
-                        :first-image="data.firstImage"
-                    />
-                </router-link>
-            </KakaoMapCustomOverlay>
+<template style="background-color: white;" >
+  <KakaoMap width="100%" class="kakao-map-item" :lat="content[0].latitude" :lng="content[0].longitude" 
+  @onLoadKakaoMap="onLoadKakaoMap" >
+    <div v-for="(data, index) in content" :key="index">
+      <KakaoMapMarker
+        :lat="data.latitude"
+        :lng="data.longitude"
+        :clickable="true"
+        :image="{
+        imageSrc: `/src/assets/marker/${data.contentTypeId}.png`,
+        imageWidth: 42,
+        imageHeight: 42,
+      }"
+        @onClickKakaoMapMarker="onClickMapMarker(index)"
+      />
+        <KakaoMapCustomOverlay
+        :lat="data.latitude"
+        :lng="data.longitude"
+        :y-anchor="1.3"
+        :z-index="20"
+        @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
+        :visible="visibleRef[index].value"
+        >
+            <router-link :to="`attraction/${data.contentId}`">
+                <CommonKakaoMapInfoWindow
+                    :title="data.title"
+                    :content-type-name="data.contentTypeName"
+                    :first-image="data.firstImage"
+                />
+            </router-link>
+        </KakaoMapCustomOverlay>
         </div>
     </KakaoMap>
 </template>
