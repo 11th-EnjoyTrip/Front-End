@@ -25,6 +25,7 @@ const getTripPlanList = async ($state) => {
         else $state.loaded();
 
         page.value++;
+        localStorage.removeItem("tripPlan");
     } catch (error) {
         console.error("Error fetching attraction list:", error);
         $state.error();

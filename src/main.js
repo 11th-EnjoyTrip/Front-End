@@ -33,8 +33,8 @@ pinia.use(
     })
 );
 
-app.use(pinia);
 app.use(router);
+app.use(pinia);
 app.use(Antd);
 app.use(MasonryWall);
 

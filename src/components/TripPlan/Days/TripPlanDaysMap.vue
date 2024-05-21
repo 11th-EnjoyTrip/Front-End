@@ -1,60 +1,140 @@
 <script setup>
-import { KakaoMap, KakaoMapMarkerPolyline } from "vue3-kakao-maps";
+import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 import { useTripPlanStore } from "@/stores/tripPlan";
 import { storeToRefs } from "pinia";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 const props = defineProps({
     day: Number,
 });
 
 const store = useTripPlanStore();
-const { days, markerList, latis, longs } = storeToRefs(store);
+const { planDetail, markerList } = storeToRefs(store);
 const newMarkerList = ref([]);
 onMounted(() => {
-    for (let i = 0; i < days.value[props.day]; i++) {
+    planDetail.value.dayPlanList[props.day].detailPlanList.forEach((v, i) => {
         newMarkerList.value.push({
-            lat: latis.value[props.day][i],
-            lng: longs.value[props.day][i],
+            lat: v.latitude,
+            lng: v.longitude,
         });
-    }
+    });
 });
 
 const map = ref();
-let bounds;
 const onLoadKakaoMap = (mapRef) => {
     map.value = mapRef;
-    bounds = new kakao.maps.LatLngBounds();
+    let bounds = new kakao.maps.LatLngBounds();
 
-    let point;
-    latis.value[props.day].forEach((lati, idx) => {
-        point = new kakao.maps.LatLng(lati, longs.value[props.day][idx]);
-        bounds.extend(point);
+    planDetail.value.dayPlanList[props.day].detailPlanList.forEach((v) => {
+        bounds.extend(new kakao.maps.LatLng(v.latitude, v.longitude));
     });
 
     map.value.setBounds(bounds);
-    map.value.setDraggable(true);
+    map.value.setDraggable(false);
+    map.value.setZoomable(false);
+    getInfo();
 };
+let polyLines = [];
+let overlays = [];
+const getInfo = () => {
+    if (polyLines.length > 0) {
+        polyLines.forEach((pl) => pl.setMap(null));
+        polyLines = [];
+    }
+
+    if (overlays.length > 0) {
+        overlays.forEach((ol) => ol.setMap(null));
+        overlays = [];
+    }
+
+    for (let i = 0; i < markerList.value[props.day].length - 1; i++) {
+        if (!markerList.value[props.day][i]) continue;
+        if (!markerList.value[props.day][i + 1]) continue;
+
+        let polyLine = new kakao.maps.Polyline({
+            map: map.value,
+            path: [
+                new kakao.maps.LatLng(newMarkerList.value[i].lat, newMarkerList.value[i].lng),
+                new kakao.maps.LatLng(newMarkerList.value[i + 1].lat, newMarkerList.value[i + 1].lng),
+            ],
+            strokeWeight: 3,
+            strokeColor: "#db4040",
+            strokeOpacity: 1,
+            strokeStyle: "solid",
+            endArrow: true,
+        });
+        polyLines.push(polyLine);
+    }
+
+    polyLines.forEach((pl) => {
+        let distance = Math.round(pl.getLength());
+
+        var walkkTime = (distance / 67) | 0;
+        var walkHour = "",
+            walkMin = "";
+        if (walkkTime > 60) walkHour = '<span class="number">' + Math.floor(walkkTime / 60) + "</span>시간 ";
+        walkMin = '<span class="number">' + (walkkTime % 60) + "</span>분";
+
+        var carTime = (distance / 1667) | 0;
+        var carHour = "",
+            carMin = "";
+        if (carTime > 60) carHour = '<span class="number">' + Math.floor(carTime / 60) + "</span>시간 ";
+        carMin = '<span class="number">' + (carTime % 60) + "</span>분";
+
+        var content = '<ul class="dotOverlay distanceInfo">';
+        content += "    <li>";
+        content +=
+            '        <span class="label">총거리</span><span class="number">' +
+            Math.round(distance / 1000) +
+            "</span>km";
+        content += "    </li>";
+        content += "    <li>";
+        content += '        <span class="label">도보</span>' + walkHour + walkMin;
+        content += "    </li>";
+        content += "    <li>";
+        content += '        <span class="label">자동차</span>' + carHour + carMin;
+        content += "    </li>";
+        content += "</ul>";
+
+        overlays.push(
+            new kakao.maps.CustomOverlay({
+                map: map.value,
+                content: content,
+                position: pl.getPath()[1],
+                xAnchor: 0,
+                yAnchor: 0,
+                zIndex: 3,
+            })
+        );
+    });
+};
+watch(newMarkerList, () => {
+    getInfo();
+});
 </script>
 
 <template>
     <div class="days-map">
         <div class="days-map-badges">
-            <a-checkable-tag v-for="(v, i) in days[day]" :key="i" v-model:checked="markerList[day][i]">{{
-                i + 1
-            }}</a-checkable-tag>
+            <a-checkable-tag
+                v-for="(v, i) in planDetail.dayPlanList[day].detailPlanList"
+                :key="i"
+                v-model:checked="markerList[day][i]"
+                @click="getInfo"
+                >{{ i + 1 }}</a-checkable-tag
+            >
         </div>
         <KakaoMap
+            v-if="newMarkerList.length > 0"
             :width="'100%'"
             :height="700"
-            :lat="latis[day][0]"
-            :lng="longs[day][0]"
+            :lat="newMarkerList[0].lat"
+            :lng="newMarkerList[0].lng"
             @onLoadKakaoMap="onLoadKakaoMap"
         >
-            <!-- <div v-for="(lati, i) in latis[day]" :key="i">
-                <KakaoMapMarker :lat="lati" :lng="longs[day][i]" :clickable="false" />
-            </div> -->
-            <KakaoMapMarkerPolyline :markerList="newMarkerList" :endArrow="true" />
+            <div v-for="(v, i) in markerList[day]" :key="i">
+                <KakaoMapMarker :lat="newMarkerList[i].lat" :lng="newMarkerList[i].lng" :clickable="true" />
+            </div>
         </KakaoMap>
     </div>
 </template>

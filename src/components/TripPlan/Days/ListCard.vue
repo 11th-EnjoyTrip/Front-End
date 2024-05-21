@@ -10,7 +10,7 @@ defineProps({
 });
 
 const store = useTripPlanStore();
-const { days, listItem } = storeToRefs(store);
+const { listItem, planDetail } = storeToRefs(store);
 </script>
 
 <template>
@@ -21,11 +21,16 @@ const { days, listItem } = storeToRefs(store);
         :expandIconPosition="'end'"
         :bordered="false"
     >
-        <a-collapse-panel v-for="(v, i) in days[day]" :key="`${i + 1}`" class="panel" :showArrow="false">
+        <a-collapse-panel
+            v-for="(v, i) in planDetail.dayPlanList[day].detailPlanList"
+            :key="v.title"
+            class="panel"
+            :showArrow="false"
+        >
             <template #header>
                 <ListCardHeader :day="day" :idx="i" />
             </template>
-            <ListCardBody :type="type" />
+            <ListCardBody :day="day" :idx="i" :type="type" />
         </a-collapse-panel>
     </a-collapse>
 </template>

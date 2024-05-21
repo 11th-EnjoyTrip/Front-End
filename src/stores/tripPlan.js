@@ -1,28 +1,14 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { tripPlanDetail } from "@/apis/tripPlanApi.js";
+import { tripPlanDetail, tripPlanLike, tripPlanLikeCancel } from "@/apis/tripPlanApi.js";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 export const useTripPlanStore = defineStore("tripPlan", () => {
     /* states */
-    ///////
-    const planDetail = ref(null);
-    const days = ref([3, 5, 4]);
+    const planDetail = ref({});
     const listItem = ref(["1", "1", "1"]);
-    const markerList = ref([
-        [true, true, true],
-        [true, true, true, true, true],
-        [true, true, true, true],
-    ]);
-    const latis = ref([
-        [37.514575, 36.35218384, 35.13995836],
-        [37.514575, 36.35218384, 35.13995836, 35.20916389, 35.8715],
-        [37.514575, 36.35218384, 35.13995836, 35.20916389],
-    ]);
-    const longs = ref([
-        [127.0495556, 127.4170933, 126.793668],
-        [127.0495556, 127.4170933, 126.793668, 128.9829083, 128.6017],
-        [127.0495556, 127.4170933, 126.793668, 128.9829083],
-    ]);
+    const markerList = ref([[true], [true], [true]]);
     const pinLat = ref(0);
     const pinLng = ref(0);
 
@@ -35,11 +21,41 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
     });
 
     /* actions */
-
     const getTripPlanDetail = async (id) => {
         await tripPlanDetail(id)
             .then((response) => {
-                planDetail.value = { ...response.data };
+                planDetail.value = response.data;
+                planDetail.value.dayPlanList = JSON.parse(planDetail.value.dayPlanList);
+
+                listItem.value = [];
+                markerList.value = [];
+                planDetail.value.dayPlanList.forEach((dayPlan) => {
+                    listItem.value.push("1");
+
+                    let lst = [];
+                    dayPlan.detailPlanList.forEach(() => lst.push(true));
+                    markerList.value.push(lst);
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    const likeTripPlanDetail = async (id) => {
+        await tripPlanLike(id)
+            .then(async () => {
+                await getTripPlanDetail(id);
+                router.go();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    const cancelLikeTripPlanDetail = async (id) => {
+        await tripPlanLikeCancel(id)
+            .then(async () => {
+                await getTripPlanDetail(id);
+                router.go();
             })
             .catch((error) => {
                 console.log(error);
@@ -48,15 +64,14 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
 
     return {
         planDetail,
-        days,
         listItem,
         markerList,
-        latis,
-        longs,
         pinLat,
         pinLng,
         getLat,
         getLng,
         getTripPlanDetail,
+        likeTripPlanDetail,
+        cancelLikeTripPlanDetail,
     };
 });

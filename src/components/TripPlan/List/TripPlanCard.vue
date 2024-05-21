@@ -2,19 +2,22 @@
 import { ref, onMounted } from "vue";
 import TripPlanCardCarousel from "@/components/TripPlan/List/TripPlanCardCarousel.vue";
 import IconLike from "@/components/icons/IconLike.vue";
+import { useTripPlanStore } from "@/stores/tripPlan.js";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
     detail: Object,
 });
 
+const router = useRouter();
+const store = useTripPlanStore();
+const { getTripPlanDetail } = store;
 const titles = ref([]);
 const images = ref([]);
 onMounted(() => {
     props.detail.contents.forEach((content) => {
         titles.value.push(content.title);
-
-        if (content.firstImage == undefined) images.value.push("@/assets/noPicture2.png");
-        else images.value.push(content.firstImage);
+        images.value.push(content.firstImage);
     });
 });
 
@@ -28,6 +31,10 @@ const getDateFormat = (date) => {
 const getDateDiff = (startDate, endDate) => {
     return Math.ceil(Math.abs((new Date(startDate).getTime() - new Date(endDate).getTime()) / (1000 * 60 * 60 * 24)));
 };
+const goDetail = async (id) => {
+    await getTripPlanDetail(id);
+    router.push(`/plan/${id}`);
+};
 </script>
 
 <template>
@@ -35,7 +42,7 @@ const getDateDiff = (startDate, endDate) => {
         <div class="w-100 h-auto">
             <TripPlanCardCarousel :titles="titles" :images="images" />
         </div>
-        <div class="w-100 p-3 rounded-bottom-2 info" @click="$router.push(`/plan/${detail.tripPlanId}`)">
+        <div class="w-100 p-3 rounded-bottom-2 info" @click="goDetail(detail.tripPlanId)">
             <div class="d-flex align-items-center">
                 <div class="fw-bold me-3 trip-title">{{ detail.title }}</div>
                 <IconLike :width="16" :height="16" :color="'#ff2c51'" :isLike="detail.isLikedPlan" />
@@ -83,5 +90,8 @@ const getDateDiff = (startDate, endDate) => {
 .detail-info {
     color: #646f7c;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>

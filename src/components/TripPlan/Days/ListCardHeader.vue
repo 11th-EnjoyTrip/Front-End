@@ -1,11 +1,16 @@
 <script setup>
 import IconLike from "@/components/icons/IconLike.vue";
 import IconEye from "@/components/icons/IconEye.vue";
+import { useTripPlanStore } from "@/stores/tripPlan.js";
+import { storeToRefs } from "pinia";
 
 defineProps({
     day: Number,
     idx: Number,
 });
+
+const store = useTripPlanStore();
+const { planDetail } = storeToRefs(store);
 </script>
 
 <template>
@@ -13,7 +18,7 @@ defineProps({
         <img src="@/assets/noPicture2.png" alt="이미지" width="100" height="100" class="object-fit-cover" />
         <div class="row-gap-2 d-flex flex-column justify-content-center ps-3 w-100">
             <div class="d-flex align-items-center justify-content-between column-gap-1 card-header-title">
-                <div>금오산</div>
+                <div>{{ planDetail.dayPlanList[day].detailPlanList[idx].title }}</div>
                 <div class="d-flex column-gap-2">
                     <IconLike :width="16" :height="16" :color="'#ff2c51'" :isLike="true" />
                     <IconEye :width="16" :height="16" :color="['#374553', '#999999']" :day="day" :idx="idx" />
