@@ -2,19 +2,24 @@
 import { ref } from "vue";
 import IconArrowDown from "@/components/icons/IconArrowDown.vue";
 import IconCheck from "@/components/icons/IconCheck.vue";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
+import { storeToRefs } from "pinia";
 
-const curType = ref(0);
 const typeList = ref([
     { name: "유형 무관", id: 0 },
-    { name: "관광지", id: 1 },
-    { name: "문화시설", id: 2 },
-    { name: "숙박", id: 3 },
-    { name: "행사/공연/축제", id: 4 },
-    { name: "레포츠", id: 5 },
-    { name: "쇼핑", id: 6 },
-    { name: "음식점", id: 7 },
+    { name: "관광지", id: 12 },
+    { name: "문화시설", id: 14 },
+    { name: "숙박", id: 32 },
+    { name: "행사/공연/축제", id: 16 },
+    { name: "레포츠", id: 28 },
+    { name: "쇼핑", id: 38 },
+    { name: "음식점", id: 39 },
 ]);
+const store = useEditTripPlanStore();
+const { curType } = storeToRefs(store);
+const idx = ref(0);
 const changeType = (type) => {
+    idx.value = type;
     curType.value = typeList.value[type].id;
     doEdit();
 };
@@ -28,7 +33,7 @@ const doEdit = () => {
 
 <template>
     <div class="col-8 add-search-content">
-        {{ typeList[curType].name }}
+        {{ typeList[idx].name }}
         <div class="add-search-dropdown" :style="{ display: displayState }">
             <div
                 v-for="(type, i) in typeList"

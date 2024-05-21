@@ -15,13 +15,11 @@ const { controlTripPlanShare } = tripPlanStore;
 <template>
     <div class="mx-auto col-9 detail-container">
         <div class="row align-items-center text-center fw-bold px-0 title">
-            <button
-                v-if="userInfo.userid != planDetail.userid"
-                class="col-3 d-flex justify-content-start"
-                @click="$router.back()"
-            >
-                뒤로가기
-            </button>
+            <div v-if="userInfo.userid != planDetail.userid" class="col-3 d-flex justify-content-start">
+                <button v-if="userInfo.userid != planDetail.userid" class="detail-btn" @click="$router.back()">
+                    뒤로가기
+                </button>
+            </div>
             <div v-else class="col-3 d-flex justify-content-start">
                 <button
                     v-if="planDetail.isShared == 1"

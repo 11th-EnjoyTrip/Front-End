@@ -13,7 +13,7 @@ import TripPlanAddDays from "@/components/TripPlan/Write/Days/TripPlanAddDays.vu
     </div>
     <div class="row">
         <div class="col-9 add-info">
-            <TripPlanAddDays />
+            <!-- <TripPlanAddDays /> -->
         </div>
     </div>
 </template>

@@ -158,7 +158,10 @@ const router = createRouter({
                     path: "add",
                     name: "plan-add",
                     component: () => import("@/components/TripPlan/Write/TripPlanAdd.vue"),
-                    beforeEnter: isValidUser,
+                    beforeEnter: async (to, from, next) => {
+                        localStorage.removeItem("editTripPlan");
+                        await isValidUser(to, from, next);
+                    },
                 },
                 {
                     path: ":id",

@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { tripPlanDetail, tripPlanLike, tripPlanLikeCancel, tripPlanShare } from "@/apis/tripPlanApi.js";
 import { useRouter } from "vue-router";
 
-const router = useRouter();
 export const useTripPlanStore = defineStore("tripPlan", () => {
     /* states */
     const planDetail = ref({});
