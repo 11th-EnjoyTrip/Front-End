@@ -1,38 +1,41 @@
 <script setup>
-import { ref, watch } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
+import { storeToRefs } from "pinia";
 
-const quill = ref(null);
+const store = useEditTripPlanStore();
+const { tripPlanInfo, quill } = storeToRefs(store);
 const getQuill = (q) => {
     quill.value = q;
-    quill.value.root.innerHTML = "<p>helllo</p>";
+    quill.value.root.innerHTML = tripPlanInfo.value.intro;
 };
-
-const departure = ref("");
-const arrival = ref("");
-const departureTime = ref("");
-watch(departureTime, () => {
-    console.log(departureTime);
-});
 </script>
 
 <template>
     <div class="w-100 add-info">
         <div class="fw-bold plan-title">여행 계획 제목</div>
-        <input class="plan-title-input plan-input" type="text" />
+        <input class="plan-title-input plan-input" type="text" v-model="tripPlanInfo.title" />
         <div class="mt-4 row justify-content-between">
             <div class="col">
                 <div class="info-period-title">출발</div>
-                <a-date-picker v-model:value="departure" :placeholder="'출발 날짜'" class="info-period-datepicker" />
+                <a-date-picker
+                    v-model:value="tripPlanInfo.startDate"
+                    :placeholder="'출발 날짜'"
+                    class="info-period-datepicker"
+                />
             </div>
             <div class="col">
                 <div class="info-period-title">복귀</div>
-                <a-date-picker v-model:value="arrival" :placeholder="'복귀 날짜'" class="info-period-datepicker" />
+                <a-date-picker
+                    v-model:value="tripPlanInfo.endDate"
+                    :placeholder="'복귀 날짜'"
+                    class="info-period-datepicker"
+                />
             </div>
             <div class="col">
                 <div class="info-period-title">출발 시간</div>
                 <a-time-picker
-                    v-model:value="departureTime"
+                    v-model:value="tripPlanInfo.startTime"
                     :placeholder="'출발 시간'"
                     class="info-period-datepicker"
                 />
@@ -40,7 +43,7 @@ watch(departureTime, () => {
         </div>
         <div class="mt-4 d-flex flex-column">
             <div class="info-period-title">출발지</div>
-            <input class="plan-title-input plan-input" type="text" />
+            <input class="plan-title-input plan-input" type="text" v-model="tripPlanInfo.startPlace" />
         </div>
         <div class="mt-4 w-100 mb-5">
             <div class="info-intro-title">여행 설명</div>

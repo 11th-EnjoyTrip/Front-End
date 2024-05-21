@@ -13,7 +13,7 @@ const props = defineProps({
         required: true,
     },
 });
-const emit = defineEmits(["update:modelValue", "searchQnA"]);
+const emit = defineEmits(["update:modelValue", "searchQnA", "search"]);
 
 const newValue = ref(props.modelValue);
 watch(newValue, () => {
@@ -51,7 +51,7 @@ const focusOut = () => (colors.value = "#e1e1e1");
             :width="28"
             :height="28"
             :color="'#646f7c'"
-            @click="emit('searchQnA')"
+            @click="emit('search')"
         />
     </div>
 </template>

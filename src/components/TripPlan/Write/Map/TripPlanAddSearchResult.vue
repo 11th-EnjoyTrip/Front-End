@@ -1,19 +1,35 @@
 <script setup>
 import TripPlanAddSearchResultCard from "@/components/TripPlan/Write/Map/TripPlanAddSearchResultCard.vue";
-import { useTripPlanStore } from "@/stores/tripPlan.js";
 import { storeToRefs } from "pinia";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
+import InfiniteLoading from "v3-infinite-loading";
+import "v3-infinite-loading/lib/style.css";
 
-const store = useTripPlanStore();
-const { pinLat, pinLng } = storeToRefs(store);
-const changeLatLng = () => {
-    pinLat.value = 37.514575;
-    pinLng.value = 127.0495556;
+const stores = useEditTripPlanStore();
+const { searchList, pinned } = storeToRefs(stores);
+const { getSearchList } = stores;
+const changeLatLng = (idx) => {
+    pinned.value = [searchList.value[idx].latitude, searchList.value[idx].longitude];
 };
 </script>
 
 <template>
-    <div class="add-search-result-sub-title">경상북도 / 음식점 / 미나리 삼겹살</div>
-    <TripPlanAddSearchResultCard v-for="(v, i) in 5" :key="i" :type="'add'" @click="changeLatLng" />
+    <div class="add-search-result-sub-title">검색 결과</div>
+    <div class="w-100" v-if="searchList.length > 0">
+        <TripPlanAddSearchResultCard
+            v-for="(v, i) in searchList"
+            :key="v.contentId"
+            :item="v"
+            :type="'add'"
+            :idx="i"
+            @click="changeLatLng(i)"
+        />
+        <InfiniteLoading @infinite="getSearchList">
+            <template #complete>
+                <span></span>
+            </template>
+        </InfiniteLoading>
+    </div>
 </template>
 
 <style scoped>

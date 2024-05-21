@@ -117,3 +117,23 @@ export const userQuit = () => {
         method: "delete",
     });
 };
+
+export const tripPlanMy = (page) => {
+    return api({
+        url: "/plan",
+        method: "get",
+        params: {
+            page: page,
+        },
+    });
+};
+
+export const tripPlanLike = (page) => {
+    return api({
+        url: "/plan/like",
+        method: "get",
+        params: {
+            page: page,
+        },
+    });
+};

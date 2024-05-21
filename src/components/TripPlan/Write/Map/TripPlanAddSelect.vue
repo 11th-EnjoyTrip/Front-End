@@ -4,18 +4,20 @@ import TripPlanAddSearchResultCard from "@/components/TripPlan/Write/Map/TripPla
 import { VueDraggableNext } from "vue-draggable-next";
 import { ref } from "vue";
 import { message } from "ant-design-vue";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
+import { storeToRefs } from "pinia";
 
-const list = ref(["title1", "title2", "title3", "title4", "title5"]);
-const daysList = ref([[]]);
+const store = useEditTripPlanStore();
+const { selected, daysSelected, canEdit } = storeToRefs(store);
 const addDays = () => {
-    daysList.value.push([]);
+    daysSelected.value.push([]);
 };
 const delDays = () => {
-    if (daysList.value.length == 1) {
+    if (daysSelected.value.length == 1) {
         message.warn("하루 이상의 일정이 있어야 합니다");
     } else {
-        daysList.value.pop().forEach((v) => {
-            list.value.push(v);
+        daysSelected.value.pop().forEach((v) => {
+            selected.value.push(v);
         });
     }
 };
@@ -29,24 +31,31 @@ const openDays = ref(false);
             <div class="add-container-title">선택 여행지</div>
         </div>
         <div class="add-content-result-container select-container">
-            <VueDraggableNext class="dragArea w-full" :group="'card'" :list="list">
-                <TripPlanAddSearchResultCard v-for="(v, i) in list" :key="i" :type="'delete'" />
+            <VueDraggableNext class="dragArea w-full" :group="'card'" :list="selected">
+                <TripPlanAddSearchResultCard v-for="(v, i) in selected" :key="i" :item="v" :type="'delete'" :idx="i" />
             </VueDraggableNext>
         </div>
         <div class="d-flex justify-content-center column-gap-2 w-100 mt-2">
             <button class="add-select-btn" @click="openDays = true">상세 계획 펼치기</button>
+            <button class="add-select-btn" @click="canEdit = true">일자 별 계획 세우기</button>
         </div>
     </div>
     <div v-if="openDays" class="add-container add-days">
         <div class="add-days-inner-container">
-            <div class="w-100" v-for="(v, i) in daysList" :key="i">
+            <div class="w-100" v-for="(v, i) in daysSelected" :key="i">
                 <div class="mt-4 d-flex justify-content-center align-items-center column-gap-3">
                     <IconPlace :width="24" :height="24" :color="'#1769ff'" />
                     <div class="add-container-title">Day {{ i + 1 }}</div>
                 </div>
                 <div class="add-content-result-container">
-                    <VueDraggableNext class="dragArea w-full" :group="'card'" :list="daysList[i]">
-                        <TripPlanAddSearchResultCard v-for="(v, idx) in daysList[i]" :key="idx" :type="'delete'" />
+                    <VueDraggableNext class="dragArea w-full" :group="'card'" :list="daysSelected[i]">
+                        <TripPlanAddSearchResultCard
+                            v-for="(val, idx) in daysSelected[i]"
+                            :key="idx"
+                            :item="val"
+                            :type="'delete'"
+                            :idx="idx"
+                        />
                     </VueDraggableNext>
                 </div>
             </div>
@@ -82,6 +91,11 @@ const openDays = ref(false);
 .add-days-inner-container {
     width: 100%;
     height: 90%;
+    overflow-y: scroll;
+}
+
+.add-days-inner-container::-webkit-scrollbar {
+    width: 0;
 }
 
 .add-container-title {

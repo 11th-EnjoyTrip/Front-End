@@ -1,24 +1,42 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 import CommonInput from "@/components/common/CommonInput.vue";
-// import { useRouter } from "vue-router";
-import { useTripPlanStore } from "@/stores/tripPlan";
-import { storeToRefs } from "pinia";
 import TripPlanCard from "@/components/TripPlan/List/TripPlanCard.vue";
+import InfiniteLoading from "v3-infinite-loading";
+import "v3-infinite-loading/lib/style.css";
+import { tripPlanList } from "@/apis/tripPlanApi.js";
 
-const store = useTripPlanStore();
-// const { getTripPlanList, getTripPlanSearch } = store;
-const { plans } = storeToRefs(store);
 const keyword = ref("");
-// const router = useRouter();
+const plans = ref(null);
+const page = ref(0);
+const getTripPlanList = async ($state) => {
+    try {
+        const response = await tripPlanList(keyword.value, page.value);
+        const jsonData = response.data;
+        if (page.value == 0) plans.value = [];
 
-onMounted(async () => {
-    // await getTripPlanList();
-});
-// const detailPlan = (id) => router.push(`/plan/${id}`);
-const searchPlan = async () => {
-    // await getTripPlanSearch(keyword.value);
+        jsonData.forEach((res) => {
+            let newRes = { ...res };
+            newRes.contents = JSON.parse(newRes.contents);
+            plans.value.push(newRes);
+        });
+
+        if (jsonData.length < 6) $state.complete();
+        else $state.loaded();
+
+        page.value++;
+        localStorage.removeItem("tripPlan");
+    } catch (error) {
+        console.error("Error fetching attraction list:", error);
+        $state.error();
+    }
 };
+onMounted(async () => {
+    await getTripPlanList();
+});
+watch(keyword, () => {
+    page.value = 0;
+});
 </script>
 
 <template>
@@ -38,11 +56,16 @@ const searchPlan = async () => {
                 :placeholder="'제목 검색'"
                 :icon="{ isStart: false, name: 'search' }"
                 v-model="keyword"
-                @searchPlan="searchPlan"
+                @search="getTripPlanList"
             />
         </div>
         <div class="row gy-5 row-cols-1 row-cols-md-2 row-cols-xl-3 mt-3">
-            <TripPlanCard v-for="plan in plans" :key="plan.id" :detail="plan" />
+            <TripPlanCard v-for="plan in plans" :key="plan.tripPlanId" :detail="plan" />
+            <InfiniteLoading @infinite="getTripPlanList">
+                <template #complete>
+                    <span></span>
+                </template>
+            </InfiniteLoading>
         </div>
     </div>
 </template>

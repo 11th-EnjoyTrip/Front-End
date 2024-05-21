@@ -2,8 +2,9 @@
 import { ref } from "vue";
 import IconArrowDown from "@/components/icons/IconArrowDown.vue";
 import IconCheck from "@/components/icons/IconCheck.vue";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
+import { storeToRefs } from "pinia";
 
-const curSido = ref(0);
 const sidoList = ref([
     { name: "지역 무관", id: 0 },
     { name: "서울", id: 1 },
@@ -17,6 +18,8 @@ const sidoList = ref([
     { name: "경기도", id: 31 },
     { name: "강원도", id: 32 },
 ]);
+const store = useEditTripPlanStore();
+const { curSido } = storeToRefs(store);
 const changeSido = (sido) => {
     curSido.value = sidoList.value[sido].id;
     doEdit();

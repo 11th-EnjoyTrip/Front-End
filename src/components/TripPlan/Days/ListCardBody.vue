@@ -1,13 +1,53 @@
 <script setup>
-import { ref } from "vue";
+import { useTripPlanStore } from "@/stores/tripPlan.js";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
+import { storeToRefs } from "pinia";
+import dayjs from "dayjs";
+import { ref, watch } from "vue";
 
-defineProps({
+const props = defineProps({
+    day: Number,
+    idx: Number,
     type: String,
 });
 
-const departureTime = ref("");
-const arrivalTime = ref("");
-const selected = ref("자동차");
+const store = useTripPlanStore();
+const { planDetail } = storeToRefs(store);
+const getTime = (time) => {
+    const splits = time.split(":");
+    return `${splits[0]}:${splits[1]}`;
+};
+
+const stores = useEditTripPlanStore();
+const { attractionInfos } = storeToRefs(stores);
+const newArrivalTime = ref(
+    props.type == "read"
+        ? ""
+        : dayjs(
+              attractionInfos.value[props.day][props.idx].arrivalTime == ""
+                  ? "12:00"
+                  : attractionInfos.value[props.day][props.idx].arrivalTime,
+              "HH:mm:ss"
+          )
+);
+const newDepartureTime = ref(
+    props.type == "read"
+        ? ""
+        : dayjs(
+              attractionInfos.value[props.day][props.idx].departureTime == ""
+                  ? "12:00"
+                  : attractionInfos.value[props.day][props.idx].departureTime,
+              "HH:mm:ss"
+          )
+);
+const newTransportation = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].transportation);
+const newMemo = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].memo);
+watch([newArrivalTime, newDepartureTime, newTransportation, newMemo], () => {
+    attractionInfos.value[props.day][props.idx].arrivalTime = newArrivalTime.value.format("HH:mm:ss");
+    attractionInfos.value[props.day][props.idx].departureTime = newDepartureTime.value.format("HH:mm:ss");
+    attractionInfos.value[props.day][props.idx].transportation = newTransportation.value;
+    attractionInfos.value[props.day][props.idx].memo = newMemo.value;
+});
 </script>
 
 <template>
@@ -15,21 +55,27 @@ const selected = ref("자동차");
         <div class="px-2 row">
             <div class="col">
                 <div class="card-body-title">도착</div>
-                <div v-if="type == 'read'" class="card-body-info">08:30</div>
-                <a-time-picker v-else v-model:value="arrivalTime" :placeholder="'도착'" use12-hours format="h:mm A" />
+                <div v-if="type == 'read'" class="card-body-info">
+                    {{ getTime(planDetail.dayPlanList[day].detailPlanList[idx].arrivalTime) }}
+                </div>
+                <a-time-picker v-else v-model:value="newArrivalTime" :placeholder="'도착'" format="HH:mm" />
             </div>
             <div class="col">
                 <div class="card-body-title">출발</div>
-                <div v-if="type == 'read'" class="card-body-info">11:00</div>
-                <a-time-picker v-else v-model:value="departureTime" :placeholder="'출발'" use12-hours format="h:mm A" />
+                <div v-if="type == 'read'" class="card-body-info">
+                    {{ getTime(planDetail.dayPlanList[day].detailPlanList[idx].departureTime) }}
+                </div>
+                <a-time-picker v-else v-model:value="newDepartureTime" :placeholder="'출발'" format="HH:mm" />
             </div>
             <div class="col">
                 <div class="card-body-title">이동수단</div>
-                <div v-if="type == 'read'" class="card-body-info">자동차</div>
+                <div v-if="type == 'read'" class="card-body-info">
+                    {{ planDetail.dayPlanList[day].detailPlanList[idx].transportation == "CAR" ? "자동차" : "도보" }}
+                </div>
                 <a-select
                     v-else
                     ref="select"
-                    v-model:value="selected"
+                    v-model:value="newTransportation"
                     style="width: 100%"
                     @focus="focus"
                     @change="handleChange"
@@ -42,9 +88,14 @@ const selected = ref("자동차");
         <div class="px-2 mt-3">
             <div class="card-body-title">간단 설명</div>
             <div v-if="type == 'read'" class="card-body-info card-body-description">
-                도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔도레미파솔
+                {{ planDetail.dayPlanList[day].detailPlanList[idx].memo }}
             </div>
-            <textarea v-else class="card-body-info card-body-description" :class="{ edit: type == 'edit' }"></textarea>
+            <textarea
+                v-else
+                class="card-body-info card-body-description"
+                :class="{ edit: type == 'edit' }"
+                v-model="newMemo"
+            ></textarea>
         </div>
     </div>
 </template>
