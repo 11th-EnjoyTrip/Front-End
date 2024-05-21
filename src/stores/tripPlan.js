@@ -1,11 +1,9 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { tripPlanDetail, tripPlanList, tripPlanSearch } from "@/apis/tripPlanApi.js";
+import { tripPlanDetail } from "@/apis/tripPlanApi.js";
 
 export const useTripPlanStore = defineStore("tripPlan", () => {
     /* states */
-    const plans = ref([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-
     ///////
     const planDetail = ref(null);
     const days = ref([3, 5, 4]);
@@ -37,24 +35,7 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
     });
 
     /* actions */
-    const getTripPlanList = async () => {
-        await tripPlanList()
-            .then((response) => {
-                plans.value = [...response.data];
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
-    const getTripPlan = async (keyword) => {
-        await tripPlanSearch(keyword)
-            .then((response) => {
-                plans.value = [...response.data];
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+
     const getTripPlanDetail = async (id) => {
         await tripPlanDetail(id)
             .then((response) => {
@@ -66,7 +47,6 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
     };
 
     return {
-        plans,
         planDetail,
         days,
         listItem,
@@ -77,8 +57,6 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
         pinLng,
         getLat,
         getLng,
-        getTripPlanList,
-        getTripPlan,
         getTripPlanDetail,
     };
 });

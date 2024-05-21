@@ -26,7 +26,7 @@ const breakpoints = ref({
                 <div class="position-relative rounded-top-3 carousel__item">
                     <img
                         class="position-absolute w-100 h-100 object-fit-cover top-0 end-0 rounded-top-3"
-                        src="@/assets/noPicture2.png"
+                        :src="images[idx]"
                         :alt="'관광지 이미지'"
                     />
                     <div class="position-absolute bg-black bg-opacity-25 text-white fw-bold px-2 py-1 rounded-2 title">

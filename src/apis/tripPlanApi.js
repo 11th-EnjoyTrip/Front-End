@@ -1,16 +1,13 @@
 import { api } from "@/apis/interceptors.js";
 
-export const tripPlanList = () => {
+export const tripPlanList = (keyword, page) => {
     return api({
-        url: "",
+        url: "/plan/shared",
         method: "get",
-    });
-};
-
-export const tripPlanSearch = (keyword) => {
-    return api({
-        url: "",
-        method: "get",
+        params: {
+            keyword: keyword,
+            page: page,
+        },
     });
 };
 

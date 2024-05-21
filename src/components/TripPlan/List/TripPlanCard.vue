@@ -19,10 +19,11 @@ onMounted(() => {
 });
 
 const getDateFormat = (date) => {
-    const year = new Date(date).getFullYear().substring(2, 4);
+    const year = new Date(date).getFullYear();
     const month = new Date(date).getMonth() + 1;
     const day = new Date(date).getDate();
-    return `${year}.${month < 10 ? "0" + month : month}.${day < 10 ? "0" + day : day}`;
+
+    return `${year.toString().substring(2)}.${month < 10 ? "0" + month : month}.${day < 10 ? "0" + day : day}`;
 };
 const getDateDiff = (startDate, endDate) => {
     return Math.ceil(Math.abs((new Date(startDate).getTime() - new Date(endDate).getTime()) / (1000 * 60 * 60 * 24)));
@@ -34,7 +35,7 @@ const getDateDiff = (startDate, endDate) => {
         <div class="w-100 h-auto">
             <TripPlanCardCarousel :titles="titles" :images="images" />
         </div>
-        <div class="w-100 p-3 rounded-bottom-2 info">
+        <div class="w-100 p-3 rounded-bottom-2 info" @click="$router.push(`/plan/${detail.tripPlanId}`)">
             <div class="d-flex align-items-center">
                 <div class="fw-bold me-3 trip-title">{{ detail.title }}</div>
                 <IconLike :width="16" :height="16" :color="'#ff2c51'" :isLike="detail.isLikedPlan" />
@@ -45,7 +46,10 @@ const getDateDiff = (startDate, endDate) => {
                     getDateDiff(detail.startDate, detail.endDate) + 1
                 }}일 ({{ getDateFormat(detail.startDate) }} ~ {{ getDateFormat(detail.endDate) }})
             </div>
-            <div class="mt-1 detail-info">출발지 : {{ detail.contents[0].title }}</div>
+            <div class="mt-1 detail-info">
+                출발지 :
+                {{ detail.contents[0].title ? detail.contents[0].title : "" }}
+            </div>
         </div>
     </div>
 </template>
