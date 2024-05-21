@@ -11,7 +11,7 @@ const menu = ref(0);
 <template>
     <NavComp :withLower="false" />
     <div class="mobiles"><MyPageSideMenuMobile v-model="menu" /></div>
-    <div class="row justify-content-center mx-auto px-5 contents desktops">
+    <div class="row justify-content-center mx-auto px-1 contents desktops">
         <div class="col-3">
             <MyPageSideMenu v-model="menu" />
         </div>

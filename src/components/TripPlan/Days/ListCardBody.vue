@@ -21,10 +21,24 @@ const getTime = (time) => {
 const stores = useEditTripPlanStore();
 const { attractionInfos } = storeToRefs(stores);
 const newArrivalTime = ref(
-    props.type == "read" ? "" : dayjs(attractionInfos.value[props.day][props.idx].arrivalTime, "HH:mm:ss")
+    props.type == "read"
+        ? ""
+        : dayjs(
+              attractionInfos.value[props.day][props.idx].arrivalTime == ""
+                  ? "12:00"
+                  : attractionInfos.value[props.day][props.idx].arrivalTime,
+              "HH:mm:ss"
+          )
 );
 const newDepartureTime = ref(
-    props.type == "read" ? "" : dayjs(attractionInfos.value[props.day][props.idx].departureTime, "HH:mm:ss")
+    props.type == "read"
+        ? ""
+        : dayjs(
+              attractionInfos.value[props.day][props.idx].departureTime == ""
+                  ? "12:00"
+                  : attractionInfos.value[props.day][props.idx].departureTime,
+              "HH:mm:ss"
+          )
 );
 const newTransportation = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].transportation);
 const newMemo = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].memo);
