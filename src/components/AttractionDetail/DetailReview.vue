@@ -1,14 +1,27 @@
 <script setup>
 import DetailReviewAdd from "@/components/AttractionDetail/DetailReviewAdd.vue";
 import DetailReviewCard from "@/components/AttractionDetail/DetailReviewCard.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { attractionReview } from "@/apis/attractionApi";
 
-defineProps({
+const props = defineProps({
     contentId: Number,
 });
 
 const isAdding = ref(false);
 const changeState = () => (isAdding.value = !isAdding.value);
+const reviews = ref([]);
+
+onMounted(async () => {
+    await attractionReview(props.contentId)
+        .then((response) => {
+            console.log(response.data);
+            reviews.value = [...response.data.reviews];
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
 </script>
 
 <template>
@@ -21,7 +34,7 @@ const changeState = () => (isAdding.value = !isAdding.value);
             <DetailReviewAdd @changeState="changeState" />
         </div>
         <div class="w-100">
-            <DetailReviewCard v-for="(v, i) in 3" :key="i" />
+            <DetailReviewCard v-for="review in reviews" :key="review.review_id" :review="review" />
         </div>
     </div>
 </template>

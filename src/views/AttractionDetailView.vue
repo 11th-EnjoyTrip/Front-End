@@ -21,9 +21,8 @@ onMounted(async () => {
 });
 
 const getContent = computed(() => {
-  return content.value;
-})
-
+    return content.value;
+});
 </script>
 
 <template>
@@ -46,7 +45,7 @@ const getContent = computed(() => {
             </div>
             <DetailContents :content="getContent" />
             <DetailMap :content="getContent" />
-            <DetailReview :contentId="1" />
+            <DetailReview :contentId="router.currentRoute.value.params.id" />
         </div>
     </div>
 </template>

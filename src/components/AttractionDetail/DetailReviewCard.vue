@@ -2,10 +2,11 @@
 import IconLike from "@/components/icons/IconLike.vue";
 import { ref } from "vue";
 
+defineProps({
+    review: Object,
+});
+
 const isEditing = ref(false);
-const ment = ref(
-    "여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요 제가 미친게 아니라요 진짜라니까요"
-);
 </script>
 
 <template>
@@ -14,22 +15,15 @@ const ment = ref(
             <div class="d-flex align-items-center column-gap-3">
                 <img src="@/assets/noPicture2.png" alt="프로필 사진" class="review-card-img" />
                 <div>
-                    <div class="review-writer">최요하</div>
-                    <div class="review-reg-date">2024.05.20 18:30:00</div>
+                    <div class="review-writer">{{ review.nickname }}</div>
+                    <div class="review-reg-date">{{ review.updated_time }}</div>
                 </div>
             </div>
             <IconLike :width="24" :height="24" :color="'#ff2c51'" :isLike="true" @click="isEditing = !isEditing" />
         </div>
         <hr />
         <div v-if="!isEditing" class="review-content">
-            여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요? 제가 미친게 아니라요 진짜라니까요? 여기 여행지 진짜 너무
-            좋아서 미쳐 환장한다니까요? 제가 미친게 아니라요 진짜라니까요? 여기 여행지 진짜 너무 좋아서 미쳐
-            환장한다니까요? 제가 미친게 아니라요 진짜라니까요? 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요? 제가
-            미친게 아니라요 진짜라니까요? 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요? 제가 미친게 아니라요
-            진짜라니까요? 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요? 제가 미친게 아니라요 진짜라니까요? 여기
-            여행지 진짜 너무 좋아서 미쳐 환장한다니까요? 제가 미친게 아니라요 진짜라니까요? 여기 여행지 진짜 너무 좋아서
-            미쳐 환장한다니까요? 제가 미친게 아니라요 진짜라니까요? 여기 여행지 진짜 너무 좋아서 미쳐 환장한다니까요?
-            제가 미친게 아니라요 진짜라니까요?
+            {{ review.review_text }}
         </div>
         <textarea v-else class="review-edit" :value="ment"></textarea>
     </div>
