@@ -44,3 +44,11 @@ export const tripPlanShare = (id) => {
         method: "patch",
     });
 };
+
+export const tripPlanAdd = (newPlan) => {
+    return api({
+        url: "/plan",
+        method: "post",
+        data: newPlan,
+    });
+};

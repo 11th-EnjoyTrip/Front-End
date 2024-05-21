@@ -14,6 +14,28 @@ export const useEditTripPlanStore = defineStore("editTripPlan", () => {
     const pinned = ref([37.514575, 127.0495556]);
     const selected = ref([]);
     const daysSelected = ref([[]]);
+    const tripPlanInfo = ref({
+        title: "",
+        startDate: "",
+        endDate: "",
+        startTime: "",
+        startPlace: "",
+        intro: "",
+    });
+    const listItems = ref(["1"]);
+    const markerLists = ref([[true]]);
+    const attractionInfos = ref([
+        [
+            {
+                arrivalTime: "",
+                departureTime: "",
+                transportation: "자동차",
+                memo: "",
+            },
+        ],
+    ]);
+    const canEdit = ref(false);
+    const quill = ref(null);
 
     /* getters */
 
@@ -36,8 +58,32 @@ export const useEditTripPlanStore = defineStore("editTripPlan", () => {
             $state.error();
         }
     };
-    watch(selected, () => {
-        console.log(selected.value);
+    watch(selected.value, () => (canEdit.value = false));
+    watch(daysSelected.value, () => {
+        listItems.value = new Array(daysSelected.value.length);
+        listItems.value.fill("1");
+
+        markerLists.value = [];
+        daysSelected.value.forEach((day) => {
+            let arr = new Array(day.length);
+            arr.fill(true);
+            markerLists.value.push(arr);
+        });
+
+        attractionInfos.value = [];
+        daysSelected.value.forEach((day) => {
+            let arr = [];
+            day.forEach(() => {
+                let obj = {
+                    arrivalTime: "",
+                    departureTime: "",
+                    transportation: "자동차",
+                    memo: "",
+                };
+                arr.push(obj);
+            });
+            attractionInfos.value.push(arr);
+        });
     });
 
     return {
@@ -50,6 +96,12 @@ export const useEditTripPlanStore = defineStore("editTripPlan", () => {
         pinned,
         selected,
         daysSelected,
+        tripPlanInfo,
+        listItems,
+        markerLists,
+        canEdit,
+        attractionInfos,
+        quill,
         getSearchList,
     };
 });

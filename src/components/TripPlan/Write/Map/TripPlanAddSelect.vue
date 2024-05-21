@@ -8,7 +8,7 @@ import { useEditTripPlanStore } from "@/stores/editTripPlan";
 import { storeToRefs } from "pinia";
 
 const store = useEditTripPlanStore();
-const { selected, daysSelected } = storeToRefs(store);
+const { selected, daysSelected, canEdit } = storeToRefs(store);
 const addDays = () => {
     daysSelected.value.push([]);
 };
@@ -37,6 +37,7 @@ const openDays = ref(false);
         </div>
         <div class="d-flex justify-content-center column-gap-2 w-100 mt-2">
             <button class="add-select-btn" @click="openDays = true">상세 계획 펼치기</button>
+            <button class="add-select-btn" @click="canEdit = true">일자 별 계획 세우기</button>
         </div>
     </div>
     <div v-if="openDays" class="add-container add-days">
@@ -90,6 +91,11 @@ const openDays = ref(false);
 .add-days-inner-container {
     width: 100%;
     height: 90%;
+    overflow-y: scroll;
+}
+
+.add-days-inner-container::-webkit-scrollbar {
+    width: 0;
 }
 
 .add-container-title {

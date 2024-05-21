@@ -38,12 +38,21 @@ const selecting = () => {
         }
     });
 
+    daysSelected.value.forEach((day, idx) => {
+        day.forEach((v, i) => {
+            if (v.contentId == props.item.contentId) {
+                message.warn("이미 등록된 관광지 입니다", 2);
+                res = false;
+            }
+        });
+    });
+
     if (res) selected.value.push(props.item);
 };
 const deleting = () => {
     selected.value.forEach((v, i) => {
         if (v.contentId == props.item.contentId) {
-            selected.splice(i, 1);
+            selected.value.splice(i, 1);
         }
     });
 

@@ -1,9 +1,11 @@
 <script setup>
-import { ref } from "vue";
 import { useTripPlanStore } from "@/stores/tripPlan.js";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
 import { storeToRefs } from "pinia";
+import dayjs from "dayjs";
+import { ref, watch } from "vue";
 
-defineProps({
+const props = defineProps({
     day: Number,
     idx: Number,
     type: String,
@@ -16,9 +18,18 @@ const getTime = (time) => {
     return `${splits[0]}:${splits[1]}`;
 };
 
-const departureTime = ref("");
-const arrivalTime = ref("");
-const selected = ref("자동차");
+const stores = useEditTripPlanStore();
+const { attractionInfos } = storeToRefs(stores);
+const newArrivalTime = ref(dayjs("12:00", "HH:mm"));
+const newDepartureTime = ref(dayjs("12:00", "HH:mm"));
+const newTransportation = ref("자동차");
+const newMemo = ref("");
+watch([newArrivalTime, newDepartureTime, newTransportation, newMemo], () => {
+    attractionInfos.value[props.day][props.idx].arrivalTime = newArrivalTime.value.format("HH:mm:ss");
+    attractionInfos.value[props.day][props.idx].departureTime = newDepartureTime.value.format("HH:mm:ss");
+    attractionInfos.value[props.day][props.idx].transportation = newTransportation.value;
+    attractionInfos.value[props.day][props.idx].memo = newMemo.value;
+});
 </script>
 
 <template>
@@ -29,14 +40,14 @@ const selected = ref("자동차");
                 <div v-if="type == 'read'" class="card-body-info">
                     {{ getTime(planDetail.dayPlanList[day].detailPlanList[idx].arrivalTime) }}
                 </div>
-                <a-time-picker v-else v-model:value="arrivalTime" :placeholder="'도착'" use12-hours format="h:mm A" />
+                <a-time-picker v-else v-model:value="newArrivalTime" :placeholder="'도착'" format="HH:mm" />
             </div>
             <div class="col">
                 <div class="card-body-title">출발</div>
                 <div v-if="type == 'read'" class="card-body-info">
                     {{ getTime(planDetail.dayPlanList[day].detailPlanList[idx].departureTime) }}
                 </div>
-                <a-time-picker v-else v-model:value="departureTime" :placeholder="'출발'" use12-hours format="h:mm A" />
+                <a-time-picker v-else v-model:value="newDepartureTime" :placeholder="'출발'" format="HH:mm" />
             </div>
             <div class="col">
                 <div class="card-body-title">이동수단</div>
@@ -46,7 +57,7 @@ const selected = ref("자동차");
                 <a-select
                     v-else
                     ref="select"
-                    v-model:value="selected"
+                    v-model:value="newTransportation"
                     style="width: 100%"
                     @focus="focus"
                     @change="handleChange"
@@ -61,7 +72,12 @@ const selected = ref("자동차");
             <div v-if="type == 'read'" class="card-body-info card-body-description">
                 {{ planDetail.dayPlanList[day].detailPlanList[idx].memo }}
             </div>
-            <textarea v-else class="card-body-info card-body-description" :class="{ edit: type == 'edit' }"></textarea>
+            <textarea
+                v-else
+                class="card-body-info card-body-description"
+                :class="{ edit: type == 'edit' }"
+                v-model="newMemo"
+            ></textarea>
         </div>
     </div>
 </template>

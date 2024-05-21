@@ -2,6 +2,7 @@
 import ListCardHeader from "@/components/TripPlan/Days/ListCardHeader.vue";
 import ListCardBody from "@/components/TripPlan/Days/ListCardBody.vue";
 import { useTripPlanStore } from "@/stores/tripPlan";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
 import { storeToRefs } from "pinia";
 
 defineProps({
@@ -11,10 +12,13 @@ defineProps({
 
 const store = useTripPlanStore();
 const { listItem, planDetail } = storeToRefs(store);
+const stores = useEditTripPlanStore();
+const { listItems, daysSelected } = storeToRefs(stores);
 </script>
 
 <template>
     <a-collapse
+        v-if="type == 'read'"
         class="bg-white"
         v-model:activeKey="listItem[day]"
         accordion
@@ -28,7 +32,22 @@ const { listItem, planDetail } = storeToRefs(store);
             :showArrow="false"
         >
             <template #header>
-                <ListCardHeader :day="day" :idx="i" />
+                <ListCardHeader :day="day" :idx="i" :type="type" />
+            </template>
+            <ListCardBody :day="day" :idx="i" :type="type" />
+        </a-collapse-panel>
+    </a-collapse>
+    <a-collapse
+        v-else
+        class="bg-white"
+        v-model:activeKey="listItems[day]"
+        accordion
+        :expandIconPosition="'end'"
+        :bordered="false"
+    >
+        <a-collapse-panel v-for="(v, i) in daysSelected[day]" :key="v.title" class="panel" :showArrow="false">
+            <template #header>
+                <ListCardHeader :day="day" :idx="i" :type="type" />
             </template>
             <ListCardBody :day="day" :idx="i" :type="type" />
         </a-collapse-panel>
