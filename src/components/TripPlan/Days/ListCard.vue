@@ -17,41 +17,43 @@ const { listItems, daysSelected } = storeToRefs(stores);
 </script>
 
 <template>
-    <a-collapse
-        v-if="type == 'read'"
-        class="bg-white"
-        v-model:activeKey="listItem[day]"
-        accordion
-        :expandIconPosition="'end'"
-        :bordered="false"
-    >
-        <a-collapse-panel
-            v-for="(v, i) in planDetail.dayPlanList[day].detailPlanList"
-            :key="v.title"
-            class="panel"
-            :showArrow="false"
+    <div v-if="type == 'read'" class="w-100">
+        <a-collapse
+            class="bg-white"
+            v-model:activeKey="listItem[day]"
+            accordion
+            :expandIconPosition="'end'"
+            :bordered="false"
         >
-            <template #header>
-                <ListCardHeader :day="day" :idx="i" :type="type" />
-            </template>
-            <ListCardBody :day="day" :idx="i" :type="type" />
-        </a-collapse-panel>
-    </a-collapse>
-    <a-collapse
-        v-else
-        class="bg-white"
-        v-model:activeKey="listItems[day]"
-        accordion
-        :expandIconPosition="'end'"
-        :bordered="false"
-    >
-        <a-collapse-panel v-for="(v, i) in daysSelected[day]" :key="v.title" class="panel" :showArrow="false">
-            <template #header>
-                <ListCardHeader :day="day" :idx="i" :type="type" />
-            </template>
-            <ListCardBody :day="day" :idx="i" :type="type" />
-        </a-collapse-panel>
-    </a-collapse>
+            <a-collapse-panel
+                v-for="(v, i) in planDetail.dayPlanList[day].detailPlanList"
+                :key="v.title"
+                class="panel"
+                :showArrow="false"
+            >
+                <template #header>
+                    <ListCardHeader :day="day" :idx="i" :type="type" />
+                </template>
+                <ListCardBody :day="day" :idx="i" :type="type" />
+            </a-collapse-panel>
+        </a-collapse>
+    </div>
+    <div v-else class="w-100">
+        <a-collapse
+            class="bg-white"
+            v-model:activeKey="listItems[day]"
+            accordion
+            :expandIconPosition="'end'"
+            :bordered="false"
+        >
+            <a-collapse-panel v-for="(v, i) in daysSelected[day]" :key="v.title" class="panel" :showArrow="false">
+                <template #header>
+                    <ListCardHeader :day="day" :idx="i" :type="type" />
+                </template>
+                <ListCardBody :day="day" :idx="i" :type="type" />
+            </a-collapse-panel>
+        </a-collapse>
+    </div>
 </template>
 
 <style scoped>

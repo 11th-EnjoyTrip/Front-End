@@ -5,7 +5,10 @@ import { storeToRefs } from "pinia";
 
 const store = useEditTripPlanStore();
 const { tripPlanInfo, quill } = storeToRefs(store);
-const getQuill = (q) => (quill.value = q);
+const getQuill = (q) => {
+    quill.value = q;
+    quill.value.root.innerHTML = tripPlanInfo.value.intro;
+};
 </script>
 
 <template>

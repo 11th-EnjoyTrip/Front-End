@@ -58,6 +58,40 @@ export const useEditTripPlanStore = defineStore("editTripPlan", () => {
             $state.error();
         }
     };
+    const editingTripPlan = async (originalPlan) => {
+        tripPlanInfo.value.title = originalPlan.title;
+        tripPlanInfo.value.startDate = "";
+        tripPlanInfo.value.endDate = "";
+        tripPlanInfo.value.intro = originalPlan.intro;
+        tripPlanInfo.value.startPlace = originalPlan.dayPlanList[0].detailPlanList[0].title;
+
+        attractionInfos.value = [];
+        daysSelected.value = [];
+        listItems.value = [];
+        markerLists.value = [];
+        originalPlan.dayPlanList.forEach((day) => {
+            let newAI = [];
+            let newDays = [];
+            let newML = [];
+            day.detailPlanList.forEach((detail) => {
+                let obj = {
+                    arrivalTime: detail.arrivalTime,
+                    departureTime: detail.departureTime,
+                    transportation: detail.transportation == "CAR" ? "자동차" : "도보",
+                    memo: detail.memo,
+                };
+                newAI.push(obj);
+                newDays.push(detail);
+                newML.push(true);
+            });
+            listItems.value.push("1");
+            markerLists.value.push(newML);
+            daysSelected.value.push(newDays);
+            attractionInfos.value.push(newAI);
+        });
+        console.log(attractionInfos.value);
+        canEdit.value = true;
+    };
     watch(selected.value, () => (canEdit.value = false));
     watch(daysSelected.value, () => {
         listItems.value = new Array(daysSelected.value.length);
@@ -103,5 +137,6 @@ export const useEditTripPlanStore = defineStore("editTripPlan", () => {
         attractionInfos,
         quill,
         getSearchList,
+        editingTripPlan,
     };
 });

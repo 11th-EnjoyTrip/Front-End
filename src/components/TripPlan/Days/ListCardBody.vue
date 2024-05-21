@@ -20,10 +20,14 @@ const getTime = (time) => {
 
 const stores = useEditTripPlanStore();
 const { attractionInfos } = storeToRefs(stores);
-const newArrivalTime = ref(dayjs("12:00", "HH:mm"));
-const newDepartureTime = ref(dayjs("12:00", "HH:mm"));
-const newTransportation = ref("자동차");
-const newMemo = ref("");
+const newArrivalTime = ref(
+    props.type == "read" ? "" : dayjs(attractionInfos.value[props.day][props.idx].arrivalTime, "HH:mm:ss")
+);
+const newDepartureTime = ref(
+    props.type == "read" ? "" : dayjs(attractionInfos.value[props.day][props.idx].departureTime, "HH:mm:ss")
+);
+const newTransportation = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].transportation);
+const newMemo = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].memo);
 watch([newArrivalTime, newDepartureTime, newTransportation, newMemo], () => {
     attractionInfos.value[props.day][props.idx].arrivalTime = newArrivalTime.value.format("HH:mm:ss");
     attractionInfos.value[props.day][props.idx].departureTime = newDepartureTime.value.format("HH:mm:ss");

@@ -3,6 +3,7 @@ import TripPlanDetailInfo from "@/components/TripPlan/Detail/TripPlanDetailInfo.
 import TripPlanDays from "@/components/TripPlan/Days/TripPlanDays.vue";
 import { useTripPlanStore } from "@/stores/tripPlan.js";
 import { useUserInfoStore } from "@/stores/userInfo.js";
+import { useEditTripPlanStore } from "@/stores/editTripPlan";
 import { storeToRefs } from "pinia";
 import { tripPlanDelete } from "@/apis/tripPlanApi";
 import { useRouter } from "vue-router";
@@ -10,9 +11,11 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const tripPlanStore = useTripPlanStore();
 const userInfoStore = useUserInfoStore();
+const editTripPlanStore = useEditTripPlanStore();
 const { userInfo } = storeToRefs(userInfoStore);
 const { planDetail } = storeToRefs(tripPlanStore);
 const { controlTripPlanShare } = tripPlanStore;
+const { editingTripPlan } = editTripPlanStore;
 const deleteTripPlan = async () => {
     await tripPlanDelete(router.currentRoute.value.params.id)
         .then((response) => {
@@ -21,6 +24,10 @@ const deleteTripPlan = async () => {
         .catch((error) => {
             console.log(error);
         });
+};
+const editTripPlan = async () => {
+    await editingTripPlan(planDetail.value);
+    router.push("/plan/add");
 };
 </script>
 
@@ -44,7 +51,7 @@ const deleteTripPlan = async () => {
             </div>
             <div class="col-6">여행계획 정보</div>
             <div v-if="userInfo.userid == planDetail.userid" class="col-3 d-flex justify-content-end column-gap-2">
-                <button class="detail-btn">계획 수정</button>
+                <button class="detail-btn" @click="editTripPlan">계획 수정</button>
                 <button class="detail-btn del" @click="deleteTripPlan">계획 삭제</button>
             </div>
         </div>
