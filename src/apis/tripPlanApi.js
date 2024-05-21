@@ -52,3 +52,10 @@ export const tripPlanAdd = (newPlan) => {
         data: newPlan,
     });
 };
+
+export const tripPlanDelete = (id) => {
+    return api({
+        url: `/plan/${id}`,
+        method: "patch",
+    });
+};

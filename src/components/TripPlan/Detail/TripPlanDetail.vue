@@ -4,12 +4,24 @@ import TripPlanDays from "@/components/TripPlan/Days/TripPlanDays.vue";
 import { useTripPlanStore } from "@/stores/tripPlan.js";
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { storeToRefs } from "pinia";
+import { tripPlanDelete } from "@/apis/tripPlanApi";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const tripPlanStore = useTripPlanStore();
 const userInfoStore = useUserInfoStore();
 const { userInfo } = storeToRefs(userInfoStore);
 const { planDetail } = storeToRefs(tripPlanStore);
 const { controlTripPlanShare } = tripPlanStore;
+const deleteTripPlan = async () => {
+    await tripPlanDelete(router.currentRoute.value.params.id)
+        .then((response) => {
+            router.replace("/plan/list");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
 </script>
 
 <template>
@@ -33,7 +45,7 @@ const { controlTripPlanShare } = tripPlanStore;
             <div class="col-6">여행계획 정보</div>
             <div v-if="userInfo.userid == planDetail.userid" class="col-3 d-flex justify-content-end column-gap-2">
                 <button class="detail-btn">계획 수정</button>
-                <button class="detail-btn del">계획 삭제</button>
+                <button class="detail-btn del" @click="deleteTripPlan">계획 삭제</button>
             </div>
         </div>
         <div class="mt-5 w-100 d-flex justify-content-evenly">
