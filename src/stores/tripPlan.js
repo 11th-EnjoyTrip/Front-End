@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { tripPlanDetail, tripPlanLike, tripPlanLikeCancel } from "@/apis/tripPlanApi.js";
+import { tripPlanDetail, tripPlanLike, tripPlanLikeCancel, tripPlanShare } from "@/apis/tripPlanApi.js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -44,6 +44,8 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
     const likeTripPlanDetail = async (id) => {
         await tripPlanLike(id)
             .then(async () => {
+                const router = useRouter();
+
                 await getTripPlanDetail(id);
                 router.go();
             })
@@ -54,6 +56,20 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
     const cancelLikeTripPlanDetail = async (id) => {
         await tripPlanLikeCancel(id)
             .then(async () => {
+                const router = useRouter();
+
+                await getTripPlanDetail(id);
+                router.go();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    const controlTripPlanShare = async (id) => {
+        await tripPlanShare(id)
+            .then(async () => {
+                const router = useRouter();
+
                 await getTripPlanDetail(id);
                 router.go();
             })
@@ -73,5 +89,6 @@ export const useTripPlanStore = defineStore("tripPlan", () => {
         getTripPlanDetail,
         likeTripPlanDetail,
         cancelLikeTripPlanDetail,
+        controlTripPlanShare,
     };
 });

@@ -37,3 +37,10 @@ export const tripPlanLikeCancel = (id) => {
         },
     });
 };
+
+export const tripPlanShare = (id) => {
+    return api({
+        url: `/plan/shared/${id}`,
+        method: "patch",
+    });
+};
