@@ -22,6 +22,11 @@ import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
+import 'vuetify/styles';
+
 useKakao("467c6aedcee5e042222b042e9896462b");
 
 const app = createApp(App);
@@ -33,10 +38,16 @@ pinia.use(
     })
 );
 
+const vuetify = createVuetify({
+    components,
+    directives,
+});
+
 app.use(router);
 app.use(pinia);
 app.use(Antd);
 app.use(MasonryWall);
+app.use(vuetify);
 
 app.component("QuillEditor", QuillEditor);
 app.component("infinite-loading", InfiniteLoading);
