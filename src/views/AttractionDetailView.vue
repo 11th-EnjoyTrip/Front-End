@@ -3,6 +3,7 @@ import NavComp from "@/components/Nav/NavComp.vue";
 import DetailContents from "@/components/AttractionDetail/DetailContents.vue";
 import DetailMap from "@/components/AttractionDetail/DetailMap.vue";
 import DetailReview from "@/components/AttractionDetail/DetailReview.vue";
+import FooterComp from "@/components/Footer/FooterComp.vue";
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
 import { attractionDetail } from "@/apis/attractionApi";
@@ -47,6 +48,7 @@ const getContent = computed(() => {
             <DetailMap :content="getContent" />
             <DetailReview :contentId="router.currentRoute.value.params.id" />
         </div>
+        <FooterComp/>
     </div>
 </template>
 <style scoped>

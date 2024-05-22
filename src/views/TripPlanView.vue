@@ -1,5 +1,6 @@
 <script setup>
 import NavComp from "@/components/Nav/NavComp.vue";
+import FooterComp from "@/components/Footer/FooterComp.vue";
 import { RouterView } from "vue-router";
 </script>
 
@@ -8,6 +9,7 @@ import { RouterView } from "vue-router";
     <div class="row">
         <RouterView />
     </div>
+    <FooterComp class="mt-5"/>
 </template>
 
 <style scoped></style>
