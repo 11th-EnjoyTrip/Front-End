@@ -17,6 +17,7 @@ const reviews = ref([]);
 const page = ref(0);
 const curReviews = ref([]);
 const nickname = ref("");
+const token = localStorage.getItem("accessToken");
 
 const getAttractionReview = async () => {
     await attractionReview(props.contentId)
@@ -27,14 +28,30 @@ const getAttractionReview = async () => {
             console.log(error);
         });
 };
-const loadNextReviews = async ($state) => {
-    curReviews.value = [...curReviews.value, ...reviews.value[page.value]];
-    page.value++;
+const loadNextReviews = ($state) => {
+    let res = true;
 
-    if (page.value >= reviews.value.length) $state.complete();
-    else if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
-        $state.loaded();
+    if (page.value >= reviews.value.length) {
+        res = true;
+    } else {
+        let nextReviews = reviews.value[page.value];
+        let newNR = nextReviews.filter((v) => v);
+        page.value++;
+
+        if (newNR.length == 0) {
+            curReviews.value = [...curReviews.value];
+            res = true;
+        } else if (newNR.length < 10) {
+            curReviews.value = [...curReviews.value, ...newNR];
+            res = true;
+        } else {
+            curReviews.value = [...curReviews.value, ...newNR];
+            res = false;
+        }
     }
+
+    if (res) $state.complete();
+    else if (window.innerHeight + window.scrolLY >= document.documentElement.scrollHeight) $state.loaded();
 };
 onMounted(async () => {
     await getAttractionReview();
@@ -52,10 +69,10 @@ onMounted(async () => {
     <div class="w-100 mt-5 mb-5 pb-5">
         <div class="review-title">
             <div>리뷰</div>
-            <button v-if="!isAdding" class="review-btn" @click="changeState">리뷰 추가</button>
+            <button v-if="token && !isAdding" class="review-btn" @click="changeState">리뷰 추가</button>
         </div>
         <div v-if="isAdding" class="w-100">
-            <DetailReviewAdd @changeState="changeState" />
+            <DetailReviewAdd :nickname="nickname" @changeState="changeState" />
         </div>
         <div class="w-100">
             <DetailReviewCard

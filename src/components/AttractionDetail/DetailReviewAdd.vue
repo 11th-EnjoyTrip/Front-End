@@ -1,11 +1,21 @@
-<script setup></script>
+<script setup>
+import dayjs from "dayjs";
+
+defineProps({
+    nickname: String,
+});
+</script>
 
 <template>
     <div class="w-100 p-4 mt-4 review-container">
         <div class="w-100 d-flex justify-content-between align-items-center">
             <div>
-                <div class="review-info">작성자&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;최요하</div>
-                <div class="mt-2 review-info">작성날짜&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;2024.05.20</div>
+                <div class="review-info">작성자&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;{{ nickname }}</div>
+                <div class="mt-2 review-info">
+                    작성날짜&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;{{ dayjs().year() }}-{{
+                        dayjs().month() + 1 < 10 ? "0" + (dayjs().month() + 1) : dayjs().month() + 1
+                    }}-{{ dayjs().day() < 10 ? "0" + dayjs().day() : dayjs().day() }}
+                </div>
             </div>
             <button class="review-btn" @click="$emit('changeState')">리뷰 작성</button>
         </div>

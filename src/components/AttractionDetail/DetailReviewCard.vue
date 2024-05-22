@@ -24,30 +24,31 @@ const editLike = async () => {
 </script>
 
 <template>
-    <div class="w-100 p-4 mt-4 review-container">
+    <div v-if="review" class="w-100 p-4 mt-4 review-container">
         <div class="w-100 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center column-gap-3">
                 <img src="@/assets/noPicture2.png" alt="프로필 사진" class="review-card-img" />
                 <div>
-                    <div class="review-writer">{{ review.nickname }}</div>
-                    <div class="review-reg-date">{{ review.updated_time }}</div>
+                    <div v-if="review" class="review-writer">{{ review.nickname }}</div>
+                    <div v-if="review" class="review-reg-date">{{ review.updated_time }}</div>
                 </div>
             </div>
             <div class="d-flex align-items-center column-gap-2">
                 <div v-if="token" class="d-flex align-items-center column-gap-1">
                     <IconLike
+                        v-if="review"
                         :width="24"
                         :height="24"
                         :color="'#ff2c51'"
                         :isLike="review.checkLiked"
                         @click="editLike"
                     />
-                    <div>({{ review.likes }})</div>
+                    <div v-if="review">({{ review.likes }})</div>
                 </div>
 
-                <div v-if="nickname == review.nickname" class="d-flex align-items-center column-gap-3">
+                <div v-if="review && nickname == review.nickname" class="d-flex align-items-center column-gap-3">
                     <IconEdit
-                        v-if="!isEditing"
+                        v-if="review && !isEditing"
                         :width="24"
                         :height="24"
                         :color="'#1769ff'"
@@ -59,7 +60,7 @@ const editLike = async () => {
             </div>
         </div>
         <hr />
-        <div v-if="!isEditing" class="review-content">
+        <div v-if="review && !isEditing" class="review-content">
             {{ review.review_text }}
         </div>
         <textarea v-else class="review-edit" :value="ment"></textarea>
