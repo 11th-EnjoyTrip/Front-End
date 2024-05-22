@@ -1,6 +1,7 @@
 <script setup>
 import ContentsUser from "@/components/MyPage/ContentsUser.vue";
 import ContentsPassword from "@/components/MyPage/ContentsPassword.vue";
+import ContentsAttraction from "@/components/MyPage/ContentsAttraction.vue";
 import ContentsPlan from "@/components/MyPage/ContentsPlan.vue";
 import ContentsReview from "@/components/MyPage/ContentsReview.vue";
 import ContentsQuit from "@/components/MyPage/ContentsQuit.vue";
@@ -20,13 +21,16 @@ defineProps({
                 <ContentsPassword v-if="menu == 1" />
             </Transition>
             <Transition name="come">
-                <ContentsPlan v-if="menu == 2" />
+                <ContentsAttraction v-if="menu == 2" />
             </Transition>
             <Transition name="come">
-                <ContentsReview v-if="menu == 3" />
+                <ContentsPlan v-if="menu == 3" />
             </Transition>
             <Transition name="come">
-                <ContentsQuit v-if="menu == 4" />
+                <ContentsReview v-if="menu == 4" />
+            </Transition>
+            <Transition name="come">
+                <ContentsQuit v-if="menu == 5" />
             </Transition>
         </div>
     </div>

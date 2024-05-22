@@ -12,7 +12,7 @@ watch(curMenu, () => {
     emit("update:modelValue", curMenu.value);
 });
 const changeMenu = (newMenu) => (curMenu.value = newMenu);
-const titles = ["회원정보 관리", "비밀번호 변경", "여행 계획", "리뷰", "회원 탈퇴"];
+const titles = ["회원정보 관리", "비밀번호 변경", "관광지", "여행 계획", "리뷰", "회원 탈퇴"];
 </script>
 
 <template>
