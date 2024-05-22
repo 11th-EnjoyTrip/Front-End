@@ -4,17 +4,19 @@ import IconEdit from "@/components/icons/IconEdit.vue";
 import IconTrash from "@/components/icons/IconTrash.vue";
 import { ref } from "vue";
 import { useReviewStore } from "@/stores/review.js";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
     review: Object,
     nickname: String,
 });
 
+const router = useRouter();
 const checkLiked = ref(props.review.checkLiked);
 const token = localStorage.getItem("accessToken");
 const isEditing = ref(false);
 const store = useReviewStore();
-const { doLikeReview, doCancelReviewLike, editReview } = store;
+const { doLikeReview, doCancelReviewLike, editReview, deleteReview } = store;
 const editLike = async () => {
     if (checkLiked.value) {
         await doCancelReviewLike(props.review.review_id);
@@ -28,6 +30,10 @@ const text = ref(props.review.review_text);
 const updateReview = async () => {
     await editReview(props.review.review_id, text.value);
     isEditing.value = false;
+};
+const delReview = async () => {
+    await deleteReview(props.review.review_id);
+    router.go();
 };
 </script>
 
@@ -63,7 +69,7 @@ const updateReview = async () => {
                         @click="isEditing = !isEditing"
                     />
                     <button v-else class="review-edit-btn" @click="updateReview">수정</button>
-                    <IconTrash :width="24" :height="24" :color="'#1769ff'" />
+                    <IconTrash :width="24" :height="24" :color="'#1769ff'" @click="delReview" />
                 </div>
             </div>
         </div>

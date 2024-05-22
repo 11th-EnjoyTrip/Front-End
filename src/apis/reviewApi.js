@@ -46,3 +46,15 @@ export const reviewEdit = (review_id, newText) => {
         },
     });
 };
+
+export const reviewDelete = (review_id) => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
+    return api({
+        url: "/review/delete",
+        method: "delete",
+        data: {
+            review_id: review_id,
+        },
+    });
+};
