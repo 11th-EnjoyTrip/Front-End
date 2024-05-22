@@ -18,6 +18,13 @@ const sidoList = ref([
     { name: "세종특별자치시", id: 8 },
     { name: "경기도", id: 31 },
     { name: "강원도", id: 32 },
+    { name: "충청북도", id: 33 },
+    { name: "충청남도", id: 34 },
+    { name: "경상북도", id: 35 },
+    { name: "경상남도", id: 36 },
+    { name: "전라북도", id: 37 },
+    { name: "전라남도", id: 38 },
+    { name: "제주도", id: 39 },
 ]);
 
 const category = ref([]);
