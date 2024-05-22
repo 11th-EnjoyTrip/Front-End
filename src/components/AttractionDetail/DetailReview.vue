@@ -5,6 +5,7 @@ import { ref, onMounted } from "vue";
 import { attractionReview } from "@/apis/attractionApi";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
+import { getUserInfo } from "@/apis/userApi.js";
 
 const props = defineProps({
     contentId: Number,
@@ -14,26 +15,36 @@ const isAdding = ref(false);
 const changeState = () => (isAdding.value = !isAdding.value);
 const reviews = ref([]);
 const page = ref(0);
-const getAttractionReview = async ($state) => {
-    try {
-        const response = await attractionReview(props.contentId, page.value);
-        const jsonData = response.data.reviews;
-        if (page.value == 0) reviews.value = [];
+const curReviews = ref([]);
+const nickname = ref("");
 
-        jsonData.forEach((res) => reviews.value.push(res));
+const getAttractionReview = async () => {
+    await attractionReview(props.contentId)
+        .then((response) => {
+            reviews.value = response.data.reviews;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+const loadNextReviews = async ($state) => {
+    curReviews.value = [...curReviews.value, ...reviews.value[page.value]];
+    page.value++;
 
-        if (jsonData.length < 10) $state.complete();
-        else $state.loaded();
-
-        page.value++;
-    } catch (error) {
-        console.error("Error fetching attraction list:", error);
-        $state.error();
+    if (page.value >= reviews.value.length) $state.complete();
+    else if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+        $state.loaded();
     }
 };
-
 onMounted(async () => {
     await getAttractionReview();
+    loadNextReviews();
+
+    await getUserInfo()
+        .then((response) => {
+            nickname.value = response.data.info.nickname;
+        })
+        .catch((error) => console.log(error));
 });
 </script>
 
@@ -47,8 +58,13 @@ onMounted(async () => {
             <DetailReviewAdd @changeState="changeState" />
         </div>
         <div class="w-100">
-            <DetailReviewCard v-for="review in reviews" :key="review.review_id" :review="review" />
-            <InfiniteLoading @infinite="getAttractionReview">
+            <DetailReviewCard
+                v-for="review in curReviews"
+                :key="review.review_id"
+                :review="review"
+                :nickname="nickname"
+            />
+            <InfiniteLoading @infinite="loadNextReviews">
                 <template #complete>
                     <span></span>
                 </template>
