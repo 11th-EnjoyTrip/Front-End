@@ -1,8 +1,6 @@
 import { api } from "./interceptors";
 
 export const attractionList = (region, category, keyword, page) => {
-    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
-
     return api({
         url: "/attraction",
         method: "get",

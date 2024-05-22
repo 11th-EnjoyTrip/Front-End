@@ -3,6 +3,8 @@ import DetailReviewAdd from "@/components/AttractionDetail/DetailReviewAdd.vue";
 import DetailReviewCard from "@/components/AttractionDetail/DetailReviewCard.vue";
 import { ref, onMounted } from "vue";
 import { attractionReview } from "@/apis/attractionApi";
+import InfiniteLoading from "v3-infinite-loading";
+import "v3-infinite-loading/lib/style.css";
 
 const props = defineProps({
     contentId: Number,
@@ -11,16 +13,27 @@ const props = defineProps({
 const isAdding = ref(false);
 const changeState = () => (isAdding.value = !isAdding.value);
 const reviews = ref([]);
+const page = ref(0);
+const getAttractionReview = async ($state) => {
+    try {
+        const response = await attractionReview(props.contentId, page.value);
+        const jsonData = response.data.reviews;
+        if (page.value == 0) reviews.value = [];
+
+        jsonData.forEach((res) => reviews.value.push(res));
+
+        if (jsonData.length < 10) $state.complete();
+        else $state.loaded();
+
+        page.value++;
+    } catch (error) {
+        console.error("Error fetching attraction list:", error);
+        $state.error();
+    }
+};
 
 onMounted(async () => {
-    await attractionReview(props.contentId)
-        .then((response) => {
-            console.log(response.data);
-            reviews.value = [...response.data.reviews];
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    await getAttractionReview();
 });
 </script>
 
@@ -35,6 +48,11 @@ onMounted(async () => {
         </div>
         <div class="w-100">
             <DetailReviewCard v-for="review in reviews" :key="review.review_id" :review="review" />
+            <InfiniteLoading @infinite="getAttractionReview">
+                <template #complete>
+                    <span></span>
+                </template>
+            </InfiniteLoading>
         </div>
     </div>
 </template>

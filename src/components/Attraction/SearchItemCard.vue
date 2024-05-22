@@ -36,8 +36,8 @@ const searchAttr = async (attrId) => {
                         <router-link :to="`attraction/${item.contentId}`" @click="searchAttr(item.contentId)">
                             <div class="card" style="box-sizing: border-box; border-radius: 25px; border: 0">
                                 <img
-                                    v-if="item.firstImage"
-                                    src="@/assets/noPicture2.png"
+                                    v-if="item.firstImage2"
+                                    :src="item.firstImage2"
                                     style="border-radius: 25px; border: 1px solid rgba(0, 0, 0, 0.1)"
                                 />
                                 <img
