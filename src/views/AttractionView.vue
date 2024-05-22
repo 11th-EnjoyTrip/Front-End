@@ -3,6 +3,7 @@ import SearchBox from "@/components/Attraction/SearchBox.vue";
 import NavComp from "@/components/Nav/NavComp.vue";
 import CommonKakaoMap from "@/components/common/CommonKakaoMap.vue";
 import SearchItemCard from "@/components/Attraction/SearchItemCard.vue";
+import FooterComp from "@/components/Footer/FooterComp.vue";
 
 import { ref,onMounted } from 'vue';
 import { attractionList } from "@/apis/attractionApi";
@@ -77,7 +78,7 @@ onMounted(() => {
       </template>
     </InfiniteLoading>
     </div>
-    
+    <FooterComp/>
   </div>
 </template>
 
