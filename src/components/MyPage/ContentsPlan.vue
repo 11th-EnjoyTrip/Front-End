@@ -1,13 +1,10 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import "v3-infinite-loading/lib/style.css";
 import { tripPlanMy, tripPlanLike } from "@/apis/userApi.js";
 import { message } from "ant-design-vue";
 import IconPlace from "@/components/icons/IconPlace.vue";
 import IconArrowDown from "@/components/icons/IconArrowDown.vue";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const plansMy = ref(null);
 const plansLike = ref(null);
 const pageMy = ref(1);

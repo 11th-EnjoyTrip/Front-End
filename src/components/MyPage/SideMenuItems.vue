@@ -3,6 +3,7 @@ import IconPerson from "@/components/icons/IconPerson.vue";
 import IconLock from "@/components/icons/IconLock.vue";
 import IconDeparture from "@/components/icons/IconDeparture.vue";
 import IconPlace from "@/components/icons/IconPlace.vue";
+import IconStar from "@/components/icons/IconStar.vue";
 import IconQuit from "@/components/icons/IconQuit.vue";
 
 defineProps({
@@ -25,7 +26,7 @@ defineProps({
         <IconPerson v-if="idx == 0" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
         <IconLock v-if="idx == 1" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
         <IconDeparture v-if="idx == 2" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
-        <IconPlace v-if="idx == 3" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
+        <IconStar v-if="idx == 3" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
         <IconQuit v-if="idx == 4" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
         <div class="fw-medium item-title" :style="{ color: menu == idx ? '#374553' : '#999999' }">
             {{ title }}
@@ -37,7 +38,7 @@ defineProps({
                 <IconPerson v-if="idx == 0" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
                 <IconLock v-if="idx == 1" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
                 <IconDeparture v-if="idx == 2" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
-                <IconPlace v-if="idx == 3" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
+                <IconStar v-if="idx == 3" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
                 <IconQuit v-if="idx == 4" :width="24" :height="24" :color="menu == idx ? '#1769ff' : '#999999'" />
             </div>
         </div>
