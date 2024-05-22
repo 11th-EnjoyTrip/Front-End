@@ -1,13 +1,9 @@
-git fetch origin
-git checkout feat-#52-chatgpt
-
-
 <script setup>
 import SearchBox from "@/components/Attraction/SearchBox.vue";
 import NavComp from "@/components/Nav/NavComp.vue";
 import CommonKakaoMap from "@/components/common/CommonKakaoMap.vue";
 import SearchItemCard from "@/components/Attraction/SearchItemCard.vue";
-import FooterComp from "@/components/Footer/FooterComp.vue";
+
 import { ref,onMounted } from 'vue';
 import { attractionList } from "@/apis/attractionApi";
 import InfiniteLoading from "v3-infinite-loading";
@@ -25,7 +21,7 @@ const searchItem = async(...args) => {
   keyword.value = args[3].value;
 
   // args(sido,categorys,keyword)로 서버에서 데이터 불러옴
-  page = ref(0);
+  page.value = 0;
   await loadAttractionList();
 };
 
@@ -81,7 +77,7 @@ onMounted(() => {
       </template>
     </InfiniteLoading>
     </div>
-    <FooterComp/>
+    
   </div>
 </template>
 
