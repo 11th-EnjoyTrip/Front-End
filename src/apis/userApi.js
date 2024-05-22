@@ -137,3 +137,21 @@ export const tripPlanLike = (page) => {
         },
     });
 };
+
+export const reviewMy = () => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
+    return api({
+        url: "/review/written",
+        method: "get",
+    });
+};
+
+export const reviewLike = () => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
+    return api({
+        url: "/review/liked",
+        method: "get",
+    });
+};
