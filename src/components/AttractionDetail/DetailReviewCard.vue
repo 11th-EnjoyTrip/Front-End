@@ -14,7 +14,7 @@ const checkLiked = ref(props.review.checkLiked);
 const token = localStorage.getItem("accessToken");
 const isEditing = ref(false);
 const store = useReviewStore();
-const { doLikeReview, doCancelReviewLike } = store;
+const { doLikeReview, doCancelReviewLike, editReview } = store;
 const editLike = async () => {
     if (checkLiked.value) {
         await doCancelReviewLike(props.review.review_id);
@@ -23,6 +23,11 @@ const editLike = async () => {
         await doLikeReview(props.review.review_id);
         checkLiked.value = true;
     }
+};
+const text = ref(props.review.review_text);
+const updateReview = async () => {
+    await editReview(props.review.review_id, text.value);
+    isEditing.value = false;
 };
 </script>
 
@@ -57,16 +62,16 @@ const editLike = async () => {
                         :color="'#1769ff'"
                         @click="isEditing = !isEditing"
                     />
-                    <button v-else class="review-edit-btn">수정</button>
+                    <button v-else class="review-edit-btn" @click="updateReview">수정</button>
                     <IconTrash :width="24" :height="24" :color="'#1769ff'" />
                 </div>
             </div>
         </div>
         <hr />
         <div v-if="review && !isEditing" class="review-content">
-            {{ review.review_text }}
+            {{ text }}
         </div>
-        <textarea v-else class="review-edit" :value="ment"></textarea>
+        <textarea v-else class="review-edit" v-model="text"></textarea>
     </div>
 </template>
 
