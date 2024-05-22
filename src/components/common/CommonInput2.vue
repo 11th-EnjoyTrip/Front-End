@@ -83,22 +83,13 @@ const doEdit = async () => {
                 v-model="newValue"
             />
         </div>
-        <div class="col-1 d-flex align-items-center px-0 edit" v-if="page == 'edit' && title == '닉네임'">
-            <button
-                class="d-flex align-items-center justify-content-center fw-medium rounded-5 border-0 w-100 h-50"
-                :style="{
-                    color: isEditing ? '#ffffff' : '#999999',
-                    'background-color': isEditing ? '#1769ff' : '#ffffff',
-                    'font-size': '14px',
-                    'text-decoration': isEditing ? 'none' : 'underline',
-                }"
-                @click="doEdit"
-            >
-                수정
-            </button>
-        </div>
-        <div v-if="page == 'edit' && title == '닉네임'" class="col-1 px-0 edit-icon">
-            <IconEdit :width="24" :height="24" :color="isEditing ? '#1769ff' : '#999999'" @click="doEdit" />
+        <div
+            v-if="page == 'edit' && title == '닉네임'"
+            class="d-flex align-items-center justify-content-center col-1 px-0"
+        >
+            <a-tooltip :title="isEditing ? '변경하기' : '닉네임 변경'" :color="'#1769ff'">
+                <IconEdit :width="24" :height="24" :color="isEditing ? '#1769ff' : '#999999'" @click="doEdit" />
+            </a-tooltip>
         </div>
     </div>
 </template>
@@ -122,10 +113,6 @@ const doEdit = async () => {
     display: none !important;
 }
 
-.edit-icon {
-    display: none !important;
-}
-
 input::placeholder {
     color: #999999;
 }
@@ -140,15 +127,6 @@ input:focus {
     }
 
     .title-icon {
-        display: flex !important;
-        align-items: center;
-    }
-
-    .edit {
-        display: none !important;
-    }
-
-    .edit-icon {
         display: flex !important;
         align-items: center;
     }

@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="col-9 mx-auto scrolls">
+    <div class="col-10 mx-auto scrolls">
         <div class="position-relative w-100">
             <Transition name="come">
                 <ContentsUser v-if="menu == 0" />

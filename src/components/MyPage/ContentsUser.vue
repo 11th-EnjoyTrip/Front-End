@@ -12,7 +12,7 @@ const { userInfo, isEditing } = storeToRefs(store);
 const newNickname = ref(userInfo.value.nickname);
 const messages = ref({
     state: false,
-    message: "",
+    message: "중복된 닉네임 입니다",
 });
 const isFirst = ref(0);
 
@@ -42,7 +42,7 @@ watch(newNickname, async () => {
 </script>
 
 <template>
-    <div class="position-absolute w-100">
+    <div class="position-absolute w-100 px-5">
         <div class="text-center fw-bold fs-5">회원정보 관리</div>
         <div class="row-gap-3 mt-5 d-flex flex-column">
             <div>

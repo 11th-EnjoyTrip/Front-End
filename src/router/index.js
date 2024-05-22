@@ -102,7 +102,10 @@ const router = createRouter({
             path: "/mypage",
             name: "mypage",
             component: MyPageView,
-            beforeEnter: isValidUser,
+            beforeEnter: async (to, from, next) => {
+                localStorage.removeItem("userInfo");
+                await isValidUser(to, from, next);
+            },
         },
         {
             path: "/attraction",

@@ -86,6 +86,11 @@ const move = () => {
 .modal-default-button {
     background-color: #73afff;
     font-size: 14px;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal-default-button:hover {
+    background-color: #1769ff;
 }
 
 .modal-enter-from {
