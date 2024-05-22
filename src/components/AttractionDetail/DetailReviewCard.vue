@@ -12,7 +12,7 @@ const props = defineProps({
 });
 
 const router = useRouter();
-const checkLiked = ref(props.review.checkLiked);
+const checkLiked = ref(props.review.checkLiked || props.review.checkliked);
 const token = localStorage.getItem("accessToken");
 const isEditing = ref(false);
 const store = useReviewStore();

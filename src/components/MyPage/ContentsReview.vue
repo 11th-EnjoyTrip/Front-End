@@ -8,7 +8,7 @@ const reviewsLike = ref(null);
 const getMyReview = async () => {
     await reviewMy()
         .then((response) => {
-            reviewsMy.value = response.data.reivews;
+            reviewsMy.value = response.data.data;
         })
         .catch((error) => {
             console.log(error);
@@ -17,7 +17,7 @@ const getMyReview = async () => {
 const getMyLikedReview = async () => {
     await reviewLike()
         .then((response) => {
-            reviewsLike.value = response.data.reviews;
+            reviewsLike.value = response.data["liked reviews"];
         })
         .catch((error) => {
             console.log(error);
@@ -35,8 +35,16 @@ onMounted(async () => {
         <div class="w-100 mt-5">
             <div class="fw-bold mt-5 fs-5">내가 작성한 리뷰</div>
             <div class="row gy-5 row-cols-1 row-cols-lg-2 mt-3">
+                <!-- <div v-for="reviews in reviewsMy" :key="reviews[0].review_id" class="w-100">
+                    <DetailReviewCard
+                        v-for="review in reviews"
+                        :key="review.review_id"
+                        :review="review"
+                        :nickname="review.nickname"
+                    />
+                </div> -->
                 <DetailReviewCard
-                    v-for="review in reviewsMy"
+                    v-for="review in reviewsMy[0]"
                     :key="review.review_id"
                     :review="review"
                     :nickname="review.nickname"
@@ -46,8 +54,16 @@ onMounted(async () => {
         <div class="w-100 mt-5">
             <div class="fw-bold mt-5 fs-5">나의 "좋아요" 리뷰</div>
             <div class="row gy-5 row-cols-1 row-cols-lg-2 mt-3">
+                <!-- <div v-for="reviews in reviewsLike" :key="reviews[0].review_id" class="w-100">
+                    <DetailReviewCard
+                        v-for="review in reviews"
+                        :key="review.review_id"
+                        :review="review"
+                        :nickname="review.nickname"
+                    />
+                </div> -->
                 <DetailReviewCard
-                    v-for="review in reviewsLike"
+                    v-for="review in reviewsLike[0]"
                     :key="review.review_id"
                     :review="review"
                     :nickname="review.nickname"
