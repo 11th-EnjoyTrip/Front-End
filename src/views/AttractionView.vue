@@ -1,3 +1,7 @@
+git fetch origin
+git checkout feat-#52-chatgpt
+
+
 <script setup>
 import SearchBox from "@/components/Attraction/SearchBox.vue";
 import NavComp from "@/components/Nav/NavComp.vue";
@@ -20,35 +24,35 @@ const searchItem = async(...args) => {
   keyword.value = args[3].value;
 
   // args(sido,categorys,keyword)로 서버에서 데이터 불러옴
-  page = 0;
+  page = ref(0);
   await loadAttractionList();
 };
 
 // 서버에서 불러온 데이터
 const attractionListData = ref(null)
-let page = 0;
+let page = ref(0);
 
-const loadAttractionList = async ($state) => {
+const loadAttractionList = async $state => {
   try {
-    const response = await attractionList(region.value, categorys.value, keyword.value, page);
-    const jsonData = response.data;
+    const response = await attractionList(region.value, categorys.value, keyword.value, page.value);
+    const jsonData = await response.data;
 
-    if (page === 0) {
+    if (page.value === 0) {
       attractionListData.value = jsonData;
     } else {
       attractionListData.value = [...attractionListData.value, ...jsonData];
+      
+      if (jsonData.length < 20) {
+        $state.complete();  // 데이터가 20개 미만일 경우 로딩 종료
+      } else if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight) {
+        $state.loaded();    // 데이터가 더 있을 경우 로딩 지속
+      }
     }
 
-    if (jsonData.length < 20) {
-      $state.complete();  // 데이터가 20개 미만일 경우 로딩 종료
-    } else {
-      $state.loaded();    // 데이터가 더 있을 경우 로딩 지속
-    }
-
-    page++;
+    page.value++;
   } catch (error) {
     console.error("Error fetching attraction list:", error);
-    $state.error(); // 에러 발생 시 로딩 종료
+    state.error(); // 에러 발생 시 로딩 종료
   }
 };
 
@@ -66,12 +70,17 @@ onMounted(() => {
         <CommonKakaoMap :content="attractionListData" />
     </div>
     <hr width="90%" style="max-width: 1200px;" class="mx-auto" />
-    <SearchItemCard :regionName="regionName" :dataList="attractionListData" />
-    <InfiniteLoading @infinite="loadAttractionList">
+    <div>
+      <SearchItemCard :regionName="regionName" :dataList="attractionListData" />
+    <InfiniteLoading @infinite="loadAttractionList" >
       <template #complete>
-        <span></span>
+        <div>
+          <span></span>
+        </div>
       </template>
     </InfiniteLoading>
+    </div>
+
   </div>
 </template>
 
