@@ -23,3 +23,13 @@ export const reviewLikeCancel = (review_id) => {
         },
     });
 };
+
+export const reviewAdd = (newReview) => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
+    return api({
+        url: "/review/write",
+        method: "post",
+        data: newReview,
+    });
+};

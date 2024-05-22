@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reviewLike, reviewLikeCancel } from "@/apis/reviewApi";
+import { reviewLike, reviewLikeCancel, reviewAdd } from "@/apis/reviewApi";
 
 export const useReviewStore = defineStore("review", () => {
     /* states */
@@ -15,8 +15,13 @@ export const useReviewStore = defineStore("review", () => {
         await reviewLikeCancel(review_id);
     };
 
+    const addReview = async (newReview) => {
+        await reviewAdd(newReview);
+    };
+
     return {
         doLikeReview,
         doCancelReviewLike,
+        addReview,
     };
 });

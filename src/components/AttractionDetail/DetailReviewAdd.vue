@@ -1,9 +1,31 @@
 <script setup>
 import dayjs from "dayjs";
+import { ref } from "vue";
+import { useReviewStore } from "@/stores/review.js";
+import { useRouter } from "vue-router";
 
-defineProps({
+const props = defineProps({
     nickname: String,
+    userid: String,
+    content_id: Number,
 });
+const emit = defineEmits(["changeState"]);
+const review_text = ref("");
+const store = useReviewStore();
+const { addReview } = store;
+const router = useRouter();
+const insertReview = async () => {
+    const newReview = {
+        userid: props.userid,
+        content_id: props.content_id,
+        nickname: props.nickname,
+        review_text: review_text.value,
+    };
+
+    await addReview(newReview);
+    emit("changeState");
+    router.go();
+};
 </script>
 
 <template>
@@ -17,10 +39,10 @@ defineProps({
                     }}-{{ dayjs().day() < 10 ? "0" + dayjs().day() : dayjs().day() }}
                 </div>
             </div>
-            <button class="review-btn" @click="$emit('changeState')">리뷰 작성</button>
+            <button class="review-btn" @click="insertReview">리뷰 작성</button>
         </div>
         <hr />
-        <textarea class="review-content"></textarea>
+        <textarea class="review-content" v-model="review_text"></textarea>
     </div>
 </template>
 

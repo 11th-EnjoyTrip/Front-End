@@ -16,6 +16,7 @@ const changeState = () => (isAdding.value = !isAdding.value);
 const reviews = ref([]);
 const page = ref(0);
 const curReviews = ref([]);
+const userid = ref("");
 const nickname = ref("");
 const token = localStorage.getItem("accessToken");
 
@@ -60,6 +61,7 @@ onMounted(async () => {
     await getUserInfo()
         .then((response) => {
             nickname.value = response.data.info.nickname;
+            userid.value = response.data.info.userid;
         })
         .catch((error) => console.log(error));
 });
@@ -72,7 +74,7 @@ onMounted(async () => {
             <button v-if="token && !isAdding" class="review-btn" @click="changeState">리뷰 추가</button>
         </div>
         <div v-if="isAdding" class="w-100">
-            <DetailReviewAdd :nickname="nickname" @changeState="changeState" />
+            <DetailReviewAdd :nickname="nickname" :userid="userid" :content_id="contentId" @changeState="changeState" />
         </div>
         <div class="w-100">
             <DetailReviewCard

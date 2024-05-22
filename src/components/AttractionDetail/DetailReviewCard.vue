@@ -10,15 +10,18 @@ const props = defineProps({
     nickname: String,
 });
 
+const checkLiked = ref(props.review.checkLiked);
 const token = localStorage.getItem("accessToken");
 const isEditing = ref(false);
 const store = useReviewStore();
 const { doLikeReview, doCancelReviewLike } = store;
 const editLike = async () => {
-    if (props.review.checkLiked) {
+    if (checkLiked.value) {
         await doCancelReviewLike(props.review.review_id);
+        checkLiked.value = false;
     } else {
         await doLikeReview(props.review.review_id);
+        checkLiked.value = true;
     }
 };
 </script>
@@ -40,7 +43,7 @@ const editLike = async () => {
                         :width="24"
                         :height="24"
                         :color="'#ff2c51'"
-                        :isLike="review.checkLiked"
+                        :isLike="checkLiked"
                         @click="editLike"
                     />
                     <div v-if="review">({{ review.likes }})</div>
