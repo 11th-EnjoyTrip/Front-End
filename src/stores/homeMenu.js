@@ -1,51 +1,47 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
-import { attractionList, contentsList } from "@/apis/homeApi";
-
-const categoryList = [
-    { name: "관광지", id: 0 },
-    { name: "문화시설", id: 1 },
-    { name: "숙박", id: 2 },
-    { name: "행사 / 공연 / 축제", id: 3 },
-    { name: "레포츠", id: 4 },
-    { name: "쇼핑", id: 5 },
-    { name: "음식점", id: 6 },
-];
+import { rankAttraction, rankPlan, rankReview } from "@/apis/homeApi";
 
 export const useHomeInfoStore = defineStore("homeInfo", () => {
     /* states */
-    const attractions = ref([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-    const contents = ref([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+    const attractions = ref([{}]);
+    const plans = ref([{}]);
+    const reviews = ref([{}]);
     const contentType = ref("");
 
     /* getters */
-    const getAttractions = computed(() => {
-        return attractions.value;
-    });
-    const getContents = computed(() => {
-        return contents.value;
-    });
-    const getContentType = computed(() => {
-        return contentType.value;
-    });
-    const getContentTypeId = computed(() => {
-        return categoryList.filter((category) => category.name == contentType.value)[0].id;
-    });
 
     /* actions */
     const queryAttractions = async () => {
-        await attractionList()
+        await rankAttraction()
             .then((response) => {
-                attractions.value = [...response.data];
+                attractions.value = response.data.splice(0, 5);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
-    const queryContents = async (contentTypeId) => {
-        await contentsList(contentTypeId)
+    const queryPlans = async () => {
+        if (localStorage.getItem("accessToken")) {
+            await rankPlan()
+                .then((response) => {
+                    plans.value = [];
+                    for (let i = 0; i < 5; i++) {
+                        let obj = response.data[i];
+                        obj.contents = JSON.parse(response.data[i].contents);
+                        plans.value.push(obj);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    };
+    const queryReviews = async () => {
+        await rankReview()
             .then((response) => {
-                contents.value = [...response.data];
+                reviews.value = response.data["best reviews"];
+                console.log(reviews.value);
             })
             .catch((error) => {
                 console.log(error);
@@ -57,13 +53,11 @@ export const useHomeInfoStore = defineStore("homeInfo", () => {
 
     return {
         attractions,
-        contents,
-        getAttractions,
-        getContents,
-        getContentType,
-        getContentTypeId,
+        plans,
+        reviews,
         queryAttractions,
-        queryContents,
+        queryPlans,
+        queryReviews,
         changeContentType,
     };
 });

@@ -3,7 +3,7 @@ import NavComp from "@/components/Nav/NavComp.vue";
 import DetailContents from "@/components/AttractionDetail/DetailContents.vue";
 import DetailMap from "@/components/AttractionDetail/DetailMap.vue";
 import DetailReview from "@/components/AttractionDetail/DetailReview.vue";
-import TheTrainer from '@/components/Chat/TheTrainer.vue';
+import TheTrainer from "@/components/Chat/TheTrainer.vue";
 import ChatButton from "@/components/Chat/ChatButton.vue";
 import FooterComp from "@/components/Footer/FooterComp.vue";
 import { useRouter } from "vue-router";
@@ -17,9 +17,8 @@ const content = ref(null);
 const showChat = ref(false);
 
 const handleShowChat = () => {
-  showChat.value = !showChat.value;
+    showChat.value = !showChat.value;
 };
-
 
 onMounted(async () => {
     await attractionDetail(router.currentRoute.value.params.id)
@@ -56,15 +55,15 @@ const getContent = computed(() => {
             <DetailMap :content="getContent" />
             <DetailReview :contentId="router.currentRoute.value.params.id" />
         </div>
-        <ChatButton @showTrainer="handleShowChat"/>
-            <div v-if="showChat">
+        <ChatButton @showTrainer="handleShowChat" />
+        <div v-if="showChat">
             <TheTrainer @showTrainer="handleShowChat" />
-            </div>
-        <FooterComp/>
+        </div>
+        <FooterComp />
     </div>
 </template>
 <style scoped>
 .attraction-detail-view {
-    width: 65% !important;
+    max-width: 1200px;
 }
 </style>

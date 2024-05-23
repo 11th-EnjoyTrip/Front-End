@@ -35,7 +35,7 @@ export const useEditTripPlanStore = defineStore("editTripPlan", () => {
         ],
     ]);
     const canEdit = ref(false);
-    const quill = ref(null);
+    const quill = ref("<p></p>");
 
     /* getters */
 
@@ -89,7 +89,6 @@ export const useEditTripPlanStore = defineStore("editTripPlan", () => {
             daysSelected.value.push(newDays);
             attractionInfos.value.push(newAI);
         });
-        console.log(attractionInfos.value);
         canEdit.value = true;
     };
     watch(selected.value, () => (canEdit.value = false));

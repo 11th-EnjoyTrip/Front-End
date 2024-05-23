@@ -1,8 +1,9 @@
 <script setup>
 import { Carousel, Slide, Navigation } from "vue3-carousel";
-import { ref } from "vue";
-import HomeTourCard from "@/components/Home/HomeTourCard.vue";
+import { ref, onMounted } from "vue";
+import HomeRankAttractionCard from "@/components/Home/Attraction/HomeRankAttractionCard.vue";
 import { useHomeInfoStore } from "@/stores/homeMenu";
+import { storeToRefs } from "pinia";
 
 const settings = ref({
     itemsToShow: 1,
@@ -27,13 +28,18 @@ const breakpoints = ref({
 });
 
 const store = useHomeInfoStore();
+const { attractions } = storeToRefs(store);
+const { queryAttractions } = store;
+onMounted(async () => {
+    await queryAttractions();
+});
 </script>
 
 <template>
     <div class="w-100 mx-auto mt-4">
         <Carousel v-bind="settings" :breakpoints="breakpoints" :wrap-around="true" :autoplay="3000">
-            <Slide v-for="attraction in store.getAttractions" :key="attraction.contentId">
-                <HomeTourCard :attraction="attraction" />
+            <Slide v-for="attraction in attractions" :key="attraction.contentId">
+                <HomeRankAttractionCard :attraction="attraction" />
             </Slide>
 
             <template #addons>

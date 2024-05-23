@@ -6,6 +6,10 @@ export const useAttractionStore = defineStore("attraction", () => {
     /* states */
     const attractionId = ref(0);
     const content = ref({});
+    const curLatLng = ref({
+        lat: 0,
+        lng: 0,
+    });
 
     /*getters */
     const getAttractionId = computed(() => {
@@ -47,6 +51,7 @@ export const useAttractionStore = defineStore("attraction", () => {
     return {
         attractionId,
         content,
+        curLatLng,
         getAttractionId,
         getContent,
         changeAttraction,

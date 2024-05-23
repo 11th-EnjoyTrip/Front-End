@@ -30,12 +30,36 @@ onMounted(async () => {
         .catch((error) => {
             console.log(error);
         });
+    console.log(planDetail.value);
 });
 </script>
 
 <template>
     <div class="d-flex">
-        <img src="@/assets/noPicture2.png" alt="이미지" width="100" height="100" class="object-fit-cover" />
+        <img
+            v-if="
+                type == 'read'
+                    ? planDetail.dayPlanList[day].detailPlanList[idx].firstImage2
+                    : daysSelected[day][idx].firstImage2
+            "
+            :src="
+                type == 'read'
+                    ? planDetail.dayPlanList[day].detailPlanList[idx].firstImage2
+                    : daysSelected[day][idx].firstImage2
+            "
+            alt="이미지"
+            width="100"
+            height="100"
+            class="object-fit-cover rounded-2"
+        />
+        <img
+            v-else
+            src="@/assets/noPicture2.png"
+            alt="이미지"
+            width="100"
+            height="100"
+            class="object-fit-cover rounded-2"
+        />
         <div class="row-gap-2 d-flex flex-column justify-content-center ps-3 w-100">
             <div class="d-flex align-items-center justify-content-between column-gap-1 card-header-title">
                 <div>
@@ -76,10 +100,16 @@ onMounted(async () => {
     font-weight: 600;
     color: #374553;
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-header-address {
     font-size: 14px;
     color: #646f7c;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>

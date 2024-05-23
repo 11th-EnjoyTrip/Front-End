@@ -5,8 +5,10 @@ import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useUserInfoStore } from "@/stores/userInfo";
 
+let alreadyTry = false;
+
 export const api = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "http://117.20.193.155:1234",
 });
 
 api.defaults.headers.common["Authorization"] = "";
@@ -34,31 +36,36 @@ api.interceptors.response.use(
             const store = useUserInfoStore();
             const { loginState, userInfo, trueLogout } = storeToRefs(store);
 
-            await regenerateAccess()
-                .then(async (response) => {
-                    localStorage.setItem("accessToken", response.data["access-token"]);
-                    console.log(error.config);
-                })
-                .catch(async () => {
-                    await logout()
-                        .then(() => {
-                            localStorage.removeItem("accessToken");
-                            localStorage.removeItem("refreshToken");
-                            loginState.value = false;
-                            userInfo.value = null;
+            if (!alreadyTry) {
+                alreadyTry = true;
+                await regenerateAccess()
+                    .then(async (response) => {
+                        localStorage.setItem("accessToken", response.data["access-token"]);
+                        alreadyTry = false;
+                        console.log(error.config);
+                    })
+                    .catch(async (error) => {
+                        if (error.status)
+                            await logout()
+                                .then(() => {
+                                    localStorage.removeItem("accessToken");
+                                    localStorage.removeItem("refreshToken");
+                                    loginState.value = false;
+                                    userInfo.value = null;
 
-                            if (!trueLogout) {
-                                message.error("로그인이 만료되었습니다", 5);
-                                router.replace("/auth/login");
-                            } else {
-                                message.success("로그아웃에 성공했습니다", 3);
-                                router.replace("/");
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                });
+                                    if (!trueLogout) {
+                                        message.error("로그인이 만료되었습니다", 5);
+                                        router.replace("/auth/login");
+                                    } else {
+                                        message.success("로그아웃에 성공했습니다", 3);
+                                        router.replace("/");
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                    });
+            }
         }
         return Promise.reject(error);
     }

@@ -1,10 +1,26 @@
 <script setup>
 import IconQuote from "@/components/icons/IconQuote.vue";
 import IconLike from "@/components/icons/IconLike.vue";
+import { attractionLike, attractionLikeCancel } from "@/apis/attractionApi";
+import { ref } from "vue";
 
-defineProps({
+const props = defineProps({
     content: Object,
 });
+
+const token = localStorage.getItem("accessToken");
+const like = ref(props.content.isLikedAttraction);
+const doLike = async () => {
+    if (like.value) {
+        await attractionLikeCancel(props.content.contentId)
+            .then(() => (like.value = false))
+            .catch((error) => console.log(error));
+    } else {
+        await attractionLike(props.content.contentId)
+            .then(() => (like.value = true))
+            .catch((error) => console.log(error));
+    }
+};
 </script>
 
 <template>
@@ -18,7 +34,7 @@ defineProps({
                     {{ content.title }}
                 </div>
             </div>
-            <IconLike :width="32" :height="32" :color="'#ff2c51'" :isLike="false" />
+            <IconLike v-if="token" :width="32" :height="32" :color="'#ff2c51'" :isLike="like" @click="doLike" />
         </div>
 
         <div class="content-box">

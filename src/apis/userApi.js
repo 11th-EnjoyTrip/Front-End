@@ -41,7 +41,9 @@ export const login = (id, password) => {
 };
 
 export const getUserInfo = () => {
-    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken")
+        ? localStorage.getItem("accessToken")
+        : null;
 
     return api({
         url: `/member/info`,

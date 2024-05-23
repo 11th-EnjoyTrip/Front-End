@@ -21,13 +21,31 @@ export const attractionDetail = (id) => {
 };
 
 export const attractionReview = (contentId, page) => {
-    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
-
     return api({
         url: `/review/read/${contentId}`,
         method: "get",
         params: {
             page: page,
+        },
+    });
+};
+
+export const attractionLike = (contentId) => {
+    return api({
+        url: "/attraction/like",
+        method: "post",
+        data: {
+            contentId: contentId,
+        },
+    });
+};
+
+export const attractionLikeCancel = (contentId) => {
+    return api({
+        url: "/attraction/like",
+        method: "delete",
+        data: {
+            contentId: contentId,
         },
     });
 };
