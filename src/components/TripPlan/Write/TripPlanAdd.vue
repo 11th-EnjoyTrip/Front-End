@@ -67,7 +67,7 @@ const addPlan = async () => {
                     end.getMonth() + 1 < 10 ? "0" + (end.getMonth() + 1) : end.getMonth() + 1
                 }-${end.getDate() < 10 ? "0" + end.getDate() : end.getDate()}`,
                 title: tripPlanInfo.value.title.trim(),
-                intro: quill.value.root.innerHTML,
+                intro: quill.value,
                 isShared: false,
                 dayPlanList: dayPlanList,
             };

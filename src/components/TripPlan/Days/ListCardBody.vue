@@ -20,12 +20,13 @@ const getTime = (time) => {
 
 const stores = useEditTripPlanStore();
 const { attractionInfos } = storeToRefs(stores);
+console.log(attractionInfos.value);
 const newArrivalTime = ref(
     props.type == "read"
         ? ""
         : dayjs(
               attractionInfos.value[props.day][props.idx].arrivalTime == ""
-                  ? "12:00"
+                  ? "12:00:00"
                   : attractionInfos.value[props.day][props.idx].arrivalTime,
               "HH:mm:ss"
           )
@@ -35,7 +36,7 @@ const newDepartureTime = ref(
         ? ""
         : dayjs(
               attractionInfos.value[props.day][props.idx].departureTime == ""
-                  ? "12:00"
+                  ? "12:00:00"
                   : attractionInfos.value[props.day][props.idx].departureTime,
               "HH:mm:ss"
           )
@@ -112,7 +113,8 @@ watch([newArrivalTime, newDepartureTime, newTransportation, newMemo], () => {
 
 .card-body-description {
     width: 100%;
-    border: 0;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
     margin-top: 4px;
     resize: none;
 }

@@ -6,7 +6,7 @@ import { useEditTripPlanStore } from "@/stores/editTripPlan";
 import { storeToRefs } from "pinia";
 
 const sidoList = ref([
-    { name: "지역 무관", id: 0 },
+    { name: "지역 전체", id: 0 },
     { name: "서울", id: 1 },
     { name: "인천", id: 2 },
     { name: "대전", id: 3 },
@@ -17,10 +17,19 @@ const sidoList = ref([
     { name: "세종특별자치시", id: 8 },
     { name: "경기도", id: 31 },
     { name: "강원도", id: 32 },
+    { name: "충청북도", id: 33 },
+    { name: "충청남도", id: 34 },
+    { name: "경상북도", id: 35 },
+    { name: "경상남도", id: 36 },
+    { name: "전라북도", id: 37 },
+    { name: "전라남도", id: 38 },
+    { name: "제주도", id: 39 },
 ]);
 const store = useEditTripPlanStore();
 const { curSido } = storeToRefs(store);
+const idx = ref(0);
 const changeSido = (sido) => {
+    idx.value = sido;
     curSido.value = sidoList.value[sido].id;
     doEdit();
 };
@@ -34,7 +43,7 @@ const doEdit = () => {
 
 <template>
     <div class="col-8 add-search-content">
-        {{ sidoList[curSido].name }}
+        {{ sidoList[idx].name }}
         <div class="add-search-dropdown" :style="{ display: displayState }">
             <div
                 v-for="(sido, i) in sidoList"

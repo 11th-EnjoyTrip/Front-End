@@ -5,10 +5,6 @@ import { storeToRefs } from "pinia";
 
 const store = useEditTripPlanStore();
 const { tripPlanInfo, quill } = storeToRefs(store);
-const getQuill = (q) => {
-    quill.value = q;
-    quill.value.root.innerHTML = tripPlanInfo.value.intro;
-};
 </script>
 
 <template>
@@ -47,7 +43,7 @@ const getQuill = (q) => {
         </div>
         <div class="mt-4 w-100 mb-5">
             <div class="info-intro-title">여행 설명</div>
-            <QuillEditor theme="snow" :toolbar="'full'" @ready="getQuill" />
+            <QuillEditor theme="snow" :toolbar="'full'" v-model:content="quill" contentType="html" />
         </div>
     </div>
 </template>

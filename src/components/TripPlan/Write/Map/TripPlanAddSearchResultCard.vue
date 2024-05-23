@@ -68,7 +68,8 @@ const deleting = () => {
 
 <template>
     <div class="add-search-result-card" @click="changeLatLng">
-        <img :src="item.firstImage2" alt="이미지" class="add-search-result-card-img" />
+        <img v-if="item.firstImage2" :src="item.firstImage2" alt="이미지" class="add-search-result-card-img" />
+        <img v-else src="@/assets/noPicture2.png" class="add-search-result-card-img" />
         <div class="d-flex justify-content-between align-items-center w-100 px-2">
             <div>
                 <div class="d-flex align-items-center column-gap-2 fw-bold">
@@ -102,6 +103,8 @@ const deleting = () => {
     width: 100px;
     height: 100px;
     object-fit: cover;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .add-search-result-card-address {
