@@ -1,6 +1,7 @@
 <script setup>
 import { computed, reactive } from 'vue';
 import TheResult from '@/components/Chat/TheResult.vue';
+
 import {
   createCompletion,
   createClient,
@@ -25,8 +26,6 @@ const data = reactive({
   loads: false,
 });
 
-const loads = false;
-
 class Message {
   role;
 
@@ -49,7 +48,6 @@ const remember = (key, value) => localStorage.setItem(key, value);
 const rememberKey = () => localStorage.setItem('key', window.btoa(data.key));
 
 const run = async () => {
-  // data.generatedMessages = [];
   data.loads = true;
   const client = createClient(data.key);
   try {
@@ -64,7 +62,6 @@ const run = async () => {
       const [choice] = choices;
       const { message } = choice;
       data.generatedMessages.push(new Message(ROLE_ASSISTANT, message.content));
-      // document.getElementById('input-9').focus();
       await new Promise((resolve) => setTimeout(resolve, data.delaySeconds * 1000));
       data.loads = false;
     }
@@ -76,69 +73,72 @@ const run = async () => {
 </script>
 
 <template>
-    <div >
-        <v-snackbar
-        v-if="data.error"
-        color="indigo-lighten-1"
-        model-value
-        @update:modelValue="data.error = ''"
-        >
-        {{ data.error }}
-        </v-snackbar>
-        <v-row class="justify-center">
+  <div>
+    <v-snackbar
+      v-if="data.error"
+      color="indigo-lighten-1"
+      model-value
+      @update:modelValue="data.error = ''"
+    >
+      {{ data.error }}
+    </v-snackbar>
+    <v-row class="justify-center">
+      <v-col cols="12" sm="10" md="6">
+        <v-card class="floating-card ">
+          <div class="pa-5 d-flex pb-3 pt-4" style="background-color:#eceff1;">
+              <a-avatar style="color: #1769FF; background-color: #B4D4FF">U</a-avatar>
+              <div class="text-h6 font-weight-bold ms-2" style="color:#666666; margin-top:2px;">Travelog</div>
+              <CloseOutlined />
+          </div>
+          <v-card-item class="pa-5 pb-4 pt-3 bg-white">
+            <TheResult :messages="generatedMessages" />
+          </v-card-item>
 
-            <v-col cols="12" sm="10" md="6">
-            <v-card
-                color="blue-grey-lighten-5"
-                height="700px"
-                style="width:400px;"
-            >
-                <v-card-item class="pa-8 pb-4">
-                  <div class="text-h5 mb-4 font-weight-bold text-indigo">
-                      문의내용
-                  </div>
-                  <div>
-                      <TheResult :messages="generatedMessages" />
-                  </div>
-                </v-card-item>
-                <v-card-item class="ps-8 pe-8">
-                  <div class="loading" v-if="data.loads">
-                      <div class="loader2"></div>
-                  </div>
-                  <div class="my-4">
-                      <div class="text-subtitle-2 mb-2">
-                      User Messages
-                      </div>
-                      <div>
-                        <v-textarea
-                            v-model="data.userMessage"
-                            color="indigo"
-                            hide-details
-                            no-resize
-                            rows="1"
-                            variant="outlined"
-                            @input="remember('userMessage', data.userMessage)"
-                            ref="msg"
-                        />
-                      </div>
-                  </div>
-                </v-card-item>
-                <v-card-actions class="justify-end pa-8 pt-0">
-                <v-btn
-                    block
-                    color="indigo"
-                    variant="outlined"
-                    @click="run"
-                >
-                    문의보내기
-                </v-btn>
-                </v-card-actions>
-            </v-card>
-            </v-col>
-        </v-row>
-    </div>
+          <div class="loading " v-if="data.loads">
+              <div class="loader2"></div>
+          </div>
+          <v-card-text style="padding-top:2px;">
+            <v-text-field
+              v-model="data.userMessage"
+              :loading="loading"
+              append-inner-icon="mdi-magnify"
+              density="compact"
+              label="무엇이 궁금하신가요?"
+              variant="solo"
+              hide-details
+              single-line
+              rounded
+              no-resize
+              @input="remember('userMessage', data.userMessage)"
+              ref="msg"
+              @click:append-inner="run"
+            ></v-text-field>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
-<style>
-  @import "@/assets/chat/loading.css";
+<style scoped>
+@import "@/assets/chat/loading.css";
+
+.floating-card {
+  position: fixed;
+  bottom: 40px;
+  right: 12%;
+  width: 350px;
+  max-width: calc(100% - 40px);
+  height: 550px;
+  /* background-color: #eceff1; */
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius:15px;
+}
+
+@media (max-width: 1350px) {
+  .floating-card {
+    right: 6%;
+  }
+}
 </style>
