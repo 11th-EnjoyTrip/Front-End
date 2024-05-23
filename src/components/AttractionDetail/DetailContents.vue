@@ -5,6 +5,8 @@ import IconLike from "@/components/icons/IconLike.vue";
 defineProps({
     content: Object,
 });
+
+const token = localStorage.getItem("accessToken");
 </script>
 
 <template>
@@ -18,7 +20,7 @@ defineProps({
                     {{ content.title }}
                 </div>
             </div>
-            <IconLike :width="32" :height="32" :color="'#ff2c51'" :isLike="false" />
+            <IconLike v-if="token" :width="32" :height="32" :color="'#ff2c51'" :isLike="false" />
         </div>
 
         <div class="content-box">

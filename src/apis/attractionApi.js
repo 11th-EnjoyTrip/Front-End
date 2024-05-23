@@ -21,8 +21,6 @@ export const attractionDetail = (id) => {
 };
 
 export const attractionReview = (contentId, page) => {
-    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
-
     return api({
         url: `/review/read/${contentId}`,
         method: "get",

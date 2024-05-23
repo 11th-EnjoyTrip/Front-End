@@ -6,6 +6,7 @@ import { attractionReview } from "@/apis/attractionApi";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 import { getUserInfo } from "@/apis/userApi.js";
+import { Empty } from "ant-design-vue";
 
 const props = defineProps({
     contentId: Number,
@@ -65,6 +66,8 @@ onMounted(async () => {
         })
         .catch((error) => console.log(error));
 });
+
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 </script>
 
 <template>
@@ -75,6 +78,9 @@ onMounted(async () => {
         </div>
         <div v-if="isAdding" class="w-100">
             <DetailReviewAdd :nickname="nickname" :userid="userid" :content_id="contentId" @changeState="changeState" />
+        </div>
+        <div v-if="curReviews.length < 1">
+            <a-empty :image="simpleImage"> 등록된 리뷰가 없습니다 </a-empty>
         </div>
         <div class="w-100">
             <DetailReviewCard

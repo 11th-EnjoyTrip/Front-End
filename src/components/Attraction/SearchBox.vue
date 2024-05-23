@@ -42,7 +42,7 @@ const categoryList = ref([
 const keyword = ref("");
 
 const updateSido = (item) => {
-    console.log(item)
+    console.log(item);
     sido.value = item.id;
     sidoName.value = item.name;
 };
@@ -60,7 +60,6 @@ const updateCategory = (item) => {
 
 const toggleAllCategories = () => {
     if (document.getElementById("flexSwitchCheckChecked").checked) {
-
         // 체크되었을 때: 모든 카테고리를 선택
         category.value = JSON.parse(JSON.stringify(categoryList.value));
     } else {
@@ -76,7 +75,7 @@ const result = ref("");
 
 // 검색 이벤트
 const doSearch = () => {
-    console.log(sido.value)
+    console.log(sido.value);
     // 유효성 체크
     if (sido.value == undefined || category.value.length == 0) {
         modalState.value = true;
@@ -87,10 +86,10 @@ const doSearch = () => {
         isSuccess.value = true;
 
         //카테고리 형식 변경
-        const categorys = ref(category.value.map((cat)=>cat.id).join(","))
-  
+        const categorys = ref(category.value.map((cat) => cat.id).join(","));
+
         // 부모 컴포넌트로 전달
-        emit("searchItem", sido,sidoName, categorys, keyword);
+        emit("searchItem", sido, sidoName, categorys, keyword);
     }
 };
 </script>
@@ -142,8 +141,9 @@ const doSearch = () => {
                             ? '관광지 유형을 선택해주세요'
                             : category.length == 7
                             ? '관광지 유형 전체'
-                            : category.map((cat) => cat.name).join(', ')"
-                    />
+                            : category.map((cat) => cat.name).join(', ')
+                    "
+                />
                 <ul
                     class="dropdown-menu p-4"
                     style="
@@ -227,7 +227,7 @@ const doSearch = () => {
         </div>
         <ModalSearchResult
             :modalState="modalState"
-            :isSucess="isSuccess"
+            :isSuccess="isSuccess"
             :result="result"
             @close="modalState = false"
         />

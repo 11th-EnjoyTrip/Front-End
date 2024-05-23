@@ -2,7 +2,7 @@
 import { computed, ref, watch, nextTick } from "vue";
 import { KakaoMap, KakaoMapCustomOverlay, KakaoMapMarker } from "vue3-kakao-maps";
 import CommonKakaoMapInfoWindow from "./CommonKakaoMapInfoWindow.vue";
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 import router from "@/router";
 
 const props = defineProps({
@@ -15,11 +15,12 @@ const props = defineProps({
 const map = ref();
 const route = useRoute();
 const overlay = ref(null);
-let visibleRef = props.content.map((item, index) => (index === 0 ? ref(true) : ref(false)));
+const visibleRef = ref(props.content.map((item, idx) => (idx == 0 ? true : false)));
 
 //마커 클릭 시 인포윈도우의 visible 값을 반전
-const onClickMapMarker = (index) => {
-    visibleRef[index].value = !visibleRef[index].value;
+const onClickMapMarker = () => {
+    visibleRef.value[0] = !visibleRef.value[0];
+    //visibleRef.value[index] = !visibleRef.value[index];
 };
 
 // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
@@ -48,7 +49,6 @@ const setBounds = () => {
         map.value.setBounds(bounds);
     }
     map.value.setDraggable(props.isDraggable);
-
 };
 
 const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
@@ -59,7 +59,7 @@ watch(
     () => props.content.length,
     () => {
         onLoadKakaoMap(map.value);
-        visibleRef = props.content.map((item, index) => (index === 0 ? ref(true) : ref(false)));
+        visibleRef.value = props.content.map((item, index) => (index === 0 ? true : false));
     }
 );
 
@@ -68,36 +68,41 @@ watch(
 // };
 </script>
 
-<template style="background-color: white;" >
-  <KakaoMap width="100%" class="kakao-map-item" :lat="content[0].latitude" :lng="content[0].longitude" 
-  @onLoadKakaoMap="onLoadKakaoMap" >
-    <div v-for="(data, index) in content" :key="index">
-      <KakaoMapMarker
-        :lat="data.latitude"
-        :lng="data.longitude"
-        :image="{
-        imageSrc: `/src/assets/marker/${data.contentTypeId}.png`,
-        imageWidth: 42,
-        imageHeight: 42,
-      }"
-        @onClickKakaoMapMarker="onClickMapMarker(index)"
-      />
-        <KakaoMapCustomOverlay
-        :lat="data.latitude"
-        :lng="data.longitude"
-        :y-anchor="1.3"
-        :z-index="20"
-        @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
-        :visible="visibleRef[index].value"
-        >
-            <router-link :to= "`/attraction/${data.contentId}`">
-                <CommonKakaoMapInfoWindow
-                    :title="data.title"
-                    :content-type-name="data.contentTypeName"
-                    :first-image="data.firstImage"
-                />
-            </router-link>
-        </KakaoMapCustomOverlay>
+<template style="background-color: white">
+    <KakaoMap
+        width="100%"
+        class="kakao-map-item"
+        :lat="content[0].latitude"
+        :lng="content[0].longitude"
+        @onLoadKakaoMap="onLoadKakaoMap"
+    >
+        <div v-for="(data, index) in content" :key="index">
+            <KakaoMapMarker
+                :lat="data.latitude"
+                :lng="data.longitude"
+                :image="{
+                    imageSrc: `/src/assets/marker/${data.contentTypeId}.png`,
+                    imageWidth: 42,
+                    imageHeight: 42,
+                }"
+                @onClickKakaoMapMarker="onClickMapMarker"
+            />
+            <KakaoMapCustomOverlay
+                :lat="data.latitude"
+                :lng="data.longitude"
+                :y-anchor="1.3"
+                :z-index="20"
+                @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
+                :visible="visibleRef[index]"
+            >
+                <router-link :to="`/attraction/${data.contentId}`">
+                    <CommonKakaoMapInfoWindow
+                        :title="data.title"
+                        :content-type-name="data.contentTypeName"
+                        :first-image="data.firstImage"
+                    />
+                </router-link>
+            </KakaoMapCustomOverlay>
         </div>
     </KakaoMap>
 </template>

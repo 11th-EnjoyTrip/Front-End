@@ -1,11 +1,11 @@
 <script setup>
-
 defineProps({
     modalState: Boolean,
     isSuccess: Boolean,
     result: String,
 });
 
+const emit = defineEmits(["close"]);
 </script>
 
 <template>
@@ -23,7 +23,7 @@ defineProps({
                     </div>
                     <button
                         class="w-100 mt-4 py-2 text-white fw-bold border-0 modal-default-button"
-                        @click="$emit('close')"
+                        @click="emit('close')"
                     >
                         확인
                     </button>
