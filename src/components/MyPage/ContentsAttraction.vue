@@ -48,7 +48,7 @@ watch(page, async () => await getAttractionLike());
 
 <template>
     <div class="w-100">
-        <div class="text-center fw-bold fs-5">여행 계획 관리</div>
+        <div class="text-center fw-bold fs-5">관광지 관리</div>
         <div class="w-100 mt-3">
             <div class="w-100 d-flex justify-content-between align-items-end">
                 <div class="fw-bold mt-5">"좋아요" 관광지</div>
@@ -67,7 +67,13 @@ watch(page, async () => await getAttractionLike());
                     <th width="10">상세 보기</th>
                 </tr>
                 <tr v-if="!like || !like.length">
-                    <td colspan="5"><a-empty :image="simpleImage" /></td>
+                    <td colspan="5">
+                        <a-empty :image="simpleImage">
+                            <template #description>
+                                <span> 불러올 데이터가 없습니다 </span>
+                            </template>
+                        </a-empty>
+                    </td>
                 </tr>
                 <Transition
                     v-for="(val, index) in like"

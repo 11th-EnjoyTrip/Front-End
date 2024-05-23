@@ -130,7 +130,13 @@ onMounted(async () => {
                     <th width="10">상세 보기</th>
                 </tr>
                 <tr v-if="!plansMy || !plansMy.length">
-                    <td colspan="4"><a-empty :image="simpleImage" /></td>
+                    <td colspan="4">
+                        <a-empty :image="simpleImage">
+                            <template #description>
+                                <span> 불러올 데이터가 없습니다 </span>
+                            </template>
+                        </a-empty>
+                    </td>
                 </tr>
                 <Transition
                     v-for="(plan, index) in plansMy"
@@ -184,7 +190,13 @@ onMounted(async () => {
                     <th width="10">상세 보기</th>
                 </tr>
                 <tr v-if="!plansLike || !plansLike.length">
-                    <td colspan="4"><a-empty :image="simpleImage" /></td>
+                    <td colspan="4">
+                        <a-empty :image="simpleImage">
+                            <template #description>
+                                <span> 불러올 데이터가 없습니다 </span>
+                            </template>
+                        </a-empty>
+                    </td>
                 </tr>
                 <Transition
                     v-for="(plan, index) in plansLike"

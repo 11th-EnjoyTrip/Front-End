@@ -113,7 +113,13 @@ watch(pageLike, async () => getNextLike());
                     <th width="10">등록 관광지 보기</th>
                 </tr>
                 <tr v-if="!reviewsMy || !reviewsMy.length">
-                    <td colspan="4"><a-empty :image="simpleImage" /></td>
+                    <td colspan="4">
+                        <a-empty :image="simpleImage">
+                            <template #description>
+                                <span> 불러올 데이터가 없습니다 </span>
+                            </template>
+                        </a-empty>
+                    </td>
                 </tr>
                 <Transition
                     v-for="(review, index) in curMy"
@@ -167,7 +173,13 @@ watch(pageLike, async () => getNextLike());
                     <th width="10">등록 관광지 보기</th>
                 </tr>
                 <tr v-if="!reviewsMy || !reviewsMy.length">
-                    <td colspan="4"><a-empty :image="simpleImage" /></td>
+                    <td colspan="4">
+                        <a-empty :image="simpleImage">
+                            <template #description>
+                                <span> 불러올 데이터가 없습니다 </span>
+                            </template>
+                        </a-empty>
+                    </td>
                 </tr>
                 <Transition
                     v-for="(review, index) in curLike"
