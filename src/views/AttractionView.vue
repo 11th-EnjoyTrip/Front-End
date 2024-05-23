@@ -3,6 +3,8 @@ import SearchBox from "@/components/Attraction/SearchBox.vue";
 import NavComp from "@/components/Nav/NavComp.vue";
 import CommonKakaoMap from "@/components/common/CommonKakaoMap.vue";
 import SearchItemCard from "@/components/Attraction/SearchItemCard.vue";
+import TheTrainer from '@/components/Chat/TheTrainer.vue';
+import ChatButton from "@/components/Chat/ChatButton.vue";
 import { ref,onMounted } from 'vue';
 import { attractionList } from "@/apis/attractionApi";
 import InfiniteLoading from "v3-infinite-loading";
@@ -12,6 +14,13 @@ const region = ref('0')
 const regionName = ref('')
 const categorys = ref('12,14,32,15,28,38,39')
 const keyword = ref('')
+
+const showChat = ref(false);
+
+const handleShowChat = () => {
+  showChat.value = !showChat.value;
+};
+
 
 const searchItem = async(...args) => {
   region.value = args[0].value;
@@ -46,8 +55,8 @@ const loadAttractionList = async ($state) => {
     }
 
     page++;
-  } catch (error) {
-    console.error("Error fetching attraction list:", error);
+  } catch (error2) {
+    console.error("Error fetching attraction list:", error2);
     $state.error(); // 에러 발생 시 로딩 종료
   }
 };
@@ -59,7 +68,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="attractionListData">
+  <div>
+    <div v-if="attractionListData">
     <NavComp :withLower="true" />
     <SearchBox @search-item="searchItem" />
     <div v-if="attractionListData.length" class="mt-4 mb-5 map-item">
@@ -73,6 +83,13 @@ onMounted(() => {
       </template>
     </InfiniteLoading>
   </div>
+  <ChatButton @showTrainer="handleShowChat"/>
+    <div v-if="showChat">
+      <TheTrainer @showTrainer="handleShowChat" />
+    </div>
+</div>
+
+
 </template>
 
 <style scoped>

@@ -1,15 +1,9 @@
 .loading {
-    position:fixed;
-    top:55%;
-    left:76%;
+    /* position:fixed; */
+    top:80%;
     /* margin:-0px 0 0 0px; */
     z-index: 9999999;}
 
-    @media (max-width: 1350px) {
-      .loading {
-          left: 79%;
-      }
-  }
 
 @-webkit-keyframes hourglass{
     0%{-webkit-transform:rotate(0deg);}

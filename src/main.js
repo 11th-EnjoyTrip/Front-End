@@ -25,7 +25,7 @@ import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
-import 'vuetify/styles';
+// import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css';
 
 useKakao("467c6aedcee5e042222b042e9896462b");

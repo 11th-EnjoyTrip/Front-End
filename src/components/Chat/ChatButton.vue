@@ -9,7 +9,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <button class="floating-btn" @click="handleClick">↑</button>
+  <button class="floating-btn" @click="handleClick"><img src="@/assets/chat/chatbot.png" width="40" height="40"/></button>
 </template>
 
 <style scoped>
@@ -19,10 +19,9 @@ const handleClick = () => {
     right: 13%;
     width: 50px;
     height: 50px;
-    background-color: #007bff;
-    color: white;
+    background-color: #ffffff;
     border: none;
-    border-radius: 50%;
+    border-radius: 40%;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
@@ -38,7 +37,19 @@ const handleClick = () => {
     }
   }
 
+  @media (max-width: 1500px){
+    .floating-btn {
+      right: 10%;
+    }
+  }
+  
+  @media(min-width:1600px){
+    .floating-btn{
+      right: 18%;
+    }
+  }
+
   .floating-btn:hover {
-    background-color: #0056b3;
+    background-color: #E9F0FE;
   }
 </style>

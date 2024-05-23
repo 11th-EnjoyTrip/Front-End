@@ -1,13 +1,30 @@
 <script setup>
+import { ref } from 'vue';
 import NavComp from "@/components/Nav/NavComp.vue";
 import { RouterView } from "vue-router";
+import TheTrainer from '@/components/Chat/TheTrainer.vue';
+import ChatButton from "@/components/Chat/ChatButton.vue";
+
+const showChat = ref(false);
+
+const handleShowChat = () => {
+  showChat.value = !showChat.value;
+};
+
 </script>
 
 <template>
-    <NavComp :withLower="true" />
+    <div>
+        <NavComp :withLower="true" />
     <div class="row">
         <RouterView />
     </div>
+    <ChatButton @showTrainer="handleShowChat"/>
+    <div v-if="showChat">
+      <TheTrainer @showTrainer="handleShowChat" />
+    </div>
+    </div>
+
 </template>
 
 <style scoped></style>
