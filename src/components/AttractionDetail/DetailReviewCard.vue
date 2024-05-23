@@ -2,9 +2,10 @@
 import IconLike from "@/components/icons/IconLike.vue";
 import IconEdit from "@/components/icons/IconEdit.vue";
 import IconTrash from "@/components/icons/IconTrash.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useReviewStore } from "@/stores/review.js";
 import { useRouter } from "vue-router";
+import { getUserInfo } from "@/apis/userApi";
 
 const props = defineProps({
     review: Object,
@@ -21,9 +22,11 @@ const editLike = async () => {
     if (checkLiked.value) {
         await doCancelReviewLike(props.review.review_id);
         checkLiked.value = false;
+        router.go();
     } else {
         await doLikeReview(props.review.review_id);
         checkLiked.value = true;
+        router.go();
     }
 };
 const text = ref(props.review.review_text);
@@ -35,6 +38,20 @@ const delReview = async () => {
     await deleteReview(props.review.review_id);
     router.go();
 };
+const userInfo = ref({
+    nickname: "",
+    userid: "",
+});
+onMounted(async () => {
+    await getUserInfo()
+        .then((response) => {
+            userInfo.value.nickname = response.data.info.nickname;
+            userInfo.value.userid = response.data.info.userid;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
 </script>
 
 <template>
@@ -60,7 +77,10 @@ const delReview = async () => {
                     <div v-if="review">({{ review.likes }})</div>
                 </div>
 
-                <div v-if="review && nickname == review.nickname" class="d-flex align-items-center column-gap-3">
+                <div
+                    v-if="review && userInfo.nickname == review.nickname"
+                    class="d-flex align-items-center column-gap-3"
+                >
                     <IconEdit
                         v-if="review && !isEditing"
                         :width="24"

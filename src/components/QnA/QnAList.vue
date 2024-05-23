@@ -63,7 +63,7 @@ const searchQnA = async () => {
                 :placeholder="'입력한 키워드가 포함된 제목의 글을 검색합니다'"
                 :icon="{ isStart: false, name: 'search' }"
                 v-model="keyword"
-                @searchQnA="searchQnA"
+                @search="searchQnA"
             />
         </div>
 

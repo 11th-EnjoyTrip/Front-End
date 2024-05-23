@@ -1,9 +1,7 @@
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch, nextTick } from "vue";
 import { KakaoMap, KakaoMapCustomOverlay, KakaoMapMarker } from "vue3-kakao-maps";
 import CommonKakaoMapInfoWindow from "./CommonKakaoMapInfoWindow.vue";
-import { useAttractionStore } from "@/stores/attraction";
-import { storeToRefs } from "pinia";
 
 const props = defineProps({
     isDraggable: {
@@ -12,24 +10,41 @@ const props = defineProps({
     },
     content: Array,
 });
-const store = useAttractionStore();
-const { curLatLng } = storeToRefs(store);
 const map = ref();
 const overlay = ref(null);
-const visibleRef = ref(props.content.map((item, idx) => (idx == 0 ? true : false)));
+let visibleRef = props.content.map((item, index) => (index === 0 ? ref(true) : ref(false)));
 
 //마커 클릭 시 인포윈도우의 visible 값을 반전
 const onClickMapMarker = (index) => {
-    visibleRef.value[visibleRef.value.indexOf(true)] = false;
-    visibleRef.value[index] = true;
+    visibleRef[index].value = !visibleRef[index].value;
 };
+
+// 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+let bounds;
 
 const onLoadKakaoMap = (mapRef) => {
     map.value = mapRef;
+    bounds = new kakao.maps.LatLngBounds();
+    let point;
+
+    props.content.forEach((markerInfo) => {
+        // 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
+        point = new kakao.maps.LatLng(markerInfo.latitude, markerInfo.longitude);
+
+        // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(point);
+    });
+
+    setBounds();
+};
+
+const setBounds = () => {
+    // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
+    // 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
+    if (map.value !== undefined) {
+        map.value.setBounds(bounds);
+    }
     map.value.setDraggable(props.isDraggable);
-    map.value.setZoomable(true);
-    curLatLng.value.lat = props.content[0].latitude + 0.001;
-    curLatLng.value.lng = props.content[0].longitude;
 };
 
 const onLoadKakaoMapCustomOverlay = (newCustomOverlay) => {
@@ -40,25 +55,17 @@ watch(
     () => props.content.length,
     () => {
         onLoadKakaoMap(map.value);
-        visibleRef.value = props.content.map((item, index) => (index === 0 ? true : false));
+        visibleRef = props.content.map((item, index) => (index === 0 ? ref(true) : ref(false)));
     }
 );
-watch(curLatLng.value, () => {
-    visibleRef.value[visibleRef.value.indexOf(true)] = false;
-    props.content.forEach((c, i) => {
-        if (c.latitude + 0.001 == curLatLng.value.lat && c.longitude == curLatLng.value.lng) {
-            visibleRef.value[i] = true;
-        }
-    });
-});
 </script>
 
 <template style="background-color: white">
     <KakaoMap
         width="100%"
         class="kakao-map-item"
-        :lat="curLatLng.lat"
-        :lng="curLatLng.lng"
+        :lat="content[0].latitude"
+        :lng="content[0].longitude"
         @onLoadKakaoMap="onLoadKakaoMap"
     >
         <div v-for="(data, index) in content" :key="index">
@@ -79,7 +86,7 @@ watch(curLatLng.value, () => {
                 :y-anchor="1.3"
                 :z-index="20"
                 @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
-                :visible="visibleRef[index]"
+                :visible="visibleRef[index].value"
             >
                 <router-link :to="`attraction/${data.contentId}`">
                     <CommonKakaoMapInfoWindow

@@ -32,7 +32,7 @@ onMounted(async () => {
             <div class="d-flex align-items-center justify-content-between card-text">
                 <span class="fw-bold info-title">{{ attraction.title }}</span>
                 <div class="d-flex align-items-center column-gap-1">
-                    <IconLike :width="20" :height="20" :color="'#ff2c51'" :isLike="true" />
+                    <IconLike :width="20" :height="20" :color="'#ff2c51'" :isLike="attraction.isAttractionLiked" />
                     <div class="fw-medium info-address">({{ attraction.likes }})</div>
                 </div>
             </div>

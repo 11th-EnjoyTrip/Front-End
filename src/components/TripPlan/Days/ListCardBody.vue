@@ -44,8 +44,8 @@ const newDepartureTime = ref(
 const newTransportation = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].transportation);
 const newMemo = ref(props.type == "read" ? "" : attractionInfos.value[props.day][props.idx].memo);
 watch([newArrivalTime, newDepartureTime, newTransportation, newMemo], () => {
-    attractionInfos.value[props.day][props.idx].arrivalTime = newArrivalTime.value.format("HH:mm:ss");
-    attractionInfos.value[props.day][props.idx].departureTime = newDepartureTime.value.format("HH:mm:ss");
+    attractionInfos.value[props.day][props.idx].arrivalTime = newArrivalTime.value;
+    attractionInfos.value[props.day][props.idx].departureTime = newDepartureTime.value;
     attractionInfos.value[props.day][props.idx].transportation = newTransportation.value;
     attractionInfos.value[props.day][props.idx].memo = newMemo.value;
 });

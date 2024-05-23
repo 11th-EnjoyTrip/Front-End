@@ -15,7 +15,7 @@ const addPlan = async () => {
     if (tripPlanInfo.value.title.trim() == "") message.warn("계획 제목을 입력해주세요!!!", 3);
     else if (tripPlanInfo.value.startDate == "" || tripPlanInfo.value.endDate == "")
         message.warn("출발 / 복귀일을 모두 입력해주세요!!!", 3);
-    else if (quill.value.root.innerHTML == "<p></p>") message.warn("계획 설명을 입력해주세요!!!", 3);
+    else if (quill.value == "<p></p>") message.warn("계획 설명을 입력해주세요!!!", 3);
     else {
         let res = true;
         daysSelected.value.forEach((day) => {
@@ -43,11 +43,18 @@ const addPlan = async () => {
             attractionInfos.value.forEach((attr, idx) => {
                 let detailPlanList = [];
                 attr.forEach((v, i) => {
+                    const departure = new Date(v.departureTime);
+                    const arrival = new Date(v.arrivalTime);
+
                     detailPlanList.push({
                         sequence: i + 1,
                         memo: v.memo.trim(),
-                        departureTime: v.departureTime,
-                        arrivalTime: v.arrivalTime,
+                        departureTime: `${arrival.getHours()}:${
+                            arrival.getMinutes() + 1 < 10 ? "0" + (arrival.getMinutes() + 1) : arrival.getMinutes() + 1
+                        }:${arrival.getSeconds() < 10 ? "0" + arrival.getSeconds() : arrival.getSeconds()}`,
+                        arrivalTime: `${arrival.getHours()}:${
+                            arrival.getMinutes() + 1 < 10 ? "0" + (arrival.getMinutes() + 1) : arrival.getMinutes() + 1
+                        }:${arrival.getSeconds() < 10 ? "0" + arrival.getSeconds() : arrival.getSeconds()}`,
                         distance: 1000,
                         transportation: v.transportation == "자동차" ? "CAR" : "WALK",
                         contentId: daysSelected.value[idx][i].contentId,

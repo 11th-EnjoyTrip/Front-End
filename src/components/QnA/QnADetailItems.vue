@@ -2,6 +2,7 @@
 import { useUserInfoStore } from "@/stores/userInfo.js";
 import { useRouter } from "vue-router";
 import { qnaDelete } from "@/apis/qnaApi";
+import { jwtDecode } from "jwt-decode";
 
 defineProps({
     detail: Object,
@@ -14,6 +15,7 @@ const deleteQnA = async () => {
         .then(() => router.replace("/qna"))
         .catch((error) => console.log(error));
 };
+const id = jwtDecode(localStorage.getItem("accessToken")).Id;
 </script>
 
 <template>
@@ -38,17 +40,13 @@ const deleteQnA = async () => {
         <hr />
         <div class="w-100 d-flex justify-content-end column-gap-3">
             <button
-                v-if="detail.writer == store.getUserInfo.id"
+                v-if="detail.writer == id"
                 class="border-0 rounded-5 btn edit-btn"
                 @click="router.push(`/qna/${detail.id}/edit`)"
             >
                 게시글 수정
             </button>
-            <button
-                v-if="detail.writer == store.getUserInfo.id"
-                class="border-0 rounded-5 btn delete-btn"
-                @click="deleteQnA"
-            >
+            <button v-if="detail.writer == id" class="border-0 rounded-5 btn delete-btn" @click="deleteQnA">
                 게시글 삭제
             </button>
             <button class="border-0 rounded-5 btn before-btn" @click="router.back()">뒤로가기</button>

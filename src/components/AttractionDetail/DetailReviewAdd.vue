@@ -1,8 +1,10 @@
 <script setup>
 import dayjs from "dayjs";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useReviewStore } from "@/stores/review.js";
 import { useRouter } from "vue-router";
+import { getUserInfo } from "@/apis/userApi";
+import { jwtDecode } from "jwt-decode";
 
 const props = defineProps({
     nickname: String,
@@ -16,9 +18,9 @@ const { addReview } = store;
 const router = useRouter();
 const insertReview = async () => {
     const newReview = {
-        userid: props.userid,
+        userid: userInfo.value.userid,
         content_id: props.content_id,
-        nickname: props.nickname,
+        nickname: userInfo.value.nickname,
         review_text: review_text.value,
     };
 
@@ -26,17 +28,33 @@ const insertReview = async () => {
     emit("changeState");
     router.go();
 };
+
+const userInfo = ref({
+    nickname: "",
+    userid: "",
+});
+onMounted(async () => {
+    await getUserInfo()
+        .then((response) => {
+            console.log(response.data);
+            userInfo.value.nickname = response.data.info.nickname;
+            userInfo.value.userid = response.data.info.userid;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
 </script>
 
 <template>
     <div class="w-100 p-4 mt-4 review-container">
         <div class="w-100 d-flex justify-content-between align-items-center">
             <div>
-                <div class="review-info">작성자&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;{{ nickname }}</div>
+                <div class="review-info">작성자&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;{{ userInfo.nickname }}</div>
                 <div class="mt-2 review-info">
                     작성날짜&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;{{ dayjs().year() }}-{{
                         dayjs().month() + 1 < 10 ? "0" + (dayjs().month() + 1) : dayjs().month() + 1
-                    }}-{{ dayjs().day() < 10 ? "0" + dayjs().day() : dayjs().day() }}
+                    }}-{{ dayjs().date() < 10 ? "0" + dayjs().date() : dayjs().date() }}
                 </div>
             </div>
             <button class="review-btn" @click="insertReview">리뷰 작성</button>

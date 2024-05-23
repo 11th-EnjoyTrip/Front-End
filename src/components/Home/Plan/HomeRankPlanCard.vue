@@ -43,7 +43,7 @@ const goDetail = async (id) => {
             <div class="d-flex align-items-center justify-content-between card-text">
                 <span class="fw-bold info-title">{{ plan.title }}</span>
                 <div class="d-flex align-items-center column-gap-1">
-                    <IconLike :width="20" :height="20" :color="'#ff2c51'" :isLike="true" />
+                    <IconLike :width="20" :height="20" :color="'#ff2c51'" :isLike="plan.isPlanLiked" />
                     <div class="fw-medium info-address">({{ plan.likes }})</div>
                 </div>
             </div>

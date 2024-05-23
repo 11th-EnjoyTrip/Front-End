@@ -3,15 +3,16 @@ import { useRouter } from "vue-router";
 import { qnaAdd } from "@/apis/qnaApi.js";
 import { ref } from "vue";
 import { useUserInfoStore } from "@/stores/userInfo";
+import { jwtDecode } from "jwt-decode";
 
 const router = useRouter();
-const inputTitle = ref("제목을 입력해주세요");
-const inputContent = ref("내용을 입력해주세요");
+const inputTitle = ref("");
+const inputContent = ref("");
 const store = useUserInfoStore();
 
 const addQnA = async () => {
     const newQnA = {
-        writer: store.getUserInfo.id,
+        writer: jwtDecode(localStorage.getItem("accessToken")).Id,
         title: inputTitle.value,
         content: inputContent.value,
     };

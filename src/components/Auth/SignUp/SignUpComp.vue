@@ -7,7 +7,9 @@ import SignUpPreferContents from "@/components/Auth/SignUp/SignUpPreferContents.
 import { ref, computed, watch } from "vue";
 import { idCheck, nicknameCheck, emailCheck, signup } from "@/apis/userApi.js";
 import { message } from "ant-design-vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const inputId = ref("");
 const inputPwd = ref("");
 const inputCheck = ref("");
@@ -151,6 +153,7 @@ const doSignup = async () => {
         await signup(signupInfo)
             .then(() => {
                 message.success("회원가입에 성공했습니다. 로그인 화면으로 이동합니다", 3);
+                router.push("/auth/login");
             })
             .catch(() => {
                 message.error("회원가입에 실패했습니다", 3);
