@@ -2,8 +2,6 @@
 import { computed, ref, watch, nextTick } from "vue";
 import { KakaoMap, KakaoMapCustomOverlay, KakaoMapMarker } from "vue3-kakao-maps";
 import CommonKakaoMapInfoWindow from "./CommonKakaoMapInfoWindow.vue";
-import { useRoute } from 'vue-router';
-import router from "@/router";
 
 const props = defineProps({
     isDraggable: {
@@ -13,7 +11,6 @@ const props = defineProps({
     content: Array,
 });
 const map = ref();
-const route = useRoute();
 const overlay = ref(null);
 let visibleRef = props.content.map((item, index) => (index === 0 ? ref(true) : ref(false)));
 
@@ -71,6 +68,7 @@ watch(
       <KakaoMapMarker
         :lat="data.latitude"
         :lng="data.longitude"
+        :clickable="true"
         :image="{
         imageSrc: `/src/assets/marker/${data.contentTypeId}.png`,
         imageWidth: 42,
