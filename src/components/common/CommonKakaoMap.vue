@@ -1,9 +1,7 @@
 <script setup>
-import { computed, ref, watch, nextTick } from "vue";
+import { ref, watch } from "vue";
 import { KakaoMap, KakaoMapCustomOverlay, KakaoMapMarker } from "vue3-kakao-maps";
 import CommonKakaoMapInfoWindow from "./CommonKakaoMapInfoWindow.vue";
-import { useRoute } from "vue-router";
-import router from "@/router";
 
 const props = defineProps({
     isDraggable: {
@@ -13,7 +11,6 @@ const props = defineProps({
     content: Array,
 });
 const map = ref();
-const route = useRoute();
 const overlay = ref(null);
 const visibleRef = ref(props.content.map((item, idx) => (idx == 0 ? true : false)));
 
@@ -62,10 +59,6 @@ watch(
         visibleRef.value = props.content.map((item, index) => (index === 0 ? true : false));
     }
 );
-
-// const getLinkPath = (contentId) => {
-//     return route.path === '/attraction' ? `/attraction/${contentId}` : router.path;
-// };
 </script>
 
 <template style="background-color: white">
@@ -80,12 +73,13 @@ watch(
             <KakaoMapMarker
                 :lat="data.latitude"
                 :lng="data.longitude"
+                :clickable="true"
                 :image="{
                     imageSrc: `/src/assets/marker/${data.contentTypeId}.png`,
                     imageWidth: 42,
                     imageHeight: 42,
                 }"
-                @onClickKakaoMapMarker="onClickMapMarker"
+                @onClickKakaoMapMarker="onClickMapMarker(index)"
             />
             <KakaoMapCustomOverlay
                 :lat="data.latitude"
@@ -93,9 +87,9 @@ watch(
                 :y-anchor="1.3"
                 :z-index="20"
                 @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
-                :visible="visibleRef[index]"
+                :visible="visibleRef[index].value"
             >
-                <router-link :to="`/attraction/${data.contentId}`">
+                <router-link :to="`attraction/${data.contentId}`">
                     <CommonKakaoMapInfoWindow
                         :title="data.title"
                         :content-type-name="data.contentTypeName"

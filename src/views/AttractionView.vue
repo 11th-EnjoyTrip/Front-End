@@ -39,22 +39,27 @@ const attractionListData = ref(null);
 const page = ref(0);
 
 const loadAttractionList = async ($state) => {
-    await attractionList(region.value, categorys.value, keyword.value, page.value)
-        .then((response) => {
-            if (page.value == 0) {
-                attractionListData.value = [...response.data];
-            } else {
-                attractionListData.value = [...attractionListData.value, ...response.data];
+    try {
+        const response = await attractionList(region.value, categorys.value, keyword.value, page.value);
+        const jsonData = response.data;
+        console.log(jsonData);
 
-                if (response.data.length < 20) $state.complete();
-                else if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) $state.loaded();
+        if (page.value === 0) {
+            attractionListData.value = jsonData;
+        } else {
+            attractionListData.value = [...attractionListData.value, ...jsonData];
+
+            if (jsonData.length < 20) {
+                $state.complete(); // 데이터가 20개 미만일 경우 로딩 종료
+            } else if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+                $state.loaded(); // 데이터가 더 있을 경우 로딩 지속
             }
-            page.value++;
-        })
-        .catch((error) => {
-            console.log(error);
-            $state.error();
-        });
+        }
+        page.value++;
+    } catch (error) {
+        console.error("Error fetching attraction list:", error);
+        $state.error(); // 에러 발생 시 로딩 종료ㄹ
+    }
 };
 
 onMounted(() => {
@@ -68,7 +73,7 @@ onMounted(() => {
             <NavComp :withLower="true" />
             <SearchBox @search-item="searchItem" />
             <div v-if="attractionListData.length" class="mt-4 mb-5 map-item">
-                <CommonKakaoMap :content="attractionListData" />
+                <CommonKakaoMap :isDraggable="true" :content="attractionListData" />
             </div>
             <hr width="90%" style="max-width: 1200px" class="mx-auto" />
             <div>
