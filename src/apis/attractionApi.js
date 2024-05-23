@@ -29,3 +29,23 @@ export const attractionReview = (contentId, page) => {
         },
     });
 };
+
+export const attractionLike = (contentId) => {
+    return api({
+        url: "/attraction/like",
+        method: "post",
+        data: {
+            contentId: contentId,
+        },
+    });
+};
+
+export const attractionLikeCancel = (contentId) => {
+    return api({
+        url: "/attraction/like",
+        method: "delete",
+        data: {
+            contentId: contentId,
+        },
+    });
+};

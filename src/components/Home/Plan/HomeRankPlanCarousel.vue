@@ -1,8 +1,9 @@
 <script setup>
 import { Carousel, Slide, Navigation } from "vue3-carousel";
-import { ref } from "vue";
-import HomeRecommendCard from "@/components/Home/HomeRecommendCard.vue";
+import { ref, onMounted } from "vue";
+import HomeRankPlanCard from "@/components/Home/Plan/HomeRankPlanCard.vue";
 import { useHomeInfoStore } from "@/stores/homeMenu";
+import { storeToRefs } from "pinia";
 
 const settings = ref({
     itemsToShow: 1,
@@ -21,19 +22,24 @@ const breakpoints = ref({
     },
 
     1200: {
-        itemsToShow: 3,
+        itemsToShow: 2,
         snapAlign: "center",
     },
 });
 
 const store = useHomeInfoStore();
+const { plans } = storeToRefs(store);
+const { queryPlans } = store;
+onMounted(async () => {
+    await queryPlans();
+});
 </script>
 
 <template>
-    <div class="w-100 mx-auto mt-3">
+    <div class="w-100 mx-auto mt-4">
         <Carousel v-bind="settings" :breakpoints="breakpoints" :wrap-around="true" :autoplay="3000">
-            <Slide v-for="content in store.getContents" :key="content.contentId">
-                <HomeRecommendCard :content="content" />
+            <Slide v-for="plan in plans" :key="plan.tripPlanId">
+                <HomeRankPlanCard :plan="plan" />
             </Slide>
 
             <template #addons>
