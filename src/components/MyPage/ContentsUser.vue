@@ -42,7 +42,7 @@ watch(newNickname, async () => {
 </script>
 
 <template>
-    <div class="position-absolute w-100 px-5">
+    <div class="w-100 px-5">
         <div class="text-center fw-bold fs-5">회원정보 관리</div>
         <div class="row-gap-3 mt-5 d-flex flex-column">
             <div>

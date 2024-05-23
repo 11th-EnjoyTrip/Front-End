@@ -38,10 +38,12 @@ defineProps({
 
 <style scoped>
 .come-enter-active {
+    position: static;
     animation: come-in 0.3s ease-in-out forwards;
 }
 
 .come-leave-active {
+    position: absolute;
     animation: come-out 0.3s ease-in-out forwards;
 }
 

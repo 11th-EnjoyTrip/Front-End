@@ -3,6 +3,7 @@ import NavComp from "@/components/Nav/NavComp.vue";
 import MyPageSideMenu from "@/components/MyPage/MyPageSideMenu.vue";
 import MyPageContents from "@/components/MyPage/MyPageContents.vue";
 import MyPageSideMenuMobile from "@/components/MyPage/MyPageSideMenuMobile.vue";
+import FooterComp from "@/components/Footer/FooterComp.vue";
 import { ref } from "vue";
 
 const menu = ref(0);
@@ -22,6 +23,7 @@ const menu = ref(0);
     <div class="mobiles">
         <MyPageContents :menu="menu" />
     </div>
+    <FooterComp class="footer" />
 </template>
 
 <style scoped>
@@ -32,6 +34,10 @@ const menu = ref(0);
 
 .mobiles {
     display: none;
+}
+
+.footer {
+    margin-top: 80px;
 }
 
 @media (max-width: 767.98px) {

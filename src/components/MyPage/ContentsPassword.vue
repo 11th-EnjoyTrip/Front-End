@@ -75,7 +75,7 @@ const doChangePassword = async () => {
 </script>
 
 <template>
-    <div class="position-absolute w-100 px-5">
+    <div class="w-100 px-5">
         <div class="fw-bold fs-5 text-center">비밀번호 변경</div>
         <div class="mt-5 d-flex flex-column row-gap-3">
             <div>

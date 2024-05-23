@@ -83,7 +83,7 @@ watch(pageLike, async () => await getMyTripPlanLike());
 </script>
 
 <template>
-    <div class="position-absolute w-100">
+    <div class="w-100">
         <div class="text-center fw-bold fs-5">여행 계획 관리</div>
         <div class="w-100 mt-3">
             <div class="w-100 d-flex justify-content-between align-items-end">
