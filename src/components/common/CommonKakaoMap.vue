@@ -62,10 +62,6 @@ watch(
         visibleRef = props.content.map((item, index) => (index === 0 ? ref(true) : ref(false)));
     }
 );
-
-// const getLinkPath = (contentId) => {
-//     return route.path === '/attraction' ? `/attraction/${contentId}` : router.path;
-// };
 </script>
 
 <template style="background-color: white;" >
@@ -90,7 +86,7 @@ watch(
         @onLoadKakaoMapCustomOverlay="onLoadKakaoMapCustomOverlay"
         :visible="visibleRef[index].value"
         >
-            <router-link :to= "`/attraction/${data.contentId}`">
+            <router-link :to="`attraction/${data.contentId}`" >
                 <CommonKakaoMapInfoWindow
                     :title="data.title"
                     :content-type-name="data.contentTypeName"
