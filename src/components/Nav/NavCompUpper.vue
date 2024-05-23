@@ -1,18 +1,17 @@
 <script setup>
 import UpperItems from "@/components/Nav/UpperItems.vue";
-import CommonLogo from "@/components/common/CommonLogo.vue";
 import UpperDropdown from "@/components/Nav/UpperDropdown.vue";
+import TravelogLogoTitle from "@/components/icons/TravelogLogoTitle.vue";
 </script>
 
 <template>
-    <!-- 네비게이션 상단 -->
     <div class="row mx-auto nav-upper">
-        <!-- 좌측 로고 & 검색 -->
         <div class="col my-auto">
-            <CommonLogo :length="28" :size="24" :title="'Travelogue'" />
+            <div class="d-flex align-items-center" @click="$router.push('/')">
+                <img src="@/assets/travelog_logo.gif" alt="로고" width="60" height="60" />
+                <TravelogLogoTitle :width="120" :height="30" :color="'#374553'" />
+            </div>
         </div>
-        <!-- 우측 사용자 상태 관리 -->
-        <!-- 모바일보다 클 때 -->
         <div class="col my-auto d-flex justify-content-end">
             <UpperItems class="user-state" />
             <UpperDropdown />

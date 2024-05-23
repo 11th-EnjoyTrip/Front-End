@@ -4,7 +4,9 @@ import { reviewMy, reviewLike } from "@/apis/userApi.js";
 import { message } from "ant-design-vue";
 import IconPlace from "@/components/icons/IconPlace.vue";
 import IconArrowDown from "@/components/icons/IconArrowDown.vue";
+import { Empty } from "ant-design-vue";
 
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 const reviewsMy = ref(null);
 const reviewsLike = ref(null);
 const curMy = ref([]);
@@ -13,8 +15,10 @@ const pageMy = ref(1);
 const pageLike = ref(1);
 const isEndMy = ref(1);
 const isEndLike = ref(1);
+const isFirstMy = ref(true);
+const isFirstLike = ref(true);
 const getNextMy = () => {
-    if (reviewsMy.value[pageMy.value - 1].length > 0) {
+    if (reviewsMy.value.length > 0 && reviewsMy.value[pageMy.value - 1].length > 0) {
         curMy.value = reviewsMy.value[pageMy.value - 1];
     }
 };
@@ -30,7 +34,7 @@ const getMyReview = async () => {
         });
 };
 const getNextLike = () => {
-    if (reviewsLike.value[pageLike.value - 1].length > 0) {
+    if (reviewsLike.value.length > 0 && reviewsLike.value[pageLike.value - 1].length > 0) {
         curLike.value = reviewsLike.value[pageLike.value - 1];
     }
 };
@@ -94,7 +98,7 @@ watch(pageLike, async () => getNextLike());
         <div class="text-center fw-bold fs-5">리뷰 관리</div>
         <div class="w-100 mt-3">
             <div class="w-100 d-flex justify-content-between align-items-end">
-                <div class="fw-bold mt-5 fs-5">내가 작성한 리뷰</div>
+                <div class="fw-bold mt-5">내가 작성한 리뷰</div>
                 <div class="d-flex align-items-center column-gap-4">
                     <IconArrowDown :width="20" :height="20" :color="'#999999'" :degree="90" @click="prevPage('my')" />
                     <div class="fw-semibold">{{ pageMy }}</div>
@@ -107,6 +111,9 @@ watch(pageLike, async () => getNextLike());
                     <th width="50">리뷰 내용</th>
                     <th width="30">등록 날짜</th>
                     <th width="10">등록 관광지 보기</th>
+                </tr>
+                <tr v-if="!reviewsMy || !reviewsMy.length">
+                    <td colspan="4"><a-empty :image="simpleImage" /></td>
                 </tr>
                 <Transition
                     v-for="(review, index) in curMy"
@@ -139,7 +146,7 @@ watch(pageLike, async () => getNextLike());
         </div>
         <div class="w-100 mt-5">
             <div class="w-100 d-flex justify-content-between align-items-end">
-                <div class="fw-bold mt-5 fs-5">"좋아요" 리뷰</div>
+                <div class="fw-bold mt-5">"좋아요" 리뷰</div>
                 <div class="d-flex align-items-center column-gap-4">
                     <IconArrowDown :width="20" :height="20" :color="'#999999'" :degree="90" @click="prevPage('like')" />
                     <div class="fw-semibold">{{ pageLike }}</div>
@@ -158,6 +165,9 @@ watch(pageLike, async () => getNextLike());
                     <th width="50">리뷰 내용</th>
                     <th width="30">등록 날짜</th>
                     <th width="10">등록 관광지 보기</th>
+                </tr>
+                <tr v-if="!reviewsMy || !reviewsMy.length">
+                    <td colspan="4"><a-empty :image="simpleImage" /></td>
                 </tr>
                 <Transition
                     v-for="(review, index) in curLike"

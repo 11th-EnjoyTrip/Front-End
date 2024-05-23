@@ -4,20 +4,25 @@ import { attractionLike } from "@/apis/userApi.js";
 import { message } from "ant-design-vue";
 import IconPlace from "@/components/icons/IconPlace.vue";
 import IconArrowDown from "@/components/icons/IconArrowDown.vue";
+import { Empty } from "ant-design-vue";
 
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 const like = ref(null);
 const page = ref(1);
 const isEnd = ref(false);
+const isFirst = ref(true);
 const getAttractionLike = async () => {
     await attractionLike(page.value - 1)
         .then((response) => {
             if (response.data.length == 0) {
                 isEnd.value = true;
-                message.info("'좋아요' 관광지 마지막 페이지에 도달했습니다", 3);
+                if (!isFirst.value) message.info("'좋아요' 관광지 마지막 페이지에 도달했습니다", 3);
+                isFirst.value = false;
             } else if (response.data.length < 6) {
                 like.value = response.data;
                 isEnd.value = true;
-                message.info("'좋아요' 관광지 마지막 페이지에 도달했습니다", 3);
+                if (!isFirst.value) message.info("'좋아요' 관광지 마지막 페이지에 도달했습니다", 3);
+                isFirst.value = false;
             } else {
                 like.value = response.data;
             }
@@ -25,13 +30,6 @@ const getAttractionLike = async () => {
         .catch((error) => {
             console.log(error);
         });
-};
-const getDateFormat = (date) => {
-    const year = new Date(date).getFullYear();
-    const month = new Date(date).getMonth() + 1;
-    const day = new Date(date).getDate();
-
-    return `${year.toString().substring(2)}.${month < 10 ? "0" + month : month}.${day < 10 ? "0" + day : day}`;
 };
 const nextPage = () => {
     if (!isEnd.value) page.value++;
@@ -53,7 +51,7 @@ watch(page, async () => await getAttractionLike());
         <div class="text-center fw-bold fs-5">여행 계획 관리</div>
         <div class="w-100 mt-3">
             <div class="w-100 d-flex justify-content-between align-items-end">
-                <div class="fw-bold mt-5 fs-5">"좋아요" 관광지</div>
+                <div class="fw-bold mt-5">"좋아요" 관광지</div>
                 <div class="d-flex align-items-center column-gap-4">
                     <IconArrowDown :width="20" :height="20" :color="'#999999'" :degree="90" @click="prevPage('my')" />
                     <div class="fw-semibold">{{ page }}</div>
@@ -67,6 +65,9 @@ watch(page, async () => await getAttractionLike());
                     <th width="30">유형</th>
                     <th width="10">시/도</th>
                     <th width="10">상세 보기</th>
+                </tr>
+                <tr v-if="!like || !like.length">
+                    <td colspan="5"><a-empty :image="simpleImage" /></td>
                 </tr>
                 <Transition
                     v-for="(val, index) in like"
