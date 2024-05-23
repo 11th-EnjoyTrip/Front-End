@@ -5,6 +5,7 @@ import DetailMap from "@/components/AttractionDetail/DetailMap.vue";
 import DetailReview from "@/components/AttractionDetail/DetailReview.vue";
 import TheTrainer from '@/components/Chat/TheTrainer.vue';
 import ChatButton from "@/components/Chat/ChatButton.vue";
+import FooterComp from "@/components/Footer/FooterComp.vue";
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
 import { attractionDetail } from "@/apis/attractionApi";
@@ -29,9 +30,8 @@ onMounted(async () => {
 });
 
 const getContent = computed(() => {
-  return content.value;
-})
-
+    return content.value;
+});
 </script>
 
 <template>
@@ -54,12 +54,13 @@ const getContent = computed(() => {
             </div>
             <DetailContents :content="getContent" />
             <DetailMap :content="getContent" />
-            <DetailReview :contentId="1" />
+            <DetailReview :contentId="router.currentRoute.value.params.id" />
         </div>
         <ChatButton @showTrainer="handleShowChat"/>
             <div v-if="showChat">
             <TheTrainer @showTrainer="handleShowChat" />
             </div>
+        <FooterComp/>
     </div>
 </template>
 <style scoped>

@@ -2,7 +2,7 @@
 import ContentsUser from "@/components/MyPage/ContentsUser.vue";
 import ContentsPassword from "@/components/MyPage/ContentsPassword.vue";
 import ContentsPlan from "@/components/MyPage/ContentsPlan.vue";
-import ContentsHotPlace from "@/components/MyPage/ContentsHotPlace.vue";
+import ContentsReview from "@/components/MyPage/ContentsReview.vue";
 import ContentsQuit from "@/components/MyPage/ContentsQuit.vue";
 
 defineProps({
@@ -23,7 +23,7 @@ defineProps({
                 <ContentsPlan v-if="menu == 2" />
             </Transition>
             <Transition name="come">
-                <ContentsHotPlace v-if="menu == 3" />
+                <ContentsReview v-if="menu == 3" />
             </Transition>
             <Transition name="come">
                 <ContentsQuit v-if="menu == 4" />
