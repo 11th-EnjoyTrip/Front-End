@@ -8,7 +8,7 @@ import { useUserInfoStore } from "@/stores/userInfo";
 let alreadyTry = false;
 
 export const api = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "http://117.20.193.155:1234",
 });
 
 api.defaults.headers.common["Authorization"] = "";

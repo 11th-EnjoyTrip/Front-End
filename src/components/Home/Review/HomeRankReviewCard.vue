@@ -12,12 +12,11 @@ onMounted(async () => {
     await attractionDetail(props.review.content_id)
         .then((response) => (attr.value = response.data))
         .catch((error) => console.log(error));
-    console.log(attr.value);
 });
 </script>
 
 <template>
-    <div class="w-100 h-100 card-tour">
+    <div class="w-100 h-100 card-tour" @click="$router.push(`/attraction/${attr.contentId}`)">
         <div class="position-relative w-100 card-img">
             <img v-if="attr.firstImage" :src="attr.firstImage" class="w-100 h-100 object-fit-cover rounded-top-4" />
             <img v-else src="@/assets/noPicture2.png" class="w-100 h-100 object-fit-cover rounded-top-4" />

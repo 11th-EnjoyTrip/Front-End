@@ -16,7 +16,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="w-100 h-100 card-tour">
+    <div class="w-100 h-100 card-tour" @click="$router.push(`/attraction/${attraction.contentId}`)">
         <div class="position-relative w-100 card-img">
             <img
                 v-if="attraction.firstImage"
