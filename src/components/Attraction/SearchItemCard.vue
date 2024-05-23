@@ -1,6 +1,7 @@
 <script setup>
 import { useAttractionStore } from "@/stores/attraction";
 import IconNoSearch from "../icons/IconNoSearch.vue";
+import { storeToRefs } from "pinia";
 
 const props = defineProps({
     dataList: Array,
@@ -8,9 +9,13 @@ const props = defineProps({
 });
 
 const store = useAttractionStore();
-
+const { curLatLng } = storeToRefs(store);
 const searchAttr = async (attrId) => {
     await store.changeAttrId(attrId);
+};
+const getLatLng = (lat, lng) => {
+    curLatLng.value.lat = lat + 0.001;
+    curLatLng.value.lng = lng;
 };
 </script>
 
@@ -32,40 +37,47 @@ const searchAttr = async (attrId) => {
                 :gap="20"
             >
                 <template #default="{ item }">
-                    <div>
-                        <router-link :to="`attraction/${item.contentId}`" @click="searchAttr(item.contentId)">
-                            <div class="card" style="box-sizing: border-box; border-radius: 25px; border: 0">
-                                <img
-                                    v-if="item.firstImage2"
-                                    :src="item.firstImage2"
-                                    style="border-radius: 25px; border: 1px solid rgba(0, 0, 0, 0.1)"
-                                />
-                                <img
-                                    v-else
-                                    src="@/assets/noPicture2.png"
-                                    style="border-radius: 25px; border: 1px solid rgba(0, 0, 0, 0.1)"
-                                />
-                                <div
-                                    class="card-body position-absolute bottom-0 start-0 ms-2 mb-2"
-                                    style="
-                                        background: radial-gradient(
-                                            50% 50% at 50% 50%,
-                                            rgba(40, 38, 38, 0.32) 50%,
-                                            rgba(40, 38, 38, 0.23) 70%,
-                                            rgba(225, 225, 225, 0) 100%
-                                        ) !important;
-                                    "
-                                >
-                                    <div style="color: #ffffff; font-weight: 700; font-size: 15px">
-                                        {{ item.title }}
-                                    </div>
-                                    <div style="color: #ffffff; font-weight: 500; font-size: 10px">
-                                        {{ item.contentTypeName }} • {{ item.sidoName }}
+                    <a-tooltip :color="'#1769ff'">
+                        <template #title>
+                            <button class="card-btn" @click="getLatLng(item.latitude, item.longitude)">
+                                지도에서 보기
+                            </button>
+                        </template>
+                        <div>
+                            <router-link :to="`attraction/${item.contentId}`" @click="searchAttr(item.contentId)">
+                                <div class="card" style="box-sizing: border-box; border-radius: 25px; border: 0">
+                                    <img
+                                        v-if="item.firstImage2"
+                                        :src="item.firstImage2"
+                                        style="border-radius: 25px; border: 1px solid rgba(0, 0, 0, 0.1)"
+                                    />
+                                    <img
+                                        v-else
+                                        src="@/assets/noPicture2.png"
+                                        style="border-radius: 25px; border: 1px solid rgba(0, 0, 0, 0.1)"
+                                    />
+                                    <div
+                                        class="card-body position-absolute bottom-0 start-0 ms-2 mb-2"
+                                        style="
+                                            background: radial-gradient(
+                                                50% 50% at 50% 50%,
+                                                rgba(40, 38, 38, 0.32) 50%,
+                                                rgba(40, 38, 38, 0.23) 70%,
+                                                rgba(225, 225, 225, 0) 100%
+                                            ) !important;
+                                        "
+                                    >
+                                        <div style="color: #ffffff; font-weight: 700; font-size: 15px">
+                                            {{ item.title }}
+                                        </div>
+                                        <div style="color: #ffffff; font-weight: 500; font-size: 10px">
+                                            {{ item.contentTypeName }} • {{ item.sidoName }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </router-link>
-                    </div>
+                            </router-link>
+                        </div>
+                    </a-tooltip>
                 </template>
             </masonry-wall>
         </div>
@@ -108,6 +120,11 @@ const searchAttr = async (attrId) => {
     width: 90% !important;
     max-width: 1200px;
     margin-bottom: 60px;
+}
+
+.card-btn {
+    background-color: #1769ff;
+    border: 0;
 }
 
 @media (max-width: 1250px) {
