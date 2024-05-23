@@ -21,6 +21,8 @@ import QnADetail from "@/components/QnA/QnADetail.vue";
 import QnAEdit from "@/components/QnA/QnAEdit.vue";
 import QnAAdd from "@/components/QnA/QnAAdd.vue";
 
+import ChatGPTView from "@/views/ChatGPTView.vue";
+
 const isValidUser = async (to, from, next) => {
     const store = useUserInfoStore();
     const accessToken = localStorage.getItem("accessToken");
@@ -174,6 +176,11 @@ const router = createRouter({
                 },
             ],
         },
+        {
+            path: "/chat",
+            name: "chat",
+            component: ChatGPTView
+        }
     ],
 });
 

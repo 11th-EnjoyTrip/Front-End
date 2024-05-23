@@ -1,10 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import NavComp from "@/components/Nav/NavComp.vue";
-import FooterComp from "@/components/Footer/FooterComp.vue";
-import { RouterView } from "vue-router";
 import TheTrainer from '@/components/Chat/TheTrainer.vue';
 import ChatButton from "@/components/Chat/ChatButton.vue";
+import HomeTodayTour from "@/components/Home/HomeTodayTour.vue";
+import HomeRecommend from "@/components/Home/HomeRecommend.vue";
+
 
 const showChat = ref(false);
 
@@ -15,18 +16,19 @@ const handleShowChat = () => {
 </script>
 
 <template>
-    <div>
-        <NavComp :withLower="true" />
-    <div class="row">
-        <RouterView />
-    </div>
+
+  <div>
+    <NavComp :withLower="true" />
+    <HomeTodayTour />
+    <HomeRecommend />
     <ChatButton @showTrainer="handleShowChat"/>
     <div v-if="showChat">
       <TheTrainer @showTrainer="handleShowChat" />
     </div>
-    <FooterComp class="mt-5"/>
-    </div>
+  </div>
+
 
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
