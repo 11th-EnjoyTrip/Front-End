@@ -155,3 +155,12 @@ export const reviewLike = () => {
         method: "get",
     });
 };
+
+export const attractionLike = () => {
+    api.defaults.headers["Authorization"] = localStorage.getItem("accessToken");
+
+    return api({
+        url: "/attraction/like",
+        method: "get",
+    });
+};

@@ -21,9 +21,9 @@ const move = () => {
         <Transition name="modal">
             <div
                 v-if="modalState"
-                class="position-fixed top-0 left-0 w-100 h-100 row justify-content-center align-items-center modal-background"
+                class="position-fixed top-0 left-0 w-100 h-100 d-flex justify-content-center align-items-center modal-background"
             >
-                <div v-if="isSuccess" class="col-6 col-sm-7 bg-white rounded-3 modal-container">
+                <div v-if="isSuccess" class="bg-white rounded-3 modal-container">
                     <div class="fw-semibold">
                         <span class="fw-bold fs-5 modal-title">{{ id }}</span> 님의 비밀번호는
                     </div>
@@ -86,6 +86,11 @@ const move = () => {
 .modal-default-button {
     background-color: #73afff;
     font-size: 14px;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal-default-button:hover {
+    background-color: #1769ff;
 }
 
 .modal-enter-from {

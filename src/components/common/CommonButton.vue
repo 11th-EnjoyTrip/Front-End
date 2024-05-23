@@ -25,6 +25,6 @@ defineProps({
 
 <style scoped>
 .common-btn {
-    transition: background-color 0.5s ease;
+    transition: background-color 0.75s ease;
 }
 </style>

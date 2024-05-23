@@ -6,6 +6,7 @@ import CommonMessage from "@/components/common/CommonMessage.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
 import { passwordFind } from "@/apis/userApi.js";
 import ModalPasswordFindResult from "@/components/Modal/ModalPasswordFindResult.vue";
+import { message } from "ant-design-vue";
 
 const inputId = ref("");
 const inputEmail = ref("");
@@ -54,9 +55,10 @@ const doFind = async () => {
                 isSuccess.value = true;
             })
             .catch(() => {
-                modalState.value = true;
-                isSuccess.value = false;
+                message.error("유효하지 않은 사용자입니다", 3);
             });
+    } else {
+        message.warn("항목을 모두 입력해주세요", 3);
     }
 };
 </script>
@@ -84,6 +86,7 @@ const doFind = async () => {
                 </div>
                 <div class="mt-4 px-5">
                     <CommonButton
+                        class="find-btn"
                         :height="40"
                         :value="'비밀번호 찾기'"
                         :bgColors="['#1769ff', '#e1e1e1']"
@@ -112,6 +115,14 @@ const doFind = async () => {
 .title {
     font-size: 24px;
     color: #374553;
+}
+
+.find-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.find-btn:hover {
+    transform: scale(1.03);
 }
 
 .bounce-enter-active {

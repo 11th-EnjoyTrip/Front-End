@@ -4,9 +4,9 @@ import CommonButton from "@/components/common/CommonButton.vue";
 import CommonInput2 from "@/components/common/CommonInput2.vue";
 import CommonMessage from "@/components/common/CommonMessage.vue";
 import SignUpPreferContents from "@/components/Auth/SignUp/SignUpPreferContents.vue";
-import ModalSignUpResult from "@/components/Modal/ModalSignUpResult.vue";
 import { ref, computed, watch } from "vue";
 import { idCheck, nicknameCheck, emailCheck, signup } from "@/apis/userApi.js";
+import { message } from "ant-design-vue";
 
 const inputId = ref("");
 const inputPwd = ref("");
@@ -41,8 +41,6 @@ const messages = ref([
         message: "",
     },
 ]);
-const modalState = ref(false);
-const isSuccess = ref(false);
 const canSignup = computed(() => {
     return messages.value.filter((item) => item.state).length;
 });
@@ -152,13 +150,13 @@ const doSignup = async () => {
 
         await signup(signupInfo)
             .then(() => {
-                modalState.value = true;
-                isSuccess.value = true;
+                message.success("회원가입에 성공했습니다. 로그인 화면으로 이동합니다", 3);
             })
             .catch(() => {
-                modalState.value = true;
-                isSuccess.value = false;
+                message.error("회원가입에 실패했습니다", 3);
             });
+    } else {
+        message.warn("항목을 모두 입력해주세요", 3);
     }
 };
 </script>
@@ -215,6 +213,7 @@ const doSignup = async () => {
                 </div>
                 <div class="px-5 mt-4">
                     <CommonButton
+                        class="signup-btn"
                         :height="40"
                         :value="'회원가입'"
                         :bgColors="['#1769ff', '#e1e1e1']"
@@ -225,7 +224,6 @@ const doSignup = async () => {
             </div>
         </div>
     </Transition>
-    <ModalSignUpResult :modalState="modalState" :isSuccess="isSuccess" @close="modalState = false" />
 </template>
 
 <style scoped>
@@ -272,6 +270,14 @@ const doSignup = async () => {
     color: #1769ff;
     font-weight: bold;
     background-color: #f7f7f7;
+}
+
+.signup-btn {
+    transition: all 0.3s ease-in-out;
+}
+
+.signup-btn:hover {
+    transform: scale(1.03);
 }
 
 @keyframes moveDown {

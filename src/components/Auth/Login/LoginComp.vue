@@ -1,14 +1,14 @@
 <script setup>
-import CommonLogo from "@/components/common/CommonLogo.vue";
 import CommonInput from "@/components/common/CommonInput.vue";
 import CommonButton from "@/components/common/CommonButton.vue";
+import TravelogLogoTitle from "@/components/icons/TravelogLogoTitle.vue";
 import LoginSubMenu from "@/components/Auth/Login/LoginSubMenu.vue";
 import { ref, watch } from "vue";
-import { login } from "@/apis/userApi.js";
 import { useRouter } from "vue-router";
-import { useUserInfoStore } from "@/stores/userInfo.js";
-import { storeToRefs } from "pinia";
 import { message } from "ant-design-vue";
+import { storeToRefs } from "pinia";
+import { useUserInfoStore } from "@/stores/userInfo.js";
+import { login } from "@/apis/userApi.js";
 
 const router = useRouter();
 const inputId = ref("");
@@ -19,9 +19,6 @@ const checkInfo = () => {
     if (inputId.value.length > 0 && inputPwd.value.length > 0) return true;
     return false;
 };
-watch([inputId, inputPwd], () => {
-    canLogin.value = checkInfo();
-});
 const doLogin = async () => {
     const store = useUserInfoStore();
     const { loginState } = storeToRefs(store);
@@ -33,6 +30,7 @@ const doLogin = async () => {
                 localStorage.setItem("refreshToken", response.data["refresh-token"]);
                 loginState.value = true;
                 router.replace("/");
+                message.success("오늘도 와주셔서 고마워요!");
             })
             .catch(() => {
                 message.error("아이디 또는 비밀번호가 잘못 입력되었습니다");
@@ -41,14 +39,17 @@ const doLogin = async () => {
         message.warning("아이디 또는 비밀번호를 입력해주세요");
     }
 };
+watch([inputId, inputPwd], () => {
+    canLogin.value = checkInfo();
+});
 </script>
 
 <template>
     <Transition name="bounce" appear>
         <div class="row">
             <div class="d-flex flex-column h-auto col-8 col-sm-12 mx-auto login">
-                <div class="w-auto mx-auto">
-                    <CommonLogo :length="44" :size="36" :title="'Travelogue'" />
+                <div class="d-flex align-items-center justify-content-center w-100">
+                    <TravelogLogoTitle :width="200" :height="50" :color="'#374553'" />
                 </div>
                 <div class="d-flex flex-column align-items-center h-auto row-gap-2 mt-5 mb-4 w-100">
                     <CommonInput
@@ -65,7 +66,8 @@ const doLogin = async () => {
                     />
                 </div>
                 <CommonButton
-                    :height="50"
+                    class="login-btn"
+                    :height="45"
                     :value="'로그인'"
                     :bgColors="['#1769ff', '#e1e1e1']"
                     :state="canLogin"
@@ -81,6 +83,14 @@ const doLogin = async () => {
 .login {
     max-width: 360px;
     margin-top: 120px;
+}
+
+.login-btn {
+    transition: all 0.3s ease-in-out;
+}
+
+.login-btn:hover {
+    transform: scale(1.03);
 }
 
 .bounce-enter-active {

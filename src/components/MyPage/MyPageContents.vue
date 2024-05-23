@@ -1,6 +1,7 @@
 <script setup>
 import ContentsUser from "@/components/MyPage/ContentsUser.vue";
 import ContentsPassword from "@/components/MyPage/ContentsPassword.vue";
+import ContentsAttraction from "@/components/MyPage/ContentsAttraction.vue";
 import ContentsPlan from "@/components/MyPage/ContentsPlan.vue";
 import ContentsReview from "@/components/MyPage/ContentsReview.vue";
 import ContentsQuit from "@/components/MyPage/ContentsQuit.vue";
@@ -11,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="col-9 mx-auto scrolls">
+    <div class="col-10 mx-auto scrolls">
         <div class="position-relative w-100">
             <Transition name="come">
                 <ContentsUser v-if="menu == 0" />
@@ -20,13 +21,16 @@ defineProps({
                 <ContentsPassword v-if="menu == 1" />
             </Transition>
             <Transition name="come">
-                <ContentsPlan v-if="menu == 2" />
+                <ContentsAttraction v-if="menu == 2" />
             </Transition>
             <Transition name="come">
-                <ContentsReview v-if="menu == 3" />
+                <ContentsPlan v-if="menu == 3" />
             </Transition>
             <Transition name="come">
-                <ContentsQuit v-if="menu == 4" />
+                <ContentsReview v-if="menu == 4" />
+            </Transition>
+            <Transition name="come">
+                <ContentsQuit v-if="menu == 5" />
             </Transition>
         </div>
     </div>
@@ -34,10 +38,12 @@ defineProps({
 
 <style scoped>
 .come-enter-active {
+    position: static;
     animation: come-in 0.3s ease-in-out forwards;
 }
 
 .come-leave-active {
+    position: absolute;
     animation: come-out 0.3s ease-in-out forwards;
 }
 

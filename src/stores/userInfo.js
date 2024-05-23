@@ -42,7 +42,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     };
     const resetInfo = () => {
         loginState.value = false;
-        //userInfo.value = null;
+        userInfo.value = null;
         isEditing.value = false;
         trueLogout.value = false;
     };

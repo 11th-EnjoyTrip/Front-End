@@ -5,9 +5,7 @@ import CommonButton from "@/components/common/CommonButton.vue";
 import { ref, computed, watch } from "vue";
 import { passwordChange, passwordCheck } from "@/apis/userApi.js";
 import { message } from "ant-design-vue";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const before = ref("");
 const after = ref("");
 const messages = ref([
@@ -66,7 +64,6 @@ const doChangePassword = async () => {
         await passwordChange(after.value)
             .then(() => {
                 message.success("비밀번호 변경에 성공했습니다");
-                router.go(0);
             })
             .catch(() => {
                 message.error("비밀번호 변경에 실패했습니다");
@@ -78,7 +75,7 @@ const doChangePassword = async () => {
 </script>
 
 <template>
-    <div class="position-absolute w-100">
+    <div class="w-100 px-5">
         <div class="fw-bold fs-5 text-center">비밀번호 변경</div>
         <div class="mt-5 d-flex flex-column row-gap-3">
             <div>
@@ -104,6 +101,7 @@ const doChangePassword = async () => {
         </div>
         <div class="mt-5 w-75 mx-auto d-flex align-items-center">
             <CommonButton
+                class="pwd-btn"
                 :height="40"
                 :value="'비밀번호 변경'"
                 :bgColors="['#1769ff', '#e1e1e1']"
@@ -114,4 +112,12 @@ const doChangePassword = async () => {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.pwd-btn {
+    transition: all 0.3s ease-in-out;
+}
+
+.pwd-btn:hover {
+    transform: scale(1.03);
+}
+</style>
